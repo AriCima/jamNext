@@ -1,0 +1,120 @@
+type User {
+    userId: String!,
+    firstName: String!,
+    lastName: String!,
+    email: String!,
+    company: [{Company, UserType}!],
+    invitation: [invitations!]
+};
+
+enum UserType {
+  ADMIN
+  EDITOR
+};
+
+type Company {
+    name: String!,
+    cif: String!,
+    Address: {
+        address: String!,
+        city: String!,
+        country: String!,
+        zipCode: String!,
+    },
+    landlordInfo: {
+        address: String!,
+        city: String!,
+        country: String!,
+        zipCode: String!,
+        docNr: String!,
+        docType: String!,
+        fistName: String!,
+        lastName: String!,
+    },
+};
+
+type Jam {
+    jamId: String!,
+    jamType: String!,
+    jamCode: String!,
+    # adminInfo: User!,
+    adminInfo: Company!,
+    createdAt: Timestamp!,
+    jamDetails: {
+        Address: Address!,
+        houseRules: {
+            checkInFrom: String!,
+            checkInProcess: String!,
+            checkInTo: String!,
+            checkOutBefore: String!,
+            checkOutProcess: String!,
+            inviteFriends: String!,
+            overnight: String!,
+            parties: String!,
+            pets: String!,
+            smoking: String!,
+            smokingBalcony: String!,
+            contractType: String!
+        }
+    }
+};
+
+type Room {
+    roomId: String!,
+    roomNr: String!,
+    jamId: String!,
+    sqm: String!,
+    exterior: Boolean!,
+    balcony: Boolean!,
+    privBath: Boolean!,
+    rent: Int!,
+    expenses: Int!,
+    deposit: Int!,
+};
+
+type Invitation {
+    Jam: Jam!
+
+    checkIn: String!,
+    checkOut: String!,
+    rent: Int!,
+    expenses: Int!,
+    deposit: Int!,
+    roomNr: String!,
+    rentsArray: [
+        {
+            month: String!, 
+            rent: Int!, 
+            paidRent: Int!,
+            difOK: Boolean!
+        }
+    ]
+};
+
+type Tenant {
+    User: {
+        userId: String!,
+        firstName: String!,
+        lastName: String!
+        email: String!
+    },
+    Invitation: Invitation!
+
+    address: String!,
+    city: String!,
+    country: String!,
+    zipCode: String!,
+    mobile: String!,
+    docType: String!,
+    docNr: String!,
+    registeredUser: Boolean,
+};
+
+type Messages {
+    Jam: Jam!,
+    createdAt: Timestamp!,
+    text: String!
+    messageType: String!
+};
+
+

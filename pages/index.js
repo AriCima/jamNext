@@ -2,7 +2,7 @@ import Head from 'next/head'
 import loadDB from '../firebase.config';
 import styles from '../styles/Home.module.css'
 import Title from '../styledComps/title';
-import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
+import { getInitialProps } from 'next/dist/next-server/lib/utils';
 
 export default function Home() {
   return (
