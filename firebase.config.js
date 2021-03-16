@@ -1,7 +1,7 @@
 // src: https://medium.com/@lemmusm/nextjs-con-firebase-790adfe988b2;
 
 import firebase from '@firebase/app';
-import '@firebase/fiorestore';
+import '@firebase/firestore';
 
 const loadDB = () => {
     try {
