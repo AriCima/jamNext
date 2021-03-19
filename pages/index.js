@@ -1,23 +1,24 @@
 import Head from 'next/head'
+
 import loadDB from '../firebase.config';
 import styles from '../styles/Home.module.css'
 import Title from '../styledComps/title';
 import { getInitialProps } from 'next/dist/next-server/lib/utils';
+import Login from './login';
+import Div from '../styledComps/divs';
+import Register from './register';
 
 export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
         <title>Jammint</title>
-        <link rel="icon" href="/favicon.ico" />
+        {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
       <main className={styles.main}>
-        <Title>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </Title>
-
-        
+        <Login />
+        <Register />
       </main>
 
       <footer className={styles.footer}>
