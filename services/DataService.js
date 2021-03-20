@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from '../firebase.config';
 
 const saveUserInfoInFirestore = (userId, userInfo) => {
     return new Promise((resolve, reject) => {

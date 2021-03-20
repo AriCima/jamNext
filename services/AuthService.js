@@ -1,5 +1,6 @@
-import firebase from 'firebase';
+//import firebase from 'firebase';
 import DataService from './DataService';
+import firebase from '../firebase.config';
 
 export default class AuthService {
 
@@ -30,7 +31,6 @@ export default class AuthService {
 
     static register(firstName, lastName, email, password){
         return new Promise((resolve, reject) => {
-
             firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((result) => {
                 // console.log("REGISTER OK userId", result.user.uid);

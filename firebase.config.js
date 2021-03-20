@@ -3,27 +3,22 @@
 import firebase from '@firebase/app';
 import '@firebase/firestore';
 
-const loadDB = () => {
-    try {
-        const config = {
-            apiKey: process.env.FIREBASE_API_KEY,
-            authDomain: process.env.FIREBASE_AUTH-DOMAIN,
-            projectId: process.env.FIREBASE_PROJECT_ID,
-            storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: process.env.FIREBASE_SENDER_ID,
-            appId: process.env.FIREBASE_APP_ID,
-            measurementId: process.env.FIREBASE_MEASSURE_ID
-        };
-        firebase.initializeApp(config);
-    } catch (error) {
-        if (!/already exist/.text(error.message)) {
-            console.log('Firebase initialization error', error.stack)
-        }
-    }
-    return firebase;
-};
 
-export default loadDB;
+const config = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASSURE_ID
+};
+const fb = !firebase.apps.length ? firebase.initializeApp(config) : firebase.app()
+
+
+
+
+export default fb;
 
 
 

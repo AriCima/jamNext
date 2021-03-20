@@ -31,7 +31,7 @@ const useRegisterForm = ({setUserInfo}) => {
   return (
 
     <form
-      autocomplete="off"
+      autoComplete="off"
       className="register-hook-form"
       onSubmit={handleSubmit(onRegister)}
     >
