@@ -12,10 +12,8 @@ const Input = styled.input`
     width: ${props => props.w ? props.w : '100%'};
 ` 
 
-
 // ::placeholder{
 //     color: $lightGray;
 // }
   
-
 export default Input;

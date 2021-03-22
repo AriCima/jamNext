@@ -6,6 +6,27 @@ import { getInitialProps } from 'next/dist/next-server/lib/utils';
 import Login from './login';
 import Div from '../styledComps/divs';
 import Register from './register';
+import Table from '../domains/table';
+
+const data = [
+  {
+    countryName: "Afghanistan",
+    capital: "Kabul",
+    currency: "Afghani"
+  },
+  {
+    countryName: "Albania",
+    capital: "Tirane",
+    currency: "Lek"
+  },
+  {
+    countryName: "Algeria",
+    capital: "Algiers",
+    currency: "Dinar"
+  }
+];
+
+const titles = [{title: 'Pais'}, {title: 'Capital'}, {title: 'Moneda'}];
 
 export default function Home() {
   return (
@@ -18,6 +39,7 @@ export default function Home() {
       <main className={styles.main}>
         <Login />
         <Register />
+        <Table data={data} titles={titles}/>
       </main>
 
       <footer className={styles.footer}>
