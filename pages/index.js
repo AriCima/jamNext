@@ -3,9 +3,9 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Title from '../styledComps/title';
 import { getInitialProps } from 'next/dist/next-server/lib/utils';
-import Login from './login';
+import Login from '../domains/Login';
 import Div from '../styledComps/divs';
-import Register from './register';
+import Register from '../domains/Register';
 import Table from '../domains/table';
 
 const data = [

@@ -5,9 +5,10 @@ import firebase from '../firebase.config';
 export default class AuthService {
 
     static login(email, password){
-
+        
+        console.log('firebase: ', firebase);
         return new Promise((resolve, reject) => {
-
+            
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then((result) =>{                
                 resolve(result);

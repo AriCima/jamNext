@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-const SubTitle = styled.h1`
-    font-size: 1.5rem;
+const Label = styled.h1`
+    font-size: 16px;
     font-weight: ${props => (props.bold ? '700' : '400')};
-    color: black;
+    color: gray;
 `;
 
-export default SubTitle;
+export default Label;

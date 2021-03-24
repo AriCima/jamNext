@@ -3,15 +3,16 @@ import Table from '../../styledComps/table';
 
 const TableMarkup = ({ titles, data }) => (
     <Table>
-        <th>
-            {titles.map((t, key)=> {
-                return (
-                    <td key={key}>{t.title}</td>
-                )
-            })}
-        </th>
-
-        <tr>
+        <thead>
+            <tr>
+                {titles.map((t, key)=> {
+                    return (
+                        <th key={key}>{t.title}</th>
+                    )
+                })}
+            </tr>
+        </thead>
+        <tbody>
             {data.map((d, key)=> {
                 return (
                     <tr key={key}>
@@ -22,7 +23,7 @@ const TableMarkup = ({ titles, data }) => (
                 )
             })}
 
-        </tr>
+        </tbody>
     </Table>
 );
 

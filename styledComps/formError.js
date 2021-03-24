@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-const SubTitle = styled.h1`
-    font-size: 1.5rem;
+const FormError = styled.h4`
+    font-size: 1rem;
     font-weight: ${props => (props.bold ? '700' : '400')};
-    color: black;
+    color: red;
 `;
-
-export default SubTitle;
+export default FormError;
