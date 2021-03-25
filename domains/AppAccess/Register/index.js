@@ -2,14 +2,14 @@ import React from 'react';
 import {useForm} from "react-hook-form";
 import { connect } from 'react-redux';
 
-import DataService from '../../services/DataService';
-import AuthService from '../../services/AuthService';
-import { setUserInfo } from '../../redux/actions/userActions.js';
+import DataService from '../../../services/DataService';
+import AuthService from '../../../services/AuthService';
+import { setUserInfo } from '../../../redux/actions/userActions.js';
 
-import { Div, Input, SubTitle, Txt, Button } from '../../styledComps';
-import FormInput from '../../components/FormInput';
+import { Div, Input, SubTitle, Txt, Button } from '../../../styledComps';
+import FormInput from '../../../components/FormInput';
 
-const useRegisterForm = ({updateView, setUserInfo}) => {
+const Register = ({updateView, setUserInfo}) => {
 
   const { register, errors, getValues, handleSubmit } = useForm();
 
@@ -30,6 +30,11 @@ const useRegisterForm = ({updateView, setUserInfo}) => {
     })
   };
 
+
+  const switchToLogin = () => {
+    updateView(false)
+  };
+
   return (
 
     <Div col w="100%">
@@ -40,7 +45,8 @@ const useRegisterForm = ({updateView, setUserInfo}) => {
           <Div col align="flex-start">
             <FormInput
               w="100%"
-              label="first name"
+              label="First Name"
+              name="firstname"
               type='text'
               error={errors.firstName}
               errorMessage="Debe ingresar un nombre"
@@ -49,7 +55,8 @@ const useRegisterForm = ({updateView, setUserInfo}) => {
             />
              <FormInput
               w="100%"
-              label="last name"
+              label="Last name"
+              name="lastname"
               type='text'
               error={errors.lastName}
               errorMessage="Debe ingresar un apellido"
@@ -72,6 +79,7 @@ const useRegisterForm = ({updateView, setUserInfo}) => {
               <FormInput
                 w="100%"
                   label="password"
+                  name="password"
                   type='password'
                   error={errors.password}
                   errorMessage="Non valid password"
@@ -84,7 +92,8 @@ const useRegisterForm = ({updateView, setUserInfo}) => {
               />
               <FormInput
                 w="100%"
-                label="confirm password"
+                label="Confirm password"
+                name="confirmPassword"
                 type='password'
                 error={errors.confirmPassword}
                 errorMessage="Non valid password"
@@ -130,10 +139,22 @@ const useRegisterForm = ({updateView, setUserInfo}) => {
           </Div>
         </Div>
       </form>
+      <Div col>
+        <Txt>Or if you don't have an account yet, you can register here</Txt>
+        <Button
+            onClick={switchToLogin}
+            border='rgb(85, 187, 151)'
+            pad="10px 15px"
+            color='rgb(85, 187, 151)'
+            w='100%'
+        >
+            Login
+        </Button>
+      </Div>
     </Div>
   );
 };
 
 
 
-export default connect (null, {setUserInfo})(useRegisterForm);
+export default connect (null, {setUserInfo})(Register);

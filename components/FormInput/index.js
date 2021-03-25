@@ -1,7 +1,6 @@
 import {Input, Div, FormError, Label} from '../../styledComps';
 
-const FormInput = ({w, label, error, errorMessage, register, registerObject, labeled, type='text'})=>{
-    const name = labeled || label[0].toUpperCase()+label.slice(1);
+const FormInput = ({w, label, name, error, errorMessage, register, registerObject, labeled, type='text'})=>{
     
     return (
         <Div
@@ -16,13 +15,13 @@ const FormInput = ({w, label, error, errorMessage, register, registerObject, lab
                 just="center"
                 align="flex-start"
             >
-                <Label>{name}</Label>
+                <Label>{label}</Label>
                 {error && <FormError bold>{errorMessage}</FormError>}
             </Div>
             <Input
                 type={type}
                 w={w}
-                name={label}
+                name={name}
                 ref={register(registerObject)}
             />
         </Div>

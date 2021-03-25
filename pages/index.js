@@ -1,53 +1,63 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
 import Head from 'next/head'
+import AppAccess from '../domains/AppAccess';
+import NavBarApp from '../domains/NavBarApp';
+import NavBarJam from '../domains/NavBarJam';
 
-import styles from '../styles/Home.module.css'
-import Title from '../styledComps/title';
+// import styles from '../styles/Home.module.css'
 import { getInitialProps } from 'next/dist/next-server/lib/utils';
-import Login from '../domains/Login';
-import Div from '../styledComps/divs';
-import Register from '../domains/Register';
-import Table from '../domains/table';
+import { SubTitle, Txt, Div, Title, Main, Footer, AppContainer } from '../styledComps';
 
-const data = [
-  {
-    countryName: "Afghanistan",
-    capital: "Kabul",
-    currency: "Afghani"
-  },
-  {
-    countryName: "Albania",
-    capital: "Tirane",
-    currency: "Lek"
-  },
-  {
-    countryName: "Algeria",
-    capital: "Algiers",
-    currency: "Dinar"
-  }
-];
 
-const titles = [{title: 'Pais'}, {title: 'Capital'}, {title: 'Moneda'}];
+const Home = ({ userId = '', firstName = '' }) => {
 
-export default function Home() {
+  const noUser = userId === ''; 
+  console.log('noUser: ', noUser);
+
   return (
-    <div className={styles.container}>
+    <AppContainer w="100%">
       <Head>
         <title>Jammint</title>
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
-      <main className={styles.main}>
-        <Login />
-        <Register />
-        <Table data={data} titles={titles}/>
-      </main>
+      <Main mg="40px 0 0 0">
+        {noUser ? (
+          <>
+            <NavBarApp w="100%"/>
+            <Div just="flex-start">
+              <Title>Welocme to jammint</Title>
+              <SubTitle>Jam with your flatmates </SubTitle>
+            </Div>
+            <AppAccess />
+            </>
+          ) : (
+            <>
+              <NavBarJam />
+            </>
+          )
+        }
+      </Main>
 
-      <footer className={styles.footer}>
-        
-      </footer>
-    </div>
+      <Footer>
+        <Txt>This is the coolest footer ever existed</Txt>
+      </Footer>
+    </AppContainer>
   )
 }
+
+// const mapStateToProps = (state) => {
+//   const {
+//     // userInfo: { userId, firstName },
+//     // jamInfo: { jamId, jamName }
+//   } = state;
+//   return { userId, firstName }
+// }
+
+export default connect(null, null)(Home);
+
 
 // Ejemplo de carga de usuarios
 

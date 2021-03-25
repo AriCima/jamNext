@@ -5,6 +5,7 @@ const Button = styled.button`
     height: ${({h}) => h || 'auto'};
     width: ${({w}) => w || 'auto'};
     padding: ${({pad}) => pad || '0'};
+    margin: ${({mg}) => mg || '0'}
     color: ${({color}) => color || 'black'};
     background-color: ${({back}) => back || 'transparent'};
     display: 'flex';

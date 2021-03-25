@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
 const Div = styled.div`
-    background-color: ${({back}) => back || 'transparent'};
     height: ${({h}) => h || 'auto'};
     width: ${({w}) => w || 'auto'};
+    margin: ${({mg}) => mg || '0'}
+    padding: ${({pad}) => pad || '0'};
+    background-color: ${({back}) => back || 'transparent'};
+    border: ${({border}) => `1px solid ${border}` || 'none'};
     display: 'flex';
     flex-direction: ${({col}) => col || 'row'};
     justify-content: ${({just}) => just || 'center'};

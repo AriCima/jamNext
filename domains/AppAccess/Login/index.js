@@ -3,27 +3,27 @@ import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 
-import AuthService from '../../services/AuthService';
-import DataService from '../../services/DataService';
-import { setUserInfo } from '../../redux/actions/userActions';
+import AuthService from '../../../services/AuthService';
+import DataService from '../../../services/DataService';
+import { setUserInfo } from '../../../redux/actions/userActions';
 
-import { Div, Input, SubTitle, Txt, Button } from '../../styledComps';
-import FormInput from '../../components/FormInput';
+import { Div, Input, SubTitle, Txt, Button } from '../../../styledComps';
+import FormInput from '../../../components/FormInput';
 
 
-const useLoginForm = ({ updateView, setUserInfo}) => {
+const Login = ({ updateView, setUserInfo}) => {
     
     const { register, errors, handleSubmit } = useForm();
 
-    useEffect(() => {
-        const userInfo = localStorage.getItem('userInfo') || '';
+    // useEffect(() => {
+    //     const userInfo = localStorage.getItem('userInfo') || '';
 
-        if (!isEmpty(userInfo)) {
-            // SET USER INFO IN REDUX
-            setUserInfo(userInfo)
-        };
+    //     if (!isEmpty(userInfo)) {
+    //         // SET USER INFO IN REDUX
+    //         setUserInfo(userInfo)
+    //     };
 
-    }, []);
+    // }, []);
 
     const onLogin = (data) => {
         console.log('data: ', data);
@@ -40,6 +40,10 @@ const useLoginForm = ({ updateView, setUserInfo}) => {
             })
         })
     }
+
+    const switchToRegister = () => {
+        updateView(true)
+    };
 
     return (
         <Div col >
@@ -86,7 +90,7 @@ const useLoginForm = ({ updateView, setUserInfo}) => {
                 <Div col>
                     <Txt>Or if you don't have an account yet, you can register here</Txt>
                     <Button
-                        onClick={(e) => updateView('register')}
+                        onClick={switchToRegister}
                         border='rgb(85, 187, 151)'
                         pad="10px 15px"
                         color='rgb(85, 187, 151)'
@@ -100,4 +104,4 @@ const useLoginForm = ({ updateView, setUserInfo}) => {
 };
 
 
-export default connect(null, { setUserInfo })(useLoginForm);
+export default connect(null, { setUserInfo })(Login);
