@@ -14,7 +14,7 @@ const Register = ({updateView, setUserInfo}) => {
   const { register, errors, getValues, handleSubmit } = useForm();
 
   const onRegister = (data) => {  
-    const {firstName, lastName, email, password }= data;  
+    const {firstName, lastName, email, password } = data;  
     DataService.checkIfEmialExists(email)
     .then(exists => {
       if (exists === true) {
@@ -29,7 +29,6 @@ const Register = ({updateView, setUserInfo}) => {
       }
     })
   };
-
 
   const switchToLogin = () => {
     updateView(false)

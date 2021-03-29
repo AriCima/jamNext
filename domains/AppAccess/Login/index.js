@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Router from 'next/router';
 import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -15,28 +16,30 @@ const Login = ({ updateView, setUserInfo}) => {
     
     const { register, errors, handleSubmit } = useForm();
 
-    // useEffect(() => {
-    //     const userInfo = localStorage.getItem('userInfo') || '';
+    useEffect(() => {
+        const userInfo = localStorage.getItem('userInfo') || '';
 
-    //     if (!isEmpty(userInfo)) {
-    //         // SET USER INFO IN REDUX
-    //         setUserInfo(userInfo)
-    //     };
+        if (!isEmpty(userInfo)) {
+            // SET USER INFO IN REDUX
+            setUserInfo(userInfo)
+        };
 
-    // }, []);
+    }, []);
 
     const onLogin = (data) => {
-        console.log('data: ', data);
         const { email, password } = data;  
 
         AuthService.login(email, password)
         .then(res => {
             const userId = res.user.uid
+            console.log('userId: ', userId);
             DataService.getUserInfo(userId)
             .then((res) => {
+                console.log('res: ', res);
                 const { firstName, lastName } = res;
                 const userInfo = {userId, firstName, lastName, email, password};               
                 localStorage.setItem('userInfo', userInfo);
+                Router.push('/dashboard')
             })
         })
     }
@@ -53,6 +56,7 @@ const Login = ({ updateView, setUserInfo}) => {
                     <Div col align="flex-start">
                         <FormInput
                             w="100%"
+                            name="email"
                             label="email"
                             // type='email'
                             error={errors.email}
@@ -67,6 +71,7 @@ const Login = ({ updateView, setUserInfo}) => {
                         <FormInput
                             label="password"
                             type='password'
+                            name="password"
                             error={errors.password}
                             errorMessage="Non valid password"
                             register={register}

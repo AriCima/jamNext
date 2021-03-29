@@ -1,4 +1,5 @@
 import AppContainer from './appContainer';
+import Aside from './aside';
 import Button from './button';
 import Div from './divs';
 import Footer from './footer';
@@ -8,23 +9,26 @@ import Input from './input';
 import Label from './label';
 import Main from './main';
 import NavBar from './navBar';
-import smallTxt from './smallTxt';
+import SmallTxt from './smallTxt';
 import SubTitle from './subTitle';
 import Title from './title';
 import Txt from './txt';
+import JamCard from './jamCard';
 
 export {
     AppContainer,
+    Aside,
     Button,
     Div,
     Footer,
     FormError,
     GlobalStyle,
     Input,
+    JamCard,
     Label,
     Main,
     NavBar,
-    smallTxt,
+    SmallTxt,
     SubTitle,
     Title,
     Txt,

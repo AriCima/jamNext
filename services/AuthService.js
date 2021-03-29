@@ -5,8 +5,7 @@ import firebase from '../firebase.config';
 export default class AuthService {
 
     static login(email, password){
-        
-        console.log('firebase: ', firebase);
+
         return new Promise((resolve, reject) => {
             
             firebase.auth().signInWithEmailAndPassword(email, password)
@@ -15,7 +14,6 @@ export default class AuthService {
                 // console.log('result: ', result);
                 // console.log('El result del LOGIN en Auth es: ', result)
             })
-
             .catch((error) => {
                 var errorCode = error.code;
                 console.log('AUTH SERVICE::::errorCode: ', errorCode);
@@ -26,7 +24,6 @@ export default class AuthService {
                     reject('User and or Password not valid');
                 }
             });
-            
         });
     };
 

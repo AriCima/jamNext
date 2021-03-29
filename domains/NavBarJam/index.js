@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Div, NavBar  } from '../../styledComps';
+import { Div, NavBar, Txt  } from '../../styledComps';
 
 
 const NavBarJam = () => {

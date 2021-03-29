@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const smallTxt = styled.h1`
+const SmallTxt = styled.h1`
     font-size: .825rem;
     font-weight: ${props => (props.bold ? '700' : '400')};
     color: black;
@@ -8,4 +8,4 @@ const smallTxt = styled.h1`
     padding: ${({pad}) => pad || '0'};
 `;
 
-export default smallTxt;
+export default SmallTxt;

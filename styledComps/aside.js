@@ -1,29 +1,19 @@
 import styled from 'styled-components';
 
-const Div = styled.div`
+const Aside = styled.div`
     align-items: ${({align}) => align || 'center'};
     background-color: ${({back}) => back || 'transparent'};
-    border: ${({border}) => `1px solid ${border}` || 'none'};
     bottom: ${({bot}) => bot || 'auto'};
     box-shadow: ${({shad}) => shad || 'none'};
-    display: 'flex';
+    display: flex;
     flex-direction: ${({col}) => col || 'row'};
     height: ${({h}) => h || 'auto'};
     justify-content: ${({just}) => just || 'center'};
     left: ${({left}) => left || 'auto'};
-    margin: ${({mg}) => mg || '0'};
-    marign-top: ${({mgT}) => mgT || '0'};
-    marign-left: ${({mgL}) => mgL || '0'};
-    marign-right: ${({mgR}) => mgR || '0'};
-    marign-bottom: ${({mgB}) => mgB || '0'};
-    overflow-y: ${({ovY}) => ovY || 'visible'};
-    padding: ${({pad}) => pad || '0'};
     position: ${({pos}) => pos || 'static'};
     right: ${({right}) => right || 'auto'};
     top: ${({top}) => top || 'auto'};
     width: ${({w}) => w || 'auto'};
-    text-overflow: ${({txtOver}) => txtOver || 'clip'};
 }`
 
-export default Div;
-// flex-direction: ${props => (props.col ? 'column' : 'row')};
+export default Aside;
