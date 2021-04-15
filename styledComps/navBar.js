@@ -2,10 +2,6 @@ import styled from 'styled-components';
 
 const NavBar = styled.div`
     width: 100%;
-    position: fixed;
-    top: 0;
-    // left: 20%;
-    right: 0;
     height: 40px;
     display: flex;
     justify-content: flex-start;

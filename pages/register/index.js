@@ -2,12 +2,12 @@ import React from 'react';
 import {useForm} from "react-hook-form";
 import { connect } from 'react-redux';
 
-import DataService from '../../../services/DataService';
-import AuthService from '../../../services/AuthService';
-import { setUserInfo } from '../../../redux/actions/userActions.js';
+import DataService from '../../services/DataService';
+import AuthService from '../../services/AuthService';
+import { setUserInfo } from '../../redux/actions/userActions.js';
 
 import { Div, Input, SubTitle, Txt, Button } from '../../../styledComps';
-import FormInput from '../../../components/FormInput';
+import FormInput from '../../components/FormInput';
 
 const Register = ({updateView, setUserInfo}) => {
 

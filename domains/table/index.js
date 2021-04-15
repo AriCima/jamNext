@@ -1,5 +1,41 @@
 // src https://codesandbox.io/s/tables-styled-components-v7vgb?from-embed=&file=/src/data.js:13-282
 import Table from '../../styledComps/table';
+/*
+const title =[
+    { 
+        id: 'countryName', 
+        title: 'País de Origen'
+    },
+    { 
+        id: 'capital', 
+        title: 'Capital del País'
+    },
+    { 
+        id: 'currency', 
+        title: 'Moneda'
+    },
+];
+
+const data =[
+    { 
+        id: 'ID0001', 
+        conuntryName: 'Noruega',
+        capital: 'Oslo',
+        currency: 'Corona Noruega'
+    },
+    { 
+        id: 'ID0002', 
+        conuntryName: 'Argentina',
+        capital: 'Buenos Aires',
+        currency: 'Peso Argentino'
+    },
+    { 
+        id: 'ID0003', 
+        conuntryName: 'España',
+        capital: 'Madrid',
+        currency: 'Euro'
+    },
+];*/
 
 const TableMarkup = ({ titles, data }) => (
     <Table>
@@ -16,13 +52,10 @@ const TableMarkup = ({ titles, data }) => (
             {data.map((d, key)=> {
                 return (
                     <tr key={key}>
-                        <td>{d.countryName}</td>
-                        <td>{d.capital}</td>
-                        <td>{d.currency}</td>
+                        {titles.map((t,index) => <td key={`${key}${index}`}> {d[t.id] || ''} </td>)}
                     </tr>
                 )
             })}
-
         </tbody>
     </Table>
 );

@@ -27,12 +27,11 @@ const Home = ({ userId = '', firstName = '' }) => {
         {noUser ? (
           <>
             <NavBarApp w="100%"/>
-            <Div just="flex-start">
+            <Div col just="flex-start">
               <Title>Welocme to jammint</Title>
               <SubTitle>Jam with your flatmates </SubTitle>
             </Div>
-            <AppAccess />
-            </>
+          </>
           ) : (
             <>
               <NavBarJam />

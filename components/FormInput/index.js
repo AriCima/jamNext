@@ -4,14 +4,14 @@ const FormInput = ({w, label, name, error, errorMessage, register, registerObjec
     
     return (
         <Div
+            col
             w={w}
-            orient="column"
             just="center"
-            align="flex-start"
+            align="center"
         >
             <Div
+                col
                 w="100%"
-                orient="column"
                 just="center"
                 align="flex-start"
             >
@@ -19,8 +19,8 @@ const FormInput = ({w, label, name, error, errorMessage, register, registerObjec
                 {error && <FormError bold>{errorMessage}</FormError>}
             </Div>
             <Input
+                w="100%"
                 type={type}
-                w={w}
                 name={name}
                 ref={register(registerObject)}
             />

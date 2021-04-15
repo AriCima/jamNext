@@ -39,6 +39,7 @@ const checkIfEmialExists = (email) => {
 
 
 const getUserInfo = (userId) => {
+    console.log('userId: ', userId);
     return new Promise((resolve, reject) => {
         firebase.firestore()
             .collection('users')

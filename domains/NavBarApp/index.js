@@ -1,13 +1,33 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
-import { NavBar, Txt  } from '../../styledComps';
+import { NavBar, Txt, Div  } from '../../styledComps';
 
 
 const NavBarApp = ({w}) => {
 
+    const router = useRouter()
+
+    const navigateToAccess = (e, href) => {
+        e.preventDefault();
+        router.push(href)
+    };
+
     return(
         <NavBar pos="fixed" w={w} just="flex-start" border="lightgray">
             <Txt>This is the app header</Txt>
+            <Div w="100%" h="100%" just="flex-end">
+                <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
+                    onClick={e => navigateToAccess(e, 'login')}
+                >
+                    <Txt color="white">Login</Txt>
+                </Div>
+                <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
+                    onClick={e => navigateToAccess(e, 'signin')}
+                >
+                    <Txt color="white">Sign In</Txt>
+                </Div>
+            </Div>
         </NavBar>
     )
 }

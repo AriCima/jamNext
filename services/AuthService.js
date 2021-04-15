@@ -28,6 +28,8 @@ export default class AuthService {
     };
 
     static register(firstName, lastName, email, password){
+        console.log('password: ', password);
+        console.log('email: ', email);
         return new Promise((resolve, reject) => {
             firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((result) => {
