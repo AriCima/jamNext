@@ -45,15 +45,18 @@ const getUserInfo = (userId) => {
             .collection('users')
             .doc(userId)
             .get()
-            .then((result) => {
-                console.log('result: ', result);
-                resolve(result.data()); // OBTENGO TODO LO QUE TENGO ALMACENADO DE ÉSTE USUARIO
+            .then((doc) => {
+                if (doc.exists) {
+                    resolve(doc.data())
+                } else {
+                    console.log("No such document!");
+                }
             })
             .catch((error) => {
-                reject('Usuario no existe');
+                console.log("Error getting document:", error);
             });
-    });
-};
+
+})};
 
 
 const getJamInfoById = (jamId) => {

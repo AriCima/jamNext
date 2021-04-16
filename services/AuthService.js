@@ -19,10 +19,19 @@ export default class AuthService {
                 console.log('AUTH SERVICE::::errorCode: ', errorCode);
                 var errorMessage = error.message;
                 console.log('errorMessage: ', errorMessage);
+
+                resolve({
+                    error: true,
+                    errorCode: errorCode
+                })
                 
                 if(errorCode === "auth/wrong-password"){
-                    reject('User and or Password not valid');
-                }
+                    reject('Password not valid');
+                };
+                if(errorCode === "auth/user-not-found"){
+                    console.log('true')
+                    reject('User not found');
+                };
             });
         });
     };

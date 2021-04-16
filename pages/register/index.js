@@ -1,12 +1,13 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
+import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 
 import DataService from '../../services/DataService';
 import AuthService from '../../services/AuthService';
 import { setUserInfo } from '../../redux/actions/userActions.js';
 
-import { Div, Input, SubTitle, Txt, Button } from '../../../styledComps';
+import { Div, InputSubmit, SubTitle, Txt, Button } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 
 const Register = ({updateView, setUserInfo}) => {
@@ -16,7 +17,7 @@ const Register = ({updateView, setUserInfo}) => {
   const onRegister = (data) => {  
     console.log('data: ', data);
     const {firstName, lastName, email, password } = data;  
-    console.log('email: ', email);
+
     DataService.checkIfEmialExists(email)
     .then(exists => {
       if (exists === true) {
@@ -27,23 +28,32 @@ const Register = ({updateView, setUserInfo}) => {
         .then(userInfo => {
           setUserInfo(userInfo);
           localStorage.setItem('userInfo', userInfo);
+          router.push('/dashboard')
         })
       }
     })
   };
 
-  const switchToLogin = () => {
-    updateView(false)
+  const router = useRouter()
+
+  const navigateTo = (e) => {
+      e.preventDefault();
+      router.push('login')
   };
+
+  const formStyle = {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center'
+  }
 
   return (
 
-    <Div col w="100%">
-      <form autoComplete="off"  onSubmit={handleSubmit(onRegister)}>
-        <Div col>
+    <Div col w="100%" just="center" align="center">
+      <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(onRegister)}>
+        <Div w="50%" col just="center" align="center">
           <SubTitle>Register and start jamin'</SubTitle>
-
-          <Div col align="flex-start">
+          <Div col w="100%" just="center" align="center">
             <FormInput
               w="100%"
               label="First Name"
@@ -66,7 +76,7 @@ const Register = ({updateView, setUserInfo}) => {
             />
               <FormInput
                   w="100%"
-                  label="email"
+                  label="Email"
                   name="email"
                   // type='email'
                   error={errors.email}
@@ -80,7 +90,7 @@ const Register = ({updateView, setUserInfo}) => {
 
               <FormInput
                 w="100%"
-                  label="password"
+                  label="Password"
                   name="password"
                   type='password'
                   error={errors.password}
@@ -133,24 +143,26 @@ const Register = ({updateView, setUserInfo}) => {
             </div> */}
           </Div>
 
-          <Div just='flex-start'>
-            <Input
-              back='rgb(85, 187, 151)'
-              type="submit"
-            />
-          </Div>
+          <InputSubmit
+            w="100%"
+            back='rgb(85, 187, 151)'
+            type="submit"
+            value="Submit"
+          />
+
         </Div>
       </form>
-      <Div col>
-        <Txt>Or if you don't have an account yet, you can register here</Txt>
+      <Div col w="100%" align="center" just="center" mgT="20px">
+        <Div just="flex-start" w="50%">
+          <Txt fSize="10px">Already have an account ? Then login here: </Txt>
+        </Div>
         <Button
-            onClick={switchToLogin}
-            border='rgb(85, 187, 151)'
-            pad="10px 15px"
-            color='rgb(85, 187, 151)'
-            w='100%'
+          onClick={e => navigateTo(e)}
+          border='rgb(85, 187, 151)'
+          color='rgb(85, 187, 151)'
+          w='50%'
         >
-            Login
+            <Txt color="gray">Login</Txt>
         </Button>
       </Div>
     </Div>

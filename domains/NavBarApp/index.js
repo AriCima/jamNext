@@ -23,7 +23,7 @@ const NavBarApp = ({w}) => {
                     <Txt color="white">Login</Txt>
                 </Div>
                 <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
-                    onClick={e => navigateToAccess(e, 'signin')}
+                    onClick={e => navigateToAccess(e, 'register')}
                 >
                     <Txt color="white">Sign In</Txt>
                 </Div>

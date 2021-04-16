@@ -6,6 +6,7 @@ import Footer from './footer';
 import FormError from './formError';
 import GlobalStyle from './global';
 import Input from './input';
+import InputSubmit from './inputSubmit';
 import Label from './label';
 import Main from './main';
 import NavBar from './navBar';
@@ -24,6 +25,7 @@ export {
     FormError,
     GlobalStyle,
     Input,
+    InputSubmit,
     JamCard,
     Label,
     Main,
