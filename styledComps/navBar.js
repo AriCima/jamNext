@@ -4,10 +4,11 @@ const NavBar = styled.div`
     width: 100%;
     height: 40px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.16);
     background-color: white;
+    padding: 0 10px;
 }`
 
 export default NavBar;

@@ -26,8 +26,7 @@ const Div = styled.div`
     max-width: ${({maxW}) => maxW || '100%'};
     width: ${({w}) => w || ''};
     text-overflow: ${({txtOver}) => txtOver || 'clip'};
-    ${({main})=> main && `
-        flex-direction: row;
+    ${({main}) => main && `
         margin: 0;
         width: 100%
         align-items: stretch;

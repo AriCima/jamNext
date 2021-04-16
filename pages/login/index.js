@@ -15,7 +15,8 @@ import FormInput from '../../components/FormInput';
 const Login = ({setUserInfo}) => {
     
     const { register, errors, handleSubmit } = useForm();
-
+    const router = useRouter()
+    
     useEffect(() => {
         const userInfo = localStorage.getItem('userInfo') || '';
 
@@ -45,8 +46,6 @@ const Login = ({setUserInfo}) => {
             alert('user or password failure')
         });
     }
-
-    const router = useRouter()
 
     const navigateTo = (e) => {
         e.preventDefault();

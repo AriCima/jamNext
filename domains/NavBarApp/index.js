@@ -15,8 +15,8 @@ const NavBarApp = ({w}) => {
 
     return(
         <NavBar pos="fixed" w={w} just="flex-start" border="lightgray">
-            <Txt>This is the app header</Txt>
-            <Div w="100%" h="100%" just="flex-end">
+            <Txt>Welcome to Jammint</Txt>
+            <Div h="100%" just="flex-end">
                 <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
                     onClick={e => navigateToAccess(e, 'login')}
                 >

@@ -23,7 +23,7 @@ const Home = ({ userId = '', firstName = '' }) => {
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
-      <Main mg="40px 0 0 0">
+      <Div w="100%" main col mg="40px 0 0 0" align="center">
         {noUser ? (
           <>
             <NavBarApp w="100%"/>
@@ -38,7 +38,7 @@ const Home = ({ userId = '', firstName = '' }) => {
             </>
           )
         }
-      </Main>
+      </Div>
 
       <Footer>
         <Txt>This is the coolest footer ever existed</Txt>
