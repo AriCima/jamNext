@@ -1,6 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import firebase from 'firebase';
+
+import JamsList from "../jamsList";
 import { Div, Txt } from "../../styledComps";
 
 const Layout = ({ children }) => {
@@ -21,19 +23,19 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <Div main>
+    <Div main h="100vh">
       <Div col back="red" flexG='1' maxW='30%'>
-        <Div pad="50px" back="lightgreen" flexG="0">
-          Create
-          Join
+        <Div h="60px" back="lightgreen" flexG="0" just="center" align="center">
+          <Txt mg="0 10px">Create</Txt>
+          <Txt mg="0 10px">Join</Txt>
           <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center" back="white"
             onClick={e => signOut(e)}
           >
             <Txt color="green">LogOut</Txt>
           </Div>
         </Div>
-        <Div pad="50px">
-          Listado Principal
+        <Div col back="blue" w="100%">
+          <JamsList />
         </Div>
       </Div>
       <Div col back="lightblue" flexG='3'>

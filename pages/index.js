@@ -14,7 +14,7 @@ import { SubTitle, Txt, Div, Title, Main, Footer, AppContainer } from '../styled
 const Home = ({ userId = '', firstName = '' }) => {
 
   const noUser = userId === ''; 
-  console.log('noUser: ', noUser);
+
 
   return (
     <AppContainer w="100%">

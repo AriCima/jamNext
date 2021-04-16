@@ -40,7 +40,6 @@ const Dashboard = ({ jamId, setUserJams, userId, setJamInfo }) => {
 
     const getJamInfo = async (jamId) => {
         const res = await DataService.getJamInfoById(jamId);
-        console.log('res: ', res);
         setJamInfo(res); // Info en Redux
     };
 
@@ -48,8 +47,8 @@ const Dashboard = ({ jamId, setUserJams, userId, setJamInfo }) => {
     const renderJamsList = jamsList.length > 0;
 
     return (
-        <Layout >
-            <Div pad='50px' flexG="0">Menu Contextual</Div>
+        <Layout>
+            <Div back="lightgray" h="60px" flexG="0" just="center" align="center">Menu Contextual</Div>
             {renderJam ? 
                 // <Jam />
                 <Div>Jam</Div>
