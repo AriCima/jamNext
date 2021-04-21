@@ -4,7 +4,6 @@ type User {
     lastName: String!,
     email: String!,
     company: [{Company, UserType}!],
-    invitation: [invitations!]
 };
 
 enum UserType {
@@ -40,6 +39,10 @@ type Jam {
     # adminInfo: User!,
     adminInfo: Company!,
     createdAt: Timestamp!,
+    jamName: String!,
+    jamDesc: String!,
+    jamUsers: [User!],
+    jamCompanies: [Company!],
     jamDetails: {
         Address: Address!,
         houseRules: {

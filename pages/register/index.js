@@ -28,7 +28,7 @@ const Register = ({updateView, setUserInfo}) => {
         .then(userInfo => {
           setUserInfo(userInfo);
           localStorage.setItem('userInfo', userInfo);
-          router.push('/dashboard')
+          router.push('/jams')
         })
       }
     })
@@ -157,6 +157,7 @@ const Register = ({updateView, setUserInfo}) => {
           <Txt fSize="10px">Already have an account ? Then login here: </Txt>
         </Div>
         <Button
+          href={""}
           onClick={e => navigateTo(e)}
           border='rgb(85, 187, 151)'
           color='rgb(85, 187, 151)'

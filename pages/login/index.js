@@ -38,7 +38,7 @@ const Login = ({setUserInfo}) => {
                 const { firstName, lastName } = res;
                 const userInfo = {userId, firstName, lastName, email, password};               
                 localStorage.setItem('userInfo', userInfo);
-                router.push('/dashboard')
+                router.push('/jams')
             })
         })
         .catch((error) => {
@@ -108,6 +108,7 @@ const Login = ({setUserInfo}) => {
                     <Txt fSize="10px">Or if you don't have an account yet, you can register here</Txt>
                 </Div>
                 <Button
+                    href={""}
                     onClick={e => navigateTo(e)}
                     border='rgb(85, 187, 151)'
                     color='rgb(85, 187, 151)'

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 
-const Button = styled.button`
+const JamCover = styled.a`
     role: button;
     height: ${({h}) => h || 'auto'};
     width: ${({w}) => w || 'auto'};
@@ -19,7 +20,12 @@ const Button = styled.button`
             color: white;
         }
     }
+    transition: 0.3s;
+    &:hover{
+        background-color: rgb(226,226,226);
+        cursor: pointer;
+    }
+
 }`
 
-export default Button;
-// flex-direction: ${props => (props.col ? 'column' : 'row')};
+export default JamCover;

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Head from 'next/head'
-import AppAccess from '../OLD/AppAccess';
 import NavBarApp from '../domains/NavBarApp';
 import NavBarJam from '../domains/NavBarJam';
 
@@ -37,7 +36,7 @@ const Home = ({ userId = '', firstName = '' }) => {
               <NavBarJam />
             </>
           )
-        }
+          }
       </Div>
 
       <Footer>

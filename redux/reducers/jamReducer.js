@@ -10,7 +10,7 @@ const defaultState = {
 function setJamReducer(state = defaultState, action) {
     return {
         ...state,
-        type: action.payload
+        jamDesc: action.payload
     }
 }
   
