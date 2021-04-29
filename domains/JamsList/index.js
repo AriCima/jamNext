@@ -18,8 +18,8 @@ const JamsList = ({ setJamInfo}) => {
     return jams.map((jam, j) => {
       const {name, desc, id} = jam;
       return (
-        <Link href={`/jams/Ij6rVm9wG1frSfLWLrKH`}>
-          <JamCover 
+        <Link href="/jams/12345">
+          <JamCover
             back="rgb(255, 255, 255)" 
             w="100%" border="gray" 
             pad="5px 10px" col mgT="60px" 
