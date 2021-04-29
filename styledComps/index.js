@@ -7,15 +7,17 @@ import FormError from './formError';
 import GlobalStyle from './global';
 import Input from './input';
 import InputSubmit from './inputSubmit';
+import JamCard from './jamCard';
 import JamCover from './jamCover';
 import Label from './label';
 import Main from './main';
 import NavBar from './navBar';
+import ProfileBox from './profileBox';
 import SmallTxt from './smallTxt';
 import SubTitle from './subTitle';
 import Title from './title';
 import Txt from './txt';
-import JamCard from './jamCard';
+import MenuItem from './menuItem';
 
 export {
     AppContainer,
@@ -31,7 +33,9 @@ export {
     JamCover,
     Label,
     Main,
+    MenuItem,
     NavBar,
+    ProfileBox,
     SmallTxt,
     SubTitle,
     Title,

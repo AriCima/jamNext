@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Div = styled.div`
+const MenuItem = styled.div`
     align-items: ${({align}) => align || 'stretch'};
     background-color: ${({back}) => back || 'transparent'};
     border: ${({border}) => border ? `1px solid ${border}` : 'none'};
@@ -26,18 +26,14 @@ const Div = styled.div`
     max-width: ${({maxW}) => maxW || '100%'};
     width: ${({w}) => w || ''};
     text-overflow: ${({txtOver}) => txtOver || 'clip'};
-    ${({transf}) => transf ? `transform: ${transf};` : ''}
-    ${({main}) => main && `
-        margin: 0;
-        width: 100%
-        align-items: stretch;
-        justify-content: stretch;
-        height: 100vh;
-    `
+    &:hover{
+        background-color: rgb(226,226,226);
+        cursor: pointer;
+    }
 }
 }`
 
-export default Div;
+export default MenuItem;
 
 //     flex-grow:${({flexG}) => flexG || '1'};
 

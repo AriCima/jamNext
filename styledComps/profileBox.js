@@ -1,22 +1,22 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-const Div = styled.div`
+const ProfileBox = styled.div`
     align-items: ${({align}) => align || 'stretch'};
     background-color: ${({back}) => back || 'transparent'};
     border: ${({border}) => border ? `1px solid ${border}` : 'none'};
     bottom: ${({bot}) => bot || 'auto'};
     box-shadow: ${({shad}) => shad || 'none'};
     color: ${({color}) => color || 'black'};
-    display: flex;
+    display: none;
     flex-direction: ${({col}) => col ? "column" : 'row'};
-    ${({h}) => h ? `height: ${h};` : ''}
+    ${({h}) => h ? `height: ${h};` : '0px'}
     justify-content: ${({just}) => just || 'stretch'};
     ${({left}) => left ? `left: ${left};` : ''}
     margin: ${({mg}) => mg || '0'};
-    margin-top: ${({mgT}) => mgT || '0'};
-    margin-left: ${({mgL}) => mgL || '0'};
-    margin-right: ${({mgR}) => mgR || '0'};
-    margin-bottom: ${({mgB}) => mgB || '0'};
+    margin-top: ${({mgT}) => mgT || ''};
+    margin-left: ${({mgL}) => mgL || ''};
+    margin-right: ${({mgR}) => mgR || ''};
+    margin-bottom: ${({mgB}) => mgB || ''};
     overflow-y: ${({ovY}) => ovY || 'visible'};
     padding: ${({pad}) => pad || '0'};
     ${({pos}) => pos? `position: ${pos};`: ''}
@@ -25,19 +25,16 @@ const Div = styled.div`
     ${({top}) => top ? `top: ${top};` : ''}
     max-width: ${({maxW}) => maxW || '100%'};
     width: ${({w}) => w || ''};
-    text-overflow: ${({txtOver}) => txtOver || 'clip'};
-    ${({transf}) => transf ? `transform: ${transf};` : ''}
-    ${({main}) => main && `
-        margin: 0;
-        width: 100%
-        align-items: stretch;
-        justify-content: stretch;
-        height: 100vh;
-    `
+    overflow: hidden;
+    ${({show}) => show && css`
+    display: flex;
+    height:100%;
+  `};
+    transition: all 0.9s ease-out;
 }
 }`
 
-export default Div;
+export default ProfileBox;
 
 //     flex-grow:${({flexG}) => flexG || '1'};
 
