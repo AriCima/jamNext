@@ -76,11 +76,34 @@ const getJamInfoById = (jamId) => {
     });
 };
 
+const updateCompanyInfo = (data) => {
+    return new Promise(() => {
+        firebase.firestore()
+        .collection('companies')
+        .add({
+            address: data.address,
+            country: data.country,
+            mobile: data.mobile,
+            name: data.name,
+            nif: data.nif,
+            phone: data.phone,
+            zipCode: data.zipCode,
+        })
+        .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
+    })
+}
+
 const DataService = {
     checkIfEmialExists,
     getJamInfoById,
     getUserInfo,
     saveUserInfoInFirestore,
+    updateCompanyInfo,
 }
 
 export default DataService;

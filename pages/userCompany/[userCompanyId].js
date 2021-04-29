@@ -33,10 +33,9 @@ const UserCompany = ({ setUserInfo }) => {
 
 
     const updateCompanyInfo = (data) => {
-        const { firstName, lastName, email } = data;  
         console.log('data: ', data);
 
-        // DataService.updateCompanyInfo(data);
+        DataService.updateCompanyInfo(data);
     }
 
     const formStyle = {

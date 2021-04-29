@@ -10,7 +10,6 @@ const Layout = ({ children }) => {
 
   const [showProfile, setShowProfile] = useState(false);
   const router = useRouter();
-  console.log('router: ', router);
 
   const signOut = (e) => {
     e.preventDefault();
@@ -32,7 +31,8 @@ const Layout = ({ children }) => {
 
   const navigateTo = (e, route, id) => {
     e.preventDefault();
-    // para evitar reload: router.push(ruta, path) --> (/ruta/[id], 'ruta/id');
+    // para evitar reload: router.push(ruta, path) --> (/ruta/[id], 'ruta/id'); ver tutorial t = 01:00:00
+    // https://www.youtube.com/watch?v=i16PlS9aTJU
     router.push(`/${route}/[id]`, `${route}/${id}`)
   }
 
