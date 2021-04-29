@@ -71,7 +71,7 @@ const Layout = ({ children }) => {
           {/* </Link> */}
           {/* <Link href="/user/user-1/company"> */}
             <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center"
-            onClick={e => navigateTo(e, 'user', 'userId')}
+            onClick={e => navigateTo(e, 'userCompany', 'userCompanyId')}
             >
               <Txt mgL="10px">Company</Txt>
             </MenuItem>

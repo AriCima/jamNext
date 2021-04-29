@@ -7,6 +7,7 @@ import FormError from './formError';
 import GlobalStyle from './global';
 import Input from './input';
 import InputSubmit from './inputSubmit';
+import Select from './select';
 import JamCard from './jamCard';
 import JamCover from './jamCover';
 import Label from './label';
@@ -36,6 +37,7 @@ export {
     MenuItem,
     NavBar,
     ProfileBox,
+    Select,
     SmallTxt,
     SubTitle,
     Title,

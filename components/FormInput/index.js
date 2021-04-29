@@ -1,11 +1,13 @@
 import {Input, Div, FormError, Label} from '../../styledComps';
 
-const FormInput = ({w, label, name, error, errorMessage, register, registerObject, labeled, type='text'})=>{
+const FormInput = ({w, mgL, mgR, label, name, error, errorMessage, register, registerObject, labeled, type='text'})=>{
     
     return (
         <Div
             col
             w={w}
+            mgL={mgL}
+            mgR={mgR}
             just="center"
             align="center"
         >

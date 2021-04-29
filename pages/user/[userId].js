@@ -17,9 +17,8 @@ const UserId = ({ setUserInfo }) => {
 
     const router = useRouter();
     const { userId } = router.query;
-    console.log('router: ', router);
 
-    const { register, errors, getValues, handleSubmit } = useForm();
+    const { register, errors, handleSubmit } = useForm();
 
 
     // const getUserInfo = async (userId) => {
@@ -36,6 +35,13 @@ const UserId = ({ setUserInfo }) => {
         console.log('data: ', data);
 
         // DataService.updateUserInfo(data);
+    }
+
+    const updateCompanyInfo = (data) => {
+        const { firstName, lastName, email } = data;  
+        console.log('data: ', data);
+
+        // DataService.updateCompanyInfo(data);
     }
 
     const formStyle = {
