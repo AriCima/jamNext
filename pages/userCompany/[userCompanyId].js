@@ -53,17 +53,31 @@ const UserCompany = ({ setUserInfo }) => {
                         <SubTitle>Company Info</SubTitle>
                         <Div col w="100%" just="center" align="center">
 
-                            <FormInput
-                                w="100%"
-                                label="Name"
-                                type='text'
-                                name="name"
-                                error={errors.name}
-                                errorMessage="name is mandatory"
-                                register={register}
-                                registerObject={{required: true}}
-                            />
+                            <Div w="100%" just="flex-start">
+                                <FormInput
+                                    w="70%"
+                                    label="Name"
+                                    type='text'
+                                    name="name"
+                                    mgR="20px"
+                                    error={errors.name}
+                                    errorMessage="name is mandatory"
+                                    register={register}
+                                    registerObject={{required: true}}
+                                />
 
+                                <FormInput
+                                    w="30%"
+                                    label="NIF"
+                                    type='text'
+                                    name="nif"
+                                    error={errors.nif}
+                                    errorMessage="nif is mandatory"
+                                    register={register}
+                                    registerObject={{required: true}}
+                                />
+
+                            </Div>
                             <FormInput
                                 w="100%"
                                 label="Address (street, houseNr, floor, door"
