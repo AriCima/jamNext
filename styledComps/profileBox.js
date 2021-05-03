@@ -27,15 +27,11 @@ const ProfileBox = styled.div`
     width: ${({w}) => w || ''};
     overflow: hidden;
     ${({show}) => show && css`
-    display: flex;
-    height:100%;
-  `};
+      display: flex;
+      height: 100%;
+    `};
     transition: all 0.9s ease-out;
 }
 }`
 
 export default ProfileBox;
-
-//     flex-grow:${({flexG}) => flexG || '1'};
-
-// flex-direction: ${props => (props.col ? 'column' : 'row')};

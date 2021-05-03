@@ -36,7 +36,7 @@ const Home = ({ userId = '', firstName = '' }) => {
               <NavBarJam />
             </>
           )
-          }
+        }
       </Div>
 
       <Footer>

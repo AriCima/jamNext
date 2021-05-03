@@ -7,6 +7,7 @@ import { Div, InputSubmit, SubTitle, Txt, Button } from '../../styledComps';
 
 
 import DataService from '../../services/DataService';
+import Calculations from '../../services/Calculations';
 import { setUserInfo } from '../../redux/actions';
 import Layout from '../../domains/Layout';
 
@@ -33,7 +34,7 @@ const UserCompany = ({ setUserInfo }) => {
 
 
     const updateCompanyInfo = (data) => {
-        console.log('data: ', data);
+        const { firstName, lastName, email } = data;  
 
         DataService.updateCompanyInfo(data);
     }
@@ -42,7 +43,9 @@ const UserCompany = ({ setUserInfo }) => {
         display: 'flex',
         width: '100%',
         justifyContent: 'center'
-      }
+    }
+
+    const countriesList = Calculations.getSelectOptions('countries');
 
     return (
         <Layout>
@@ -111,6 +114,7 @@ const UserCompany = ({ setUserInfo }) => {
                                 errorMessage="country is mandatory"
                                 register={register}
                                 registerObject={{required: true}}
+                                options={countriesList}
                             />
                         </Div>
 

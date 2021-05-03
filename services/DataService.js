@@ -96,14 +96,29 @@ const updateCompanyInfo = (data) => {
             console.error("Error adding document: ", error);
         });
     })
-}
+};
+
+const createJam = (data) => {
+    return new Promise(() => {
+        firebase.firestore()
+        .collection('jams')
+        .add({data})
+        .then((docRef) => {
+            console.log("Jam created sucessfully with ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Error creating Jam: ", error);
+        });
+    })
+};
 
 const DataService = {
     checkIfEmialExists,
+    createJam,
     getJamInfoById,
     getUserInfo,
     saveUserInfoInFirestore,
     updateCompanyInfo,
-}
+};
 
 export default DataService;

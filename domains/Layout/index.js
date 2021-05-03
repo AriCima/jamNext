@@ -30,18 +30,28 @@ const Layout = ({ children }) => {
   } 
 
   const navigateTo = (e, route, id) => {
+    console.log('id: ', id);
+    console.log('route: ', route);
     e.preventDefault();
     // para evitar reload: router.push(ruta, path) --> (/ruta/[id], 'ruta/id'); ver tutorial t = 01:00:00
     // https://www.youtube.com/watch?v=i16PlS9aTJU
-    router.push(`/${route}/[id]`, `${route}/${id}`)
+    router.push(`/${route}/[id]`, `/${route}/${id}`)
   }
 
   return (
     <Div main h="100vh">
       <Div col back="red" flexG='1' maxW='30%'>
         <Div h="60px" back="lightgreen" flexG="0" just="center" align="center">
-          <Txt mg="0 10px">Create</Txt>
-          <Txt mg="0 10px">Join</Txt>
+          <Div align="center" just="center"
+            onClick={e => navigateTo(e, 'user/create', 'userId/create')}
+          >
+            <Txt mg="0 10px">Create</Txt>
+          </Div>
+          <Div align="center" just="center"
+            onClick={e => navigateTo(e, 'user/create', 'userId/create')}
+          >
+            <Txt mg="0 10px">Join</Txt>
+          </Div>
           <Div
             onClick={e => showProfileMenu(e)}
           >
