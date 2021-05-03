@@ -18,7 +18,7 @@ import FormSelect from '../../components/FormSelect';
 const UserCompany = ({ setUserInfo }) => {
 
     const router = useRouter();
-    const { userId } = router.query;
+    const { userCompanyId } = router.query;
 
     const { register, errors, handleSubmit } = useForm();
 

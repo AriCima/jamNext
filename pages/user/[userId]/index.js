@@ -2,18 +2,14 @@ import React from "react";
 import {useForm} from "react-hook-form";
 import { useRouter } from 'next/router';
 
-import { connect } from 'react-redux';
-import { Div, InputSubmit, SubTitle, Txt, Button } from '../../styledComps';
+// import { connect } from 'react-redux';
+import { Div, InputSubmit, SubTitle } from '../../../styledComps';
+import Layout from '../../../domains/Layout';
+
+import FormInput from '../../../components/FormInput';
 
 
-import DataService from '../../services/DataService';
-import { setUserInfo } from '../../redux/actions';
-import Layout from '../../domains/Layout';
-
-import FormInput from '../../components/FormInput';
-
-
-const UserId = ({ setUserInfo }) => {
+const UserId = () => {
 
     const router = useRouter();
     const { userId } = router.query;

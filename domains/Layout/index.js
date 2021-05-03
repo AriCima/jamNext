@@ -24,36 +24,22 @@ const Layout = ({ children }) => {
     });
   };
 
-  const showProfileMenu = (e) => {
-    e.preventDefault();
+  const showProfileMenu = () => {
     setShowProfile(!showProfile);
-  } 
-
-  const navigateTo = (e, route, id) => {
-    console.log('id: ', id);
-    console.log('route: ', route);
-    e.preventDefault();
-    // para evitar reload: router.push(ruta, path) --> (/ruta/[id], 'ruta/id'); ver tutorial t = 01:00:00
-    // https://www.youtube.com/watch?v=i16PlS9aTJU
-    router.push(`/${route}/[id]`, `/${route}/${id}`)
-  }
+  };
 
   return (
     <Div main h="100vh">
       <Div col back="red" flexG='1' maxW='30%'>
         <Div h="60px" back="lightgreen" flexG="0" just="center" align="center">
-          <Div align="center" just="center"
-            onClick={e => navigateTo(e, 'user/create', 'userId/create')}
-          >
+          <Div align="center" just="center">
             <Txt mg="0 10px">Create</Txt>
           </Div>
-          <Div align="center" just="center"
-            onClick={e => navigateTo(e, 'user/create', 'userId/create')}
-          >
+          <Div align="center" just="center">
             <Txt mg="0 10px">Join</Txt>
           </Div>
           <Div
-            onClick={e => showProfileMenu(e)}
+            onClick={() => showProfileMenu()}
           >
             <Txt>Prof</Txt>
           </Div>
@@ -72,20 +58,16 @@ const Layout = ({ children }) => {
             </Div>
           </Div>
           
-          {/* <Link href="/user/user-1"> */}
-            <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center"
-              onClick={e => navigateTo(e, 'user', 'userId')}
-            >
+          <Link href="/user/user-1">
+            <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center">
               <Txt mgL="10px">Profile Info</Txt>
             </MenuItem>
-          {/* </Link> */}
-          {/* <Link href="/user/user-1/company"> */}
-            <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center"
-            onClick={e => navigateTo(e, 'userCompany', 'userCompanyId')}
-            >
+          </Link>
+          <Link href="/user/user-1/company">
+            <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center">
               <Txt mgL="10px">Company</Txt>
             </MenuItem>
-          {/* </Link> */}
+          </Link>
         </ProfileBox>
         <Div col back="blue" w="100%">
           <JamsList />
