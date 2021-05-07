@@ -8,7 +8,7 @@ import AuthService from '../../services/AuthService';
 import DataService from '../../services/DataService';
 import { setUserInfo } from '../../redux/actions/userActions';
 
-import { Div, SubTitle, Txt, Button, InputSubmit } from '../../styledComps';
+import { Div, SubTitle, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 
 
@@ -47,11 +47,6 @@ const Login = ({setUserInfo}) => {
         });
     }
 
-    const navigateTo = (e) => {
-        e.preventDefault();
-        router.push('register')
-    };
-
     const formStyle = {
         display: 'flex',
         width: '100%',
@@ -60,8 +55,7 @@ const Login = ({setUserInfo}) => {
 
     return (
             <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(onLogin)}>
-                <Div w="50%" col just="center" align="center">
-                    <SubTitle>LOGIN and start jamin'</SubTitle>
+                <Div w="100%" col just="center" align="center">
                     <Div col w="100%" just="center" align="center">
                         <FormInput
                             w="100%"

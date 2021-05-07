@@ -22,18 +22,18 @@ const Home = ({ userId = '', firstName = '' }) => {
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
-      <Div w="100%" main col mg="40px 0 0 0" align="center">
+      <Div main w="100%" col mg="40px 0 0 0" just="flex-start" align="center">
         {noUser ? (
           <>
             <NavBarApp w="100%"/>
-            <Div col just="flex-start">
+            <Div w="100%" col align="center">
               <Title>Welocme to jammint</Title>
               <SubTitle>Jam with your flatmates </SubTitle>
             </Div>
           </>
           ) : (
             <>
-              <NavBarJam />
+              <NavBarJam w="100%"/>
             </>
           )
         }

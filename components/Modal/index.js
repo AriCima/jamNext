@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { Div, CloseButton } from '../../styledComps';
+
 
 const BaseModal = styled.div`
     position: fixed;
@@ -13,35 +15,29 @@ const BaseModal = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const Div = styled.div`
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
-    min-width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`;
-
 const Modal = ({children, showModal, closeModal}) => {
     const ref = useRef(null);
+
     const clickOnBaseModal = (event) => {
       if (!ref.current || ref.current.contains(event.target)) {
         return;
       }
       closeModal();
-    }
+    };
+
     if(!showModal) return null;
+
     return (
         
         <BaseModal
             onClick={clickOnBaseModal}
         >
-            <Div
+            <Div  maxH="90%" col back="white" borderR="10px" pad="0 0 0 10px" minW="50%" just="center" align="center"
                 ref={ref}
             >
-              <button onClick={closeModal}>X</button>
+                <Div w="100%" just="flex-end" mgR="20px">
+                    <CloseButton pad="5px" onClick={closeModal}>+</CloseButton>
+                </Div>
               {children}
             </Div>
         </BaseModal>

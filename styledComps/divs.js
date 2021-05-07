@@ -4,6 +4,7 @@ const Div = styled.div`
     align-items: ${({align}) => align || 'stretch'};
     background-color: ${({back}) => back || 'transparent'};
     border: ${({border}) => border ? `1px solid ${border}` : 'none'};
+    border-radius: ${({borderR}) => borderR ? borderR : ''};
     bottom: ${({bot}) => bot || 'auto'};
     box-shadow: ${({shad}) => shad || 'none'};
     color: ${({color}) => color || 'black'};
@@ -23,22 +24,24 @@ const Div = styled.div`
     ${({flexG}) => flexG? `flex-grow: ${flexG};`: ''}
     ${({right}) => right ? `right: ${right};` : ''}
     ${({top}) => top ? `top: ${top};` : ''}
+    max-height: ${({maxH}) => maxH || ''};
     max-width: ${({maxW}) => maxW || '100%'};
+    min-width: ${({minW}) => minW || ''};
     width: ${({w}) => w || ''};
     text-overflow: ${({txtOver}) => txtOver || 'clip'};
+    overflow: auto;
     ${({transf}) => transf ? `transform: ${transf};` : ''}
     ${({main}) => main && `
         margin: 0;
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 0 0;
         width: 100%
-        align-items: stretch;
-        justify-content: stretch;
+        align-items: center;
+        justify-content: flex-start;
         height: 100vh;
     `
 }
 }`
 
 export default Div;
-
-//     flex-grow:${({flexG}) => flexG || '1'};
-
-// flex-direction: ${props => (props.col ? 'column' : 'row')};

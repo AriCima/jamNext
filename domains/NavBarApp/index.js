@@ -1,46 +1,59 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import Modal from '../../components/Modal';
 import LoginForm from '../LoginForm';
+import RegisterForm from '../RegisterForm';
 
-import { NavBar, Txt, Div  } from '../../styledComps';
+import styled from 'styled-components';
+import { NavBar, Txt, Div, SubTitle  } from '../../styledComps';
 
+
+const Span = styled.span`
+    font-weight: 700;
+    color: green;
+    margin-left: 10px;
+    &:hover{
+        text-decoration: underline;
+    }
+`;
 
 const NavBarApp = ({w}) => {
     const [showModal, setShowModal] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
-    const router = useRouter()
-
-    /* const navigateToAccess = (e, href) => {
-        e.preventDefault();
-        router.push(href)
-    }; */
 
     return(
         <NavBar pos="fixed" w={w} just="flex-start" border="lightgray">
             <Txt>Welcome to Jammint</Txt>
             <Div h="100%" just="flex-end">
                 <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
-                    onClick={() => setShowModal(true)}
+                    onClick={() => {
+                        setShowModal(true);
+                        setIsLogin(true);
+                    }}
                 >
                     <Txt color="white">Login</Txt>
                 </Div>
-                <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
-                    onClick={e => navigateToAccess(e, 'register')}
-                >
-                    <Txt color="white">Sign In</Txt>
-                </Div>
             </Div>
             <Modal showModal={showModal} closeModal={()=>setShowModal(false)}>
-                <Div col w='80%' just="center" align="center" >
-                {isLogin ? (<>
-                        <h3>Login</h3>
-                        <p>Don't have an account? <span onClick={()=>setIsLogin(false)}>Register</span></p>
-                    </>):(<>
-                        <h3>Register</h3>
-                        <p>Do you have an account? <span onClick={()=>setIsLogin(true)}>Login</span></p>
-                    </>)}
-                {isLogin ? <LoginForm /> : <div>Register</div>}
+                <Div col w='100%' just="center" align="center" >
+                    <Div col w="90%" pad="0 0 10px 0">
+                        {isLogin ? (
+                            <>
+                                <Div className="LoginWrapper" w="100%" just="center">
+                                    <SubTitle mgT="-5px" mgB="20px">Login and start jamin'</SubTitle>
+                                </Div>
+                                <Txt>Don't have an account yet ? <Span onClick={()=>setIsLogin(false)}>Register</Span></Txt>
+                                <LoginForm />
+                            </>
+                        ):(
+                            <>
+                                <Div className="RegisterWrapper" w="100%" just="center">
+                                    <SubTitle mgT="-5px" mgB="20px">Register</SubTitle>
+                                </Div>
+                                <Txt>Already have an account ? <Span onClick={()=>setIsLogin(true)}>Login</Span></Txt>
+                                <RegisterForm />
+                            </>
+                        )}
+                    </Div>
                 </Div>
             </Modal>
         </NavBar>

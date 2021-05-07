@@ -1,6 +1,7 @@
 import AppContainer from './appContainer';
 import Aside from './aside';
 import Button from './button';
+import CloseButton from './closeButton';
 import Div from './divs';
 import Footer from './footer';
 import FormError from './formError';
@@ -24,6 +25,7 @@ export {
     AppContainer,
     Aside,
     Button,
+    CloseButton,
     Div,
     Footer,
     FormError,
