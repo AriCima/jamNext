@@ -33,6 +33,7 @@ const NavBarApp = ({w}) => {
                     <Txt color="white">Login</Txt>
                 </Div>
             </Div>
+            
             <Modal showModal={showModal} closeModal={()=>setShowModal(false)}>
                 <Div col w='100%' just="center" align="center" >
                     <Div col w="90%" pad="0 0 10px 0">
@@ -56,6 +57,7 @@ const NavBarApp = ({w}) => {
                     </Div>
                 </Div>
             </Modal>
+            
         </NavBar>
     )
 }

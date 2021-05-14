@@ -1,12 +1,17 @@
 import {Div, Select, FormError, Label} from '../../styledComps';
 
-const FormSelect = ({options, w, mgL, mgR, label, name, error, errorMessage, register, registerObject, type='text'})=>{
+const FormSelect = ({reportValue, options, w, mgL, mgR, label, name, error, errorMessage, register, registerObject, type='text'})=>{
+
 
     let optionsList = options.map((el, k) => {
         return(
             <option key={el} value={el.id}>{el.name}</option>
         )
     });
+
+    const handleChange = (e) => {
+        reportValue(e.target.value);
+    };
         
     return (
         <Div
@@ -31,6 +36,7 @@ const FormSelect = ({options, w, mgL, mgR, label, name, error, errorMessage, reg
                 type={type}
                 name={name}
                 ref={register(registerObject)}
+                onChange= {e => handleChange(e)}
                 >
                 {optionsList}
             </Select>

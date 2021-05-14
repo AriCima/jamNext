@@ -321,8 +321,9 @@ const getSelectOptions = (listType) => {
         break;
         case 'jamTypes':
             list = [
+                {id: 'select', name: "Select . . . "},
                 {id: 'rooms-rental', name: "Rooms Rental"},
-                {id: 'standard', name: "Just a friend's Jam"},               
+                {id: 'standard', name: "Just a jam"},               
             ];
         break;
         default:

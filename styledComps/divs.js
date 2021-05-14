@@ -25,6 +25,7 @@ const Div = styled.div`
     ${({right}) => right ? `right: ${right};` : ''}
     ${({top}) => top ? `top: ${top};` : ''}
     max-height: ${({maxH}) => maxH || ''};
+    min-height: ${({minH}) => minH || ''};
     max-width: ${({maxW}) => maxW || '100%'};
     min-width: ${({minW}) => minW || ''};
     width: ${({w}) => w || ''};

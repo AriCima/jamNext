@@ -45,81 +45,77 @@ const RegisterForm = ({updateView, setUserInfo}) => {
       <Div w="100%" col just="center" align="flex-start">
         <Div col w="100%" just="center" align="center">
           <FormInput
-              w="100%"
-              label="First Name"
-              name="firstName"
-              type='text'
-              error={errors.firstName}
-              errorMessage="Debe ingresar un nombre"
-              register={register}
-              registerObject={{ required: true}}
+            w="100%"
+            label="First Name"
+            name="firstName"
+            type='text'
+            error={errors.firstName}
+            errorMessage="Debe ingresar un nombre"
+            register={register}
+            registerObject={{ required: true}}
           />
-              <FormInput
-              w="100%"
-              label="Last name"
-              name="lastName"
-              type='text'
-              error={errors.lastName}
-              errorMessage="Debe ingresar un apellido"
-              register={register}
-              registerObject={{ required: true}}
+          <FormInput
+            w="100%"
+            label="Last name"
+            name="lastName"
+            type='text'
+            error={errors.lastName}
+            errorMessage="Debe ingresar un apellido"
+            register={register}
+            registerObject={{ required: true}}
           />
-              <FormInput
-                  w="100%"
-                  label="Email"
-                  name="email"
-                  // type='email'
-                  error={errors.email}
-                  errorMessage="Email no válido"
-                  register={register}
-                  registerObject={{ 
-                      required: true,
-                      pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  }}
-              />
+          <FormInput
+            w="100%"
+            label="Email"
+            name="email"
+            // type='email'
+            error={errors.email}
+            errorMessage="Email no válido"
+            register={register}
+            registerObject={{ 
+                required: true,
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            }}
+          />
+          <FormInput
+            w="100%"
+            label="Password"
+            name="password"
+            type='password'
+            error={errors.password}
+            errorMessage="Non valid password"
+            register={register}
+            registerObject={{
+                required: true,
+                pattern: '',
+            }}
+          />
+          <FormInput
+            w="100%"
+            label="Confirm password"
+            name="confirmPassword"
+            type='password'
+            error={errors.confirmPassword}
+            errorMessage="Non valid password"
+            register={register}
+            registerObject={{
+              required: true,
+              pattern: '',
+            }}
+            validate={{
+              matchesPreviousPassword: value => {
+              const { password } = getValues();
+              return password === value || "Passwords should match!";
+            }}}
+          />
+        </Div>
 
-              <FormInput
-              w="100%"
-                  label="Password"
-                  name="password"
-                  type='password'
-                  error={errors.password}
-                  errorMessage="Non valid password"
-                  register={register}
-                  registerObject={{
-                      required: true,
-                      pattern: '',
-
-                  }}
-              />
-              <FormInput
-              w="100%"
-              label="Confirm password"
-              name="confirmPassword"
-              type='password'
-              error={errors.confirmPassword}
-              errorMessage="Non valid password"
-              register={register}
-              registerObject={{
-                  required: true,
-                  pattern: '',
-
-              }}
-              validate={{
-                  matchesPreviousPassword: value => {
-                  const { password } = getValues();
-                  return password === value || "Passwords should match!";
-                  }}}
-              />
-          </Div>
-
-          <InputSubmit
+        <InputSubmit
           w="100%"
           back='rgb(85, 187, 151)'
           type="submit"
           value="Submit"
-          />
-
+        />
       </Div>
     </form>
   );

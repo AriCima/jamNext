@@ -12,3 +12,4 @@ const AppContainer = styled.div`
 
 export default AppContainer;
 // flex-direction: ${props => (props.col ? 'column' : 'row')};
+  

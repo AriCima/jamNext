@@ -20,7 +20,7 @@ const CreateJam = ({  }) => {
     
     const router = useRouter();
     console.log('router: ', router);
-    // const { userId } = router.query;
+
 
     const { register, errors, handleSubmit } = useForm();
 

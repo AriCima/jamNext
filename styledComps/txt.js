@@ -9,7 +9,7 @@ const Txt = styled.p`
     margin-right: ${({mgR}) => mgR || ''};
     margin-bottom: ${({mgB}) => mgB || ''};
     padding: ${({pad}) => pad || '0'};
-    color: ${({color}) => color || 'black'};;
+    color: ${({color}) => color || 'black'};
 `;
 
 export default Txt;

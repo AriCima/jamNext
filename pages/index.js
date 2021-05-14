@@ -16,13 +16,13 @@ const Home = ({ userId = '', firstName = '' }) => {
 
 
   return (
-    <AppContainer w="100%">
+    <AppContainer col w="100%" just="flex-start">
       <Head>
         <title>Jammint</title>
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
-      <Div main w="100%" col mg="40px 0 0 0" just="flex-start" align="center">
+      <Div main w="100%" mg="40px 0 0 0" just="flex-start" align="center">
         {noUser ? (
           <>
             <NavBarApp w="100%"/>

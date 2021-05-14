@@ -98,12 +98,12 @@ const updateCompanyInfo = (data) => {
 };
 
 const createJam = (data) => {
-    return new Promise(() => {
-        firebase.firestore()
-        .collection('jams')
-        .add({data})
-        .then((docRef) => {
-            console.log("Jam created sucessfully with ID: ", docRef.id);
+    console.log('data: ', data);
+    return new Promise((resolve, reject) => {
+        firebase.firestore().collection('jams').add(data)
+        .then((doc) => {
+            console.log('doc del create: ', doc);
+            resolve({ id: doc.id });
         })
         .catch((error) => {
             console.error("Error creating Jam: ", error);
