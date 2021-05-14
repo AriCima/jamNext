@@ -57,24 +57,6 @@ const getUserInfo = (userId) => {
 
 })};
 
-
-const getJamInfoById = (jamId) => {
-    return new Promise((resolve, reject) => {
-        firebase.firestore().collection('jams')
-            .doc(jamId)
-            .get()
-            .then((result) => {
-                resolve(result.data());
-            })
-
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
-            });
-    });
-};
-
 const updateCompanyInfo = (data) => {
     return new Promise(() => {
         firebase.firestore()
@@ -111,11 +93,59 @@ const createJam = (data) => {
     })
 };
 
+const addJamToUser = (userId, jamId, data) => {
+    return new Promise((resolve, reject) => {
+        firebase.firestore().collection('users').doc(userId).
+        collection(userJams)
+        .doc(jamId)
+        .add(data)
+        .then((doc) => {
+            console.log('doc del create: ', doc);
+        })
+        .catch((error) => {
+            console.error("Error creating Jam: ", error);
+        });
+    })
+};
+
+const getUserJams = (userId, userJams) => {
+    return new Promise((resolve, reject) => {
+    firebase.firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('userJams')
+        .orderBy('createdAt')
+        .onSnapshot(userJams)
+    });
+}
+
+const getJamInfoById = (jamId) => {
+    return new Promise((resolve, reject) => {
+        firebase.firestore().collection('jams')
+            .doc(jamId)
+            .get()
+            .then((result) => {
+                resolve(result.data());
+            })
+
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
+            });
+    });
+};
+
+
+
+
 const DataService = {
+    addJamToUser,
     checkIfEmialExists,
     createJam,
     getJamInfoById,
     getUserInfo,
+    getUserJams,
     saveUserInfoInFirestore,
     updateCompanyInfo,
 };

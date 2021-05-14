@@ -65,6 +65,9 @@ const CreateForm = ({userId, showModal}) => {
             const jamId = res.id;
             showModal(false)
             router.push(`/jam/${jamId}`)
+
+            const jamSummary = {adminId: userId, createdAt}
+            DataService.addJamToUser(userId, jamId, jamSummary)
         })
     };
 
