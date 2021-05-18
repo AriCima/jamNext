@@ -86,7 +86,7 @@ const JamsList = ({ userId }) => {
   };
 
   const JamsInfoLoaded = nrOfJams === jamsList.length;
-  const renderJams = JamsInfoLoaded && nrOfJams > 0
+  const readyToRender = JamsInfoLoaded && nrOfJams > 0
 
   return (
     <Div col w="100%">

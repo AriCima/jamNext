@@ -72,15 +72,17 @@ const Layout = ({ children }) => {
           >
             <FontAwesomeIcon icon={faCheck}/>
           </NavBarIcon>
-          <NavBarIcon className="Create-button"
+          <NavBarIcon className="Create-button" cfSize="36px"
             onClick={() => {
                 setShowModal(true);
                 setShowCreate(true);
             }}
           >
-            <NavBarIcon cfSize="36px"><FontAwesomeIcon icon={faPlus}/></NavBarIcon>
+            <FontAwesomeIcon icon={faPlus}/>
           </NavBarIcon>
-          <NavBarIcon className="Profile-button" fSize="36px"onClick={() => showProfileMenu()}><FontAwesomeIcon icon={faUser}/></NavBarIcon>
+          <NavBarIcon className="Profile-button" fSize="36px"onClick={() => showProfileMenu()}>
+            <FontAwesomeIcon icon={faUser}/>
+          </NavBarIcon>
         </Div>
         <ProfileBox back="lightgray" show={showProfile} w="100%" col mgT="0" just="flex-start" align="flex-start">
           <Div w={'100%'} just="flex-end">

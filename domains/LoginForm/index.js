@@ -38,7 +38,7 @@ const Login = ({setUserInfo}) => {
                 const { firstName, lastName } = res;
                 const userInfo = {userId, firstName, lastName, email, password};               
                 localStorage.setItem('userInfo', userInfo);
-                router.push('/jams')
+                router.push('/jam')
             })
         })
         .catch((error) => {
