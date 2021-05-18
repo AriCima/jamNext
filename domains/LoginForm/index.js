@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from "react-hook-form";
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import isEmpty from 'lodash/isEmpty';
 
 import AuthService from '../../services/AuthService';
 import DataService from '../../services/DataService';
 import { setUserInfo } from '../../redux/actions/userActions';
 
-import { Div, SubTitle, InputSubmit } from '../../styledComps';
+import { Div, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 
 
-const Login = ({setUserInfo}) => {
+const Login = () => {
     
     const { register, errors, handleSubmit } = useForm();
     const router = useRouter()
+    const dispatch = useDispatch()
     
     useEffect(() => {
         const userInfo = localStorage.getItem('userInfo') || '';
@@ -36,8 +37,8 @@ const Login = ({setUserInfo}) => {
             DataService.getUserInfo(userId)
             .then(res => {
                 const { firstName, lastName } = res;
-                const userInfo = {userId, firstName, lastName, email, password};               
-                localStorage.setItem('userInfo', userInfo);
+                const userInfo = {userId, firstName, lastName, email}; 
+                dispatch(setUserInfo(userInfo));           
                 router.push('/jam')
             })
         })
@@ -99,5 +100,4 @@ const Login = ({setUserInfo}) => {
     );
 };
 
-
-export default connect(null, { setUserInfo })(Login);
+export default Login;

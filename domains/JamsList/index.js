@@ -35,41 +35,41 @@ const JamCover = styled.a`
 
 const JamsList = ({ userId }) => {
 
-  const [jamsList, setJamsList] = useState([]);
-  const [nrOfJams, setNrOfJams] = useState(-1);
+  // const [jamsList, setJamsList] = useState([]);
+  // const [nrOfJams, setNrOfJams] = useState(-1);
 
-  useEffect(() => {
-    if(userId) {
-        const unsubscribe = DataService.getUserJams(userId, {
-            next: querySnapshot => {
-              const jams = [];
-              querySnapshot.docs.map(docSnapshot => {
-                  const j = docSnapshot.data();
-                  j.id = docSnapshot.id;
-                  jams.push(j);
-              });
+  // useEffect(() => {
+  //   if(userId) {
+  //       const unsubscribe = DataService.getUserJams(userId, {
+  //           next: querySnapshot => {
+  //             const jams = [];
+  //             querySnapshot.docs.map(docSnapshot => {
+  //                 const j = docSnapshot.data();
+  //                 j.id = docSnapshot.id;
+  //                 jams.push(j);
+  //             });
 
-              setNrOfJams(jams.length);
-              let jList = [];
+  //             setNrOfJams(jams.length);
+  //             let jList = [];
 
-              if(jams.length > 0) {
-                for (let i = 0; i <jams-length; i++) {
-                  DataService.getJamCoverInfoInfoById(jams)
-                  .then(res => {
-                    const { jamName, jamDesc, jamId } = res;
-                    const jamCover = { jamName, jamDesc, jamId }
-                    jList.push(jamCover)
-                  })
-                }
-                setJamsList(jams);
-              }
+  //             if(jams.length > 0) {
+  //               for (let i = 0; i <jams-length; i++) {
+  //                 DataService.getJamCoverInfoInfoById(jams)
+  //                 .then(res => {
+  //                   const { jamName, jamDesc, jamId } = res;
+  //                   const jamCover = { jamName, jamDesc, jamId }
+  //                   jList.push(jamCover)
+  //                 })
+  //               }
+  //               setJamsList(jams);
+  //             }
 
-            },
-            error: () => console.log('failure')
-        });
-        return unsubscribe;
-    }
-  }, [userId]);
+  //           },
+  //           error: () => console.log('failure')
+  //       });
+  //       return unsubscribe;
+  //   }
+  // }, [userId]);
 
   const renderJams = () => {
     return jamsList.map((jam, j) => {

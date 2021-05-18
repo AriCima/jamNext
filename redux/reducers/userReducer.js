@@ -6,10 +6,15 @@ const defaultState = {
 }; 
 
 function setUserReducer(state = defaultState, action) {
-    return {
-        ...state,
-        type: action.payload
-    }
+    switch(action.type){
+        case 'USER_INFO':
+            return {
+                ...state,
+                ...action.payload
+            }
+        default:
+            return state;
+    }   
 }
   
 export { setUserReducer };

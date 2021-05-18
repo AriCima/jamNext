@@ -8,9 +8,14 @@ const defaultState = {
 }; 
 
 function setJamReducer(state = defaultState, action) {
-    return {
-        ...state,
-        jamDesc: action.payload
+    switch(action.type){
+        case 'JAM_DESC':
+            return {
+                ...state,
+                jamDesc: action.payload
+            }
+        default:
+            return state;
     }
 }
   

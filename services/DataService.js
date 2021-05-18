@@ -108,15 +108,29 @@ const addJamToUser = (userId, jamId, data) => {
     })
 };
 
-const getUserJams = (userId, userJams) => {
+const getUserJamsDB = (userId, field, comparation) => {
     return new Promise((resolve, reject) => {
-    firebase.firestore()
-        .collection('users')
-        .doc(userId)
-        .collection('userJams')
-        .orderBy('createdAt')
-        .onSnapshot(userJams)
-    });
+        firebase.firestore()
+            .collection('jams')
+            .where(field, comparation, userId)
+            .get()
+            .then(result => {
+                let jams = []
+                result.forEach((doc) => {
+                    const j = doc.data();
+                    j.jamId = doc.id;
+                    jams.push(j);
+                });
+                resolve(jams);
+        })})
+}
+const getUserJams = async (userId) => {
+    const JamsAdmin = getUserJamsDB(userId, 'adminId', '==')
+    const JamsUsers = getUserJamsDB(userId, 'jamUsers', 'array-contains')
+    return await Promise.all([JamsAdmin, JamsUsers]).then(([resultJamsAdmin, resultJamsUsers]) => {
+        const jams = [...resultJamsAdmin, ...resultJamsUsers]
+        return jams
+    })
 }
 
 const getJamInfoById = (jamId) => {
@@ -135,8 +149,6 @@ const getJamInfoById = (jamId) => {
             });
     });
 };
-
-
 
 
 const DataService = {

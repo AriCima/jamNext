@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
-import isEmpty from 'lodash/isEmpty';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Div } from "../../styledComps";
 
 import DataService from '../../services/DataService';
-import { setJamInfo } from '../../redux/actions';
 import Layout from '../../domains/Layout';
 
-const Jams = ({ setUserJams, userId }) => {
+const Jams = () => {
     const [jamsList, setJamsList] = useState([]);
+
+    const { userId } = useSelector(state => state.userReducer);
+
+    const getUserJams = async () => {
+        try{
+            const jams = await DataService.getUserJams(userId)
+            console.log('jamsList: ', jams);
+            setJamsList(jams);
+        }catch(err){
+            console.log(err);
+        }
+    };
 
     // Use an effect hook to subscribe to the jams list item stream and
     // automatically unsubscribe when the component unmounts.
     useEffect(() => {
-        if(userId) {
-            const unsubscribe = DataService.getUserJams(userId, {
-                next: querySnapshot => {
-                    const jams = [];
-                    querySnapshot.docs.map(docSnapshot => {
-                        const j = docSnapshot.data();
-                        j.id = docSnapshot.id;
-                        jams.push(j);
-                    });
-                    setUserJams(jams);
-                    setJamsList(jams);
-                },
-                error: () => console.log('failure')
-            });
-            return unsubscribe;
-        }
+        userId && getUserJams()
+        /* if(userId) {
+            getUserJams()
+            // const unsubscribe = DataService.getUserJams(userId, {
+            //     next: querySnapshot => {
+            //         const jams = [];
+            //         querySnapshot.docs.map(docSnapshot => {
+            //             const j = docSnapshot.data();
+            //             j.id = docSnapshot.id;
+            //             jams.push(j);
+            //         });
+            //         setJamsList(jams);
+            //     },
+            //     error: () => console.log('failure')
+            // // });
+            // return unsubscribe;
+        } */
     }, [userId]);
 
     // useEffect(() => {
@@ -39,6 +50,8 @@ const Jams = ({ setUserJams, userId }) => {
     //     const res = await DataService.getJamInfoById(jamId);
     //     setJamInfo(res); // Info en Redux
     // };
+
+
 
 
     const renderJamsList = jamsList.length > 0;
@@ -53,12 +66,5 @@ const Jams = ({ setUserJams, userId }) => {
     );
 }
 
-const mapStateToProps = state => {
-    const {jamDesc} = state.jamReducer;
-    const { userId, userJams } = state.userReducer;
-
-    return { jamDesc, userId, userJams };
-};
-
-export default connect(mapStateToProps, { setJamInfo }) (Jams);
+export default Jams;
 

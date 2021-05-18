@@ -128,7 +128,7 @@ const Layout = ({ children }) => {
                         <Div className="LoginWrapper" w="100%" just="center">
                             <SubTitle mgT="-5px" mgB="20px">Create yout own Jam !</SubTitle>
                         </Div>
-                        <CreateForm userId={'1'} showModal={val => setShowModal(val)}/>
+                        <CreateForm showModal={val => setShowModal(val)}/>
                     </>
                 ):(
                     <>

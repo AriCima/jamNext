@@ -7,7 +7,7 @@ import NavBarJam from '../domains/NavBarJam';
 
 // import styles from '../styles/Home.module.css'
 import { getInitialProps } from 'next/dist/next-server/lib/utils';
-import { SubTitle, Txt, Div, Title, Main, Footer, AppContainer } from '../styledComps';
+import { SubTitle, Txt, Div, Title, Footer, AppContainer } from '../styledComps';
 
 
 const Home = ({ userId = '', firstName = '' }) => {

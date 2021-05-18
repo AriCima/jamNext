@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from "react-hook-form";
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import DataService from '../../services/DataService';
 import Calculations from "../../services/Calculations";
-import { setUserInfo } from '../../redux/actions/userActions';
 
 import { Div, SubTitle, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
@@ -18,9 +17,12 @@ const formStyle = {
     justifyContent: 'center'
 };
 
-const CreateForm = ({userId, showModal}) => {
+const CreateForm = ({showModal}) => {
     const [typeOfJam, setJamType] = useState('');
     const [roomsNr, setRoomsNr] = useState(0)
+
+    const { userId } = useSelector(state => state.userReducer);
+    console.log('userId: ', userId);
     
     const { register, errors, handleSubmit } = useForm();
     const router = useRouter()
@@ -141,5 +143,4 @@ const CreateForm = ({userId, showModal}) => {
     );
 };
 
-
-export default connect(null, { setUserInfo })(CreateForm);
+export default CreateForm;

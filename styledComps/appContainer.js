@@ -4,10 +4,7 @@ const AppContainer = styled.div`
     width: ${({w}) => w || 'auto'};
     min-height: 100vh;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    display: block;
 }`
 
 export default AppContainer;
