@@ -38,7 +38,6 @@ const Login = () => {
             .then(res => {
                 const { firstName, lastName } = res;
                 const userInfo = {userId, firstName, lastName, email}; 
-                console.log('userInfo: ', userInfo);
                 dispatch(setUserInfo(userInfo));           
                 router.push('/jam')
             })

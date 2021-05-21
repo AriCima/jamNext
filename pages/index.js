@@ -1,19 +1,29 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useRouter } from 'next/router';
+
+import { setUserInfo } from '../redux/actions/userActions';
+import { useDispatch } from 'react-redux'
+
 
 import Head from 'next/head'
 import NavBarApp from '../domains/NavBarApp';
 import NavBarJam from '../domains/NavBarJam';
+import firebase from '../firebase.config';
 
-// import styles from '../styles/Home.module.css'
-import { getInitialProps } from 'next/dist/next-server/lib/utils';
 import { SubTitle, Txt, Div, Title, Footer, AppContainer } from '../styledComps';
 
 
-const Home = ({ userId = '', firstName = '' }) => {
+const Home = () => {
+  const router = useRouter();
+  const dispatch = useDispatch()
 
-  const noUser = userId === ''; 
-
+  firebase.auth().onAuthStateChanged(function(user) {
+    if(user) {
+      const userId = user.id;
+      dispatch(setUserInfo(userId));
+      router.push('/jam');
+    }
+  });
 
   return (
     <AppContainer col w="100%" just="flex-start">
@@ -23,20 +33,11 @@ const Home = ({ userId = '', firstName = '' }) => {
       </Head>
 
       <Div main w="100%" mg="40px 0 0 0" just="flex-start" align="center">
-        {noUser ? (
-          <>
-            <NavBarApp w="100%"/>
-            <Div w="100%" col align="center">
-              <Title>Welocme to jammint</Title>
-              <SubTitle>Jam with your flatmates </SubTitle>
-            </Div>
-          </>
-          ) : (
-            <>
-              <NavBarJam w="100%"/>
-            </>
-          )
-        }
+        <NavBarApp w="100%"/>
+        <Div w="100%" col align="center">
+          <Title>Welocme to jammint</Title>
+          <SubTitle>Jam with your flatmates </SubTitle>
+        </Div>
       </Div>
 
       <Footer>
@@ -46,42 +47,4 @@ const Home = ({ userId = '', firstName = '' }) => {
   )
 }
 
-// const mapStateToProps = (state) => {
-//   const {
-//     // userInfo: { userId, firstName },
-//     // jamInfo: { jamId, jamName }
-//   } = state;
-//   return { userId, firstName }
-// }
-
-export default connect(null, null)(Home);
-
-
-// Ejemplo de carga de usuarios
-
-// static async getInitialProps() {
-//   const firebase = await loadFirebase();
-//   const db = firebase.firestore();
-//   let result = await new Promise((resolve, reject) => {
-//     db.collection('jamNext')
-//       .get()
-//       .then(snapshot => {
-//         let data = [];
-//         snapshot.forEach(doc => {
-//           data.push(Object.assign(
-//             {
-//               id:doc.id
-//             },
-//             doc.data()
-//           )
-//           );
-//         });
-//         resolve(data)
-//       })
-//       .catch(error => {
-//         reject([]);
-//       });
-//   });
-//   return { users: result};
-// }
-
+export default Home;

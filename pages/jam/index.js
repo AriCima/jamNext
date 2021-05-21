@@ -23,7 +23,6 @@ const Jams = () => {
     const getUserJams = async () => {
         try{
             const jams = await DataService.getUserJams(userId)
-            console.log('jamsList: ', jams);
             dispatch(setUserJams(jams));  
         }catch(err){
             console.log(err);
