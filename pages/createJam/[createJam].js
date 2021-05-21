@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 import { connect } from 'react-redux';
 import { Div, InputSubmit, SubTitle, Txt, Button } from '../../styledComps';
@@ -14,29 +14,15 @@ import FormSelect from '../../components/FormSelect';
 import Calculations from "../../services/Calculations";
 
 
-const CreateJam = ({  }) => {
+const CreateJam = () => {
     const [typeOfJam, setJamType] = useState('');
     const [nrOfRooms, setNrOfRooms] = useState(0)
-    
-    const router = useRouter();
-    console.log('router: ', router);
 
-
+    const { userId } = useSelector(state => state.userReducer);
     const { register, errors, handleSubmit } = useForm();
 
 
-    // const getUserInfo = async (userId) => {
-    //     const res = await DataService.getJamInfoById(jamId);
-    //     setUserInfo(res);
-    // };
-
-    // useEffect(() => {
-    //     userId && getUserInfo(userId);
-    // }, [userId]);
-
-
     const createNewJam = (data) => {
-        console.log('data: ', data);
         const { jamName, jamDesc, jamType } = data;
         
         const jamCode = Calculations.generateJamCode();

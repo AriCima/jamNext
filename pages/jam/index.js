@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
+
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUserJams } from '../../redux/actions/userActions';
+
+import { useRouter } from 'next/router';
+
 import { Div } from "../../styledComps";
 
 import DataService from '../../services/DataService';
@@ -9,12 +15,16 @@ const Jams = () => {
     const [jamsList, setJamsList] = useState([]);
 
     const { userId } = useSelector(state => state.userReducer);
+    const router = useRouter();
+
+    const {jamId} = router.query;
+    const dispatch = useDispatch()
 
     const getUserJams = async () => {
         try{
             const jams = await DataService.getUserJams(userId)
             console.log('jamsList: ', jams);
-            setJamsList(jams);
+            dispatch(setUserJams(jams));  
         }catch(err){
             console.log(err);
         }
@@ -41,15 +51,16 @@ const Jams = () => {
             // return unsubscribe;
         } */
     }, [userId]);
+    
+    const getJamInfo = async (jamId) => {
+        const res = await DataService.getJamInfoById(jamId);
+        setJamInfo(res); // Info en Redux
+    };
 
-    // useEffect(() => {
-    //     jamId && getJamInfo(jamId, userId);
-    // }, [jamId]);
+    useEffect(() => {
+        jamId && getJamInfo(jamId, userId);
+    }, [jamId]);
 
-    // const getJamInfo = async (jamId) => {
-    //     const res = await DataService.getJamInfoById(jamId);
-    //     setJamInfo(res); // Info en Redux
-    // };
 
 
 

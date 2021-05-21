@@ -9,15 +9,15 @@ const defaultState = {
 
 function setJamReducer(state = defaultState, action) {
     switch(action.type){
-        case 'JAM_DESC':
+        case 'JAM_INFO':
             return {
                 ...state,
-                jamDesc: action.payload
+                ...action.payload
             }
         default:
             return state;
-    }
-}
+    }   
+};
   
 export { setJamReducer };
   

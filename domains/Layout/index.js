@@ -111,7 +111,7 @@ const Layout = ({ children }) => {
         </ProfileBox>
 
         <Div className="JamsList" col h="100%" w="100%">
-          <JamsList userId={'hiF88yQZpvUepnGZkcEYd5Hig0L2'}/>
+          <JamsList/>
         </Div>
 
       </Div>

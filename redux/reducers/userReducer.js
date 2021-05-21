@@ -3,6 +3,7 @@ const defaultState = {
     firstName: '',
     lastName: '',
     email: '',
+    userJams: []
 }; 
 
 function setUserReducer(state = defaultState, action) {
@@ -12,6 +13,12 @@ function setUserReducer(state = defaultState, action) {
                 ...state,
                 ...action.payload
             }
+        case 'USER_JAMS':
+            return {
+                ...state,
+                userJams: action.payload
+            }
+
         default:
             return state;
     }   

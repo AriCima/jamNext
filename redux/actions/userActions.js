@@ -5,4 +5,12 @@ function setUserInfo(userInfo) {
     };
 }
 
-export { setUserInfo };
+function setUserJams(jamsList) {
+    return {
+        type: 'USER_JAMS',
+        payload: jamsList
+    };
+}
+
+
+export { setUserInfo, setUserJams };
