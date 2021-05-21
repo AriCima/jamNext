@@ -18,15 +18,15 @@ const Login = () => {
     const router = useRouter()
     const dispatch = useDispatch()
     
-    useEffect(() => {
-        const userInfo = localStorage.getItem('userInfo') || '';
+    // useEffect(() => {
+    //     const userInfo = localStorage.getItem('userInfo') || '';
 
-        if (!isEmpty(userInfo)) {
-            // SET USER INFO IN REDUX
-            setUserInfo(userInfo)
-        };
+    //     if (!isEmpty(userInfo)) {
+    //         // SET USER INFO IN REDUX
+    //         setUserInfo(userInfo)
+    //     };
 
-    }, []);
+    // }, []);
 
     const onLogin = (data) => {
         const { email, password } = data;  

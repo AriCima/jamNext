@@ -10,28 +10,29 @@ import { Div } from "../../styledComps";
 
 import DataService from '../../services/DataService';
 import Layout from '../../domains/Layout';
+import NavBarJam from '../../domains/NavBarJam';
 
 const Jams = () => {
     const [jamsList, setJamsList] = useState([]);
-
     const { userId } = useSelector(state => state.userReducer);
+    
     const router = useRouter();
-
-    const {jamId} = router.query;
+    const { jamId } = router.query;
+    
     const dispatch = useDispatch()
 
     const getUserJams = async () => {
         try{
             const jams = await DataService.getUserJams(userId)
-            dispatch(setUserJams(jams));  
+            dispatch(setUserJams(jams)); 
+            setJamsList(jams); 
         }catch(err){
             console.log(err);
         }
     };
 
-    // Use an effect hook to subscribe to the jams list item stream and
-    // automatically unsubscribe when the component unmounts.
     useEffect(() => {
+        console.log('userId: ', userId);
         userId && getUserJams()
         /* if(userId) {
             getUserJams()
@@ -61,14 +62,11 @@ const Jams = () => {
     }, [jamId]);
 
 
-
-
-
     const renderJamsList = jamsList.length > 0;
 
     return (
         <Layout>
-            <Div back="lightgray" h="60px" flexG="0" just="center" align="center">Menu Contextual</Div>
+            <NavBarJam />
             <Div pad="50px" back="orange">
                 {renderJamsList ? <p>select a Jam</p> : <p>You have no Jams yet, Create or Join</p>}
             </Div>

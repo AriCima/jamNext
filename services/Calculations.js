@@ -28,7 +28,6 @@ const generateJamCode = () => {
      return code
 };
 
-
 const getJamRules = (type) => {
     let rules = [];
     switch (type) {
@@ -49,6 +48,43 @@ const getJamRules = (type) => {
 
     }
    return rules;
+};
+
+const getJamAdminSections = (type) => {
+    let sections = [];
+    switch (type) {
+        case 'accommodation':
+          sections = ['Board', 'Jammers', 'MyJam', 'Settings']
+          break;
+        case 'rooms-rental':
+            sections = ['Overview','Board', 'Tenants', 'Rooms', 'Settings']
+            break;
+        case 'chat': 
+            sections = ['Chat']
+            break;
+        default:
+          //console.log('no reconoce tipo')
+    }
+   return sections;
+};
+
+const getJamGuestSections = (type) => {
+    //console.log('get Jam Sections launched')
+    let sections = [];
+    switch (type) {
+        case 'accommodation':
+          sections = ['Board', 'Jammers', 'MyJam', 'Settings']
+          break;
+        case 'rooms-rental':
+            sections = ['Overview', 'Board', 'Flatmates']
+            break;
+        case 'chat': 
+            sections = ['Chat']
+            break;
+        default:
+          //console.log('no reconoce tipo')
+    }
+   return sections;
 };
 
 const getSelectOptions = (listType) => {
@@ -331,10 +367,14 @@ const getSelectOptions = (listType) => {
 
 
     return list;         
-}
+};
+
+
 
 const Calculations = {
     generateJamCode,
+    getJamAdminSections,
+    getJamGuestSections,
     getSelectOptions,
     getJamRules,
 };

@@ -37,7 +37,6 @@ const checkIfEmialExists = (email) => {
         });
 };
 
-
 const getUserInfo = (userId) => {
     return new Promise((resolve, reject) => {
         firebase.firestore()
