@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import Link from 'next/Link';
 import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
@@ -36,12 +36,16 @@ const NavBarJam = () => {
     const [jamSections, setJamSections] = useState([]);
     const { jamType, jamName, adminId } = useSelector(state => state.jamReducer);
     const { userId } = useSelector(state => state.userReducer);
+    const { jamId } = useSelector(state => state.jamReducer);
 
-    if (jamSections.length > 0 && jamType !== '') {
-        const userIsAdmin = userId === adminId;
-        const sections = userIsAdmin ? Calculations.getJamSections(jamType) : Calculations.getJamGuestSections(jamType);
-        setJamSections(sections);
-    };
+
+    useEffect(() => {
+        if(jamType) {
+            const userIsAdmin = userId === adminId;
+            const sections = userIsAdmin ? Calculations.getJamAdminSections(jamType) : Calculations.getJamGuestSections(jamType);
+            setJamSections(sections);
+        } 
+    }, [jamType]);
 
     const renderJamSections = () => {
         return jamSections.map((section, key) => {
@@ -55,11 +59,11 @@ const NavBarJam = () => {
 
     const sectionsLoaded = jamSections.length !== 0;
     return(
-        <NavBar>
+        <NavBar className="Jam-NavBar">
             <Div w="20%" just="flex-start">
                 <Txt>{jamName}</Txt>
             </Div>
-            <Div w="80%" just="space-around" align="center">
+            <Div className="jam-sections" w="80%" just="space-around" align="center">
                 {sectionsLoaded && renderJamSections()}
             </Div>
         </NavBar>

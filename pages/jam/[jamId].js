@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 import { Div } from "../../styledComps";
 
 import DataService from '../../services/DataService';
 import { setJamInfo } from '../../redux/actions';
 import Layout from '../../domains/Layout';
+import NavBarJam  from '../../domains/NavBarJam';
+import JamSection from '../../domains/JamSection';
 
-const JamsId = ({ userId, setJamInfo }) => {
-
+const JamsId = () => {
+    const dispatch = useDispatch()
     const router = useRouter();
     const { jamId } = router.query;
 
     const getJamInfo = async (jamId) => {
         const res = await DataService.getJamInfoById(jamId);
-        setJamInfo(res);
+        console.log('res: ', res);
+        dispatch(setJamInfo(res));
     };
 
     useEffect(() => {
@@ -23,23 +27,16 @@ const JamsId = ({ userId, setJamInfo }) => {
     }, [jamId]);
 
 
+    const section = "overview";
 
     return (
         <Layout>
-            <Div back="lightgray" h="60px" flexG="0" just="center" align="center">Menu Contextual</Div>
-            <Div pad="50px" back="orange">
-                Contenido del Jam
-            </Div>
+            <NavBarJam />
+            <JamSection section={section}/>
         </Layout>
     );
 }
 
-const mapStateToProps = state => {
-    const {jamDesc} = state.jamReducer;
-    const { userId, userJams } = state.userReducer;
 
-    return { jamDesc, userId, userJams };
-};
-
-export default connect(mapStateToProps, { setJamInfo }) (JamsId);
+export default JamsId;
 

@@ -138,7 +138,10 @@ const getJamInfoById = (jamId) => {
             .doc(jamId)
             .get()
             .then((result) => {
-                resolve(result.data());
+                const jamInfo = result.data();
+                const jamId = result.id;
+                jamInfo.jamId = jamId;
+                resolve(jamInfo);
             })
 
             .catch((error) => {

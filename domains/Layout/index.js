@@ -62,7 +62,7 @@ const Layout = ({ children }) => {
 
   return (
     <AppWrapper className="AppWrapper">
-      <Div className="AppMenuSide" col flexG='1' maxW='30%'>
+      <Div className="LeftSide" col flexG='1' maxW='30%'>
         <Div className="AppNavBar" minH="60px" mgL="10px" mgR="10px" flexG="0" just="space-between" align="center">
           <NavBarIcon className="Join-button" fSize="36px"
             onClick={() => {
