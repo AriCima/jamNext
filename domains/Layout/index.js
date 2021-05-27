@@ -3,13 +3,15 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Link from 'next/Link';
 import firebase from 'firebase';
+import { useDispatch } from 'react-redux';
 
-import JamsList from "../jamsList";
+import JamsList from "../JamsList";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faCheck, faUser } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../../components/Modal';
 import CreateForm from '../CreateForm';
 import JoinForm from '../JoinForm';
+import { resetUserInfo } from '../../redux/actions/userActions';
 import { Div, Txt, ProfileBox, SubTitle, MenuItem } from "../../styledComps";
 
 const AppWrapper = styled.div`
@@ -38,16 +40,18 @@ const Layout = ({ children }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showCreate, setShowCreate] = useState(true);
-
   
   const router = useRouter();
+  const dispatch = useDispatch()
 
   const signOut = (e) => {
     e.preventDefault();
     firebase.auth().signOut()
     .then(() => {
-      alert('See you later');
-      localStorage.setItem('userId', '');
+      // alert('See you later');
+      // localStorage.setItem('userId', '');
+      console.log('Logout')
+      dispatch(resetUserInfo());
       router.push('/');
     })
     .catch(() => {
@@ -61,7 +65,7 @@ const Layout = ({ children }) => {
 
 
   return (
-    <AppWrapper className="AppWrapper">
+    <AppWrapper>
       <Div className="LeftSide" col flexG='1' maxW='30%'>
         <Div className="AppNavBar" minH="60px" mgL="10px" mgR="10px" flexG="0" just="space-between" align="center">
           <NavBarIcon className="Join-button" fSize="36px"
@@ -104,13 +108,13 @@ const Layout = ({ children }) => {
             </MenuItem>
           </Link>
           <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center"
-            onClick={e => signOut(e)}
+            onClick={signOut}
           >
             <Txt mgL="10px">LogOut</Txt>
           </MenuItem>
         </ProfileBox>
 
-        <Div className="JamsList" col h="100%" w="100%">
+        <Div className="JamsList" col back="blue" h="100%" w="100%">
           <JamsList/>
         </Div>
 

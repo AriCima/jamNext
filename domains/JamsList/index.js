@@ -1,5 +1,6 @@
 import React, {useState, useEffect}  from "react";
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import Link from 'next/Link';
 
 import styled from 'styled-components';
@@ -36,20 +37,23 @@ const JamCover = styled.a`
 const JamsList = () => {
 
   const { userJams } = useSelector(state => state.userReducer);
-  const { jamId } = useSelector(state => state.jamReducer);
-  const [currentJamId, setCurrentJamId] = useState(jamId);
-  
+  const [currentJamId, setCurrentJamId] = useState('');
+  const router = useRouter();
+
+  const { jamId } = router.query;
+
   useEffect(() => {
     jamId && setCurrentJamId(jamId)
   }, [jamId])
 
   const renderJams = () => {
+    console.log('launched')
     return userJams.map((jam, j) => {
       const {jamName, jamDesc, jamId} = jam;
       const active = jam.jamId === currentJamId;
       return (
-        <Link href={`/jam/${jamId}`}>
-          <JamCover key={j} active={active}>
+        <Link  key={jamId} href="/jam/[jamId]" as={`/jam/${jamId}`}>
+          <JamCover active={active}>
             <span>{jamName}</span>
             <span>{jamDesc}</span>
           </JamCover>

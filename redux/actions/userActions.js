@@ -5,6 +5,12 @@ function setUserInfo(userInfo) {
     };
 }
 
+function resetUserInfo() {
+    return {
+        type: 'RESET_USER_INFO'
+    };
+}
+
 function setUserJams(jamsList) {
     return {
         type: 'USER_JAMS',
@@ -13,4 +19,4 @@ function setUserJams(jamsList) {
 }
 
 
-export { setUserInfo, setUserJams };
+export { setUserInfo, setUserJams, resetUserInfo };

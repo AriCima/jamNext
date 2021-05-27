@@ -3,7 +3,8 @@ const defaultState = {
     firstName: '',
     lastName: '',
     email: '',
-    userJams: []
+    userJams: [],
+    company: []
 }; 
 
 function setUserReducer(state = defaultState, action) {
@@ -12,6 +13,11 @@ function setUserReducer(state = defaultState, action) {
             return {
                 ...state,
                 ...action.payload
+            }
+        case 'RESET_USER_INFO':
+            return {
+                ...state,
+                ...defaultState
             }
         case 'USER_JAMS':
             return {

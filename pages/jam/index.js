@@ -13,56 +13,20 @@ import Layout from '../../domains/Layout';
 import NavBarJam from '../../domains/NavBarJam';
 
 const Jams = () => {
-    const [jamsList, setJamsList] = useState([]);
-    const { userId } = useSelector(state => state.userReducer);
-    
-    const router = useRouter();
-    const { jamId } = router.query;
-    
-    const dispatch = useDispatch()
+    const { userId, userJams } = useSelector(state => state.userReducer);
+    // const { jamId } = useSelector(state => state.jamReducer);
 
-    const getUserJams = async () => {
-        try{
-            const jams = await DataService.getUserJams(userId)
-            dispatch(setUserJams(jams)); 
-            setJamsList(jams); 
-        }catch(err){
-            console.log(err);
-        }
-    };
+    // const getJamInfo = async (jamId) => {
+    //     const res = await DataService.getJamInfoById(jamId);
+    //     setJamInfo(res); // Info en Redux
+    // };
 
-    useEffect(() => {
-        console.log('userId: ', userId);
-        userId && getUserJams()
-        /* if(userId) {
-            getUserJams()
-            // const unsubscribe = DataService.getUserJams(userId, {
-            //     next: querySnapshot => {
-            //         const jams = [];
-            //         querySnapshot.docs.map(docSnapshot => {
-            //             const j = docSnapshot.data();
-            //             j.id = docSnapshot.id;
-            //             jams.push(j);
-            //         });
-            //         setJamsList(jams);
-            //     },
-            //     error: () => console.log('failure')
-            // // });
-            // return unsubscribe;
-        } */
-    }, [userId]);
-    
-    const getJamInfo = async (jamId) => {
-        const res = await DataService.getJamInfoById(jamId);
-        setJamInfo(res); // Info en Redux
-    };
-
-    useEffect(() => {
-        jamId && getJamInfo(jamId, userId);
-    }, [jamId]);
+    // useEffect(() => {
+    //     jamId && getJamInfo(jamId, userId);
+    // }, [jamId]);
 
 
-    const renderJamsList = jamsList.length > 0;
+    const renderJamsList = userJams.length > 0;
 
     return (
         <Layout>
