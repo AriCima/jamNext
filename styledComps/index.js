@@ -1,4 +1,5 @@
 import AppContainer from './appContainer';
+import AppWrapper from './appWrapper';
 import Aside from './aside';
 import Button from './button';
 import CloseButton from './closeButton';
@@ -22,6 +23,7 @@ import MenuItem from './menuItem';
 
 export {
     AppContainer,
+    AppWrapper,
     Aside,
     Button,
     CloseButton,

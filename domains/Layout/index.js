@@ -12,18 +12,8 @@ import Modal from '../../components/Modal';
 import CreateForm from '../CreateForm';
 import JoinForm from '../JoinForm';
 import { resetUserInfo } from '../../redux/actions/userActions';
-import { Div, Txt, ProfileBox, SubTitle, MenuItem } from "../../styledComps";
+import { Div, SubTitle, AppWrapper } from "../../styledComps";
 
-const AppWrapper = styled.div`
-  margin: 0;
-  display: flex;
-  flex-direction: row;
-  margin: 0 0 0 0;
-  width: 100%
-  align-items: flex-start;
-  justify-content: flex-start;
-  height: 100vh;
-`;
 
 const NavBarIcon = styled.p`
   font-size: 30px;
