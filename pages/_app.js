@@ -6,6 +6,21 @@ import { Provider , useDispatch, useSelector } from 'react-redux';
 import store from '../redux/index';
 import firebase from '../firebase.config';
 import DataService from '../services/DataService'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+`
+
+const theme = {
+  colors: {
+    primary: '#0070f3',
+  },
+}
 
 const MyComponent = ({Component, pageProps}) => {
   const dispatch = useDispatch()
@@ -37,7 +52,10 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
-      <MyComponent Component={Component} pageProps={pageProps} />
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <MyComponent Component={Component} pageProps={pageProps} />
+      </ThemeProvider>
     </Provider>
   )
 }

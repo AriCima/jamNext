@@ -65,6 +65,8 @@ const getJamAdminSections = (type) => {
         default:
           //console.log('no reconoce tipo')
     }
+
+   console.log('sections: ', sections);
    return sections;
 };
 

@@ -10,7 +10,6 @@ import Input from './input';
 import InputSubmit from './inputSubmit';
 import Select from './select';
 import JamCard from './jamCard';
-import JamCover from './jamCover';
 import Label from './label';
 import Main from './main';
 import NavBar from './navBar';
@@ -33,7 +32,6 @@ export {
     Input,
     InputSubmit,
     JamCard,
-    JamCover,
     Label,
     Main,
     MenuItem,

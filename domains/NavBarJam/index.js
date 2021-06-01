@@ -50,7 +50,7 @@ const NavBarJam = () => {
     const renderJamSections = () => {
         return jamSections.map((section, key) => {
             return(
-                <Link href={`/jam/${jamId}/`}>
+                <Link href={`/jam/${jamId}/`} key={key}>
                     <NavBarItem>{section}</NavBarItem>
                 </Link>
             )

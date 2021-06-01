@@ -10,6 +10,7 @@ import { setJamInfo } from '../../../redux/actions';
 import Layout from '../../../domains/Layout';
 import NavBarJam  from '../../../domains/NavBarJam';
 import JamSection from '../../../domains/JamSection';
+import LeftMenu from '../../../domains/LeftMenu';
 
 const JamsId = () => {
     const dispatch = useDispatch()
@@ -28,7 +29,7 @@ const JamsId = () => {
     const section = "overview";
 
     return (
-        <Layout>
+        <Layout leftMenu={<LeftMenu />}>
             <NavBarJam />
             <Div pad="50px" back="orange">
                 <JamSection section={section}/>

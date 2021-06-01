@@ -35,7 +35,7 @@ const NavBarIcon = styled.p`
   }
 `;
 
-const Layout = ({ children }) => {
+const Layout = ({ children, leftMenu }) => {
 
   const [showProfile, setShowProfile] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -67,57 +67,7 @@ const Layout = ({ children }) => {
   return (
     <AppWrapper>
       <Div className="LeftSide" col flexG='1' maxW='30%'>
-        <Div className="AppNavBar" minH="60px" mgL="10px" mgR="10px" flexG="0" just="space-between" align="center">
-          <NavBarIcon className="Join-button" fSize="36px"
-            onClick={() => {
-              setShowModal(true);
-              setShowCreate(false);
-            }}
-          >
-            <FontAwesomeIcon icon={faCheck}/>
-          </NavBarIcon>
-          <NavBarIcon className="Create-button" cfSize="36px"
-            onClick={() => {
-                setShowModal(true);
-                setShowCreate(true);
-            }}
-          >
-            <FontAwesomeIcon icon={faPlus}/>
-          </NavBarIcon>
-          <NavBarIcon className="Profile-button" fSize="36px"onClick={() => showProfileMenu()}>
-            <FontAwesomeIcon icon={faUser}/>
-          </NavBarIcon>
-        </Div>
-        <ProfileBox back="lightgray" show={showProfile} w="100%" col mgT="0" just="flex-start" align="flex-start">
-          <Div w={'100%'} just="flex-end">
-            <Div transf='rotate(45deg)' mgR="20px"
-              onClick={e => showProfileMenu(e)}
-            >
-              <Txt fSize="28px" bold >+</Txt>
-            </Div>
-          </Div>
-          
-          <Link href="/user/user-1">
-            <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center">
-              <Txt mgL="10px">Profile Info</Txt>
-            </MenuItem>
-          </Link>
-          <Link href="/user/user-1/company">
-            <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center">
-              <Txt mgL="10px">Company</Txt>
-            </MenuItem>
-          </Link>
-          <MenuItem pad={'10px 0'} w="100%" just="flex-start" align="center"
-            onClick={signOut}
-          >
-            <Txt mgL="10px">LogOut</Txt>
-          </MenuItem>
-        </ProfileBox>
-
-        <Div className="JamsList" col back="blue" h="100%" w="100%">
-          <JamsList/>
-        </Div>
-
+        {leftMenu}
       </Div>
 
       <Div className="AppBody" col back="lightblue" flexG='3'>

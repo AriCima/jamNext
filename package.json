@@ -6,7 +6,7 @@
     "build": "next build",
     "cypress:headless": "cypress run --browser chrome --headless",
     "cypress": "cypress open",
-    "dev": "next dev",
+    "dev": "next",
     "enzyme-adapter-react-16": "1.11.2",
     "enzyme": "3.9.0",
     "jest": "24.6.0",

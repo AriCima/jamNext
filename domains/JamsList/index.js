@@ -43,6 +43,7 @@ const JamsList = () => {
   const { jamId } = router.query;
 
   useEffect(() => {
+    console.log('jamId: ', jamId);
     jamId && setCurrentJamId(jamId)
   }, [jamId])
 
@@ -52,10 +53,10 @@ const JamsList = () => {
       const {jamName, jamDesc, jamId} = jam;
       const active = jam.jamId === currentJamId;
       return (
-        <Link  key={jamId} href="/jam/[jamId]" as={`/jam/${jamId}`}>
+        <Link key={jamId} href="/jam/[jamId]" as={`/jam/${jamId}`} passHref>
           <JamCover active={active}>
-            <span>{jamName}</span>
-            <span>{jamDesc}</span>
+              <span>{jamName}</span>
+              <span>{jamDesc}</span>
           </JamCover>
         </Link>
       )
