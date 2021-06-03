@@ -65,13 +65,10 @@ const getJamAdminSections = (type) => {
         default:
           //console.log('no reconoce tipo')
     }
-
-   console.log('sections: ', sections);
    return sections;
 };
 
 const getJamGuestSections = (type) => {
-    //console.log('get Jam Sections launched')
     let sections = [];
     switch (type) {
         case 'accommodation':

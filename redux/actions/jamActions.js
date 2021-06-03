@@ -5,4 +5,11 @@ function setJamInfo(jamInfo) {
     };
 }
 
-export { setJamInfo };
+function setActiveSection(section) {
+    return {
+        type: 'ACTIVE_SECTION',
+        payload: section
+    };
+}
+
+export { setJamInfo, setActiveSection };

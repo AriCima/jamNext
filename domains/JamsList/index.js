@@ -20,7 +20,6 @@ const JamsList = () => {
   }, [jamId])
 
   const renderJams = () => {
-    console.log('launched')
     return userJams.map((jam, j) => {
       const {jamName, jamDesc, jamId} = jam;
       const active = jam.jamId === currentJamId;

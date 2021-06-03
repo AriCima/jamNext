@@ -4,7 +4,7 @@ import LoginForm from '../LoginForm';
 import RegisterForm from '../RegisterForm';
 
 import styled from 'styled-components';
-import { NavBar, Txt, Div, SubTitle  } from '../../styledComps';
+import { Txt, Div, SubTitle  } from '../../styledComps';
 
 
 const Span = styled.span`
@@ -21,7 +21,7 @@ const NavBarApp = ({w}) => {
     const [isLogin, setIsLogin] = useState(true);
 
     return(
-        <NavBar pos="fixed" w={w} just="flex-start" border="lightgray">
+        <Div pos="fixed" w={w} h="60px" just="space-between" align="center" border="lightgray">
             <Txt>Welcome to Jammint</Txt>
             <Div h="100%" just="flex-end">
                 <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
@@ -58,7 +58,7 @@ const NavBarApp = ({w}) => {
                 </Div>
             </Modal>
             
-        </NavBar>
+        </Div>
     )
 }
 

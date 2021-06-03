@@ -1,7 +1,8 @@
 import { setUserInfo} from './userActions'
-import { setJamInfo } from './jamActions'
+import { setJamInfo, setActiveSection } from './jamActions'
 
 export {
     setJamInfo,
-    setUserInfo
+    setUserInfo,
+    setActiveSection,
 }
