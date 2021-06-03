@@ -33,7 +33,7 @@ const ModalBody = styled.div`
 const Modal = ({children, showModal, closeModal}) => {
     const ref = useRef(null);
 
-    const clickOnmodalWrapper = (event) => {
+    const clickOnModalWrapper = (event) => {
       if (!ref.current || ref.current.contains(event.target)) {
         return;
       }
@@ -45,7 +45,7 @@ const Modal = ({children, showModal, closeModal}) => {
     return (
         
         <ModalWrapper
-            onClick={clickOnmodalWrapper}
+            onClick={clickOnModalWrapper}
         >
             <ModalBody
                 ref={ref}

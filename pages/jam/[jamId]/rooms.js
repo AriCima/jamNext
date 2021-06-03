@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setJamInfo } from '../../../redux/actions';
 
-import { Div , Txt} from "../../../styledComps";
 import Layout from '../../../domains/Layout';
+import { Div, Txt, SubTitle} from "../../../styledComps";
 import NavBarJam  from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 
 
-const JamsId = () => {
+const Rooms = () => {
     const dispatch = useDispatch()
     const router = useRouter();
     const { jamId } = router.query;
+    const { jamName } = useSelector(state => state.jamReducer);
 
     const getJamInfo = async (jamId) => {
         const res = await DataService.getJamInfoById(jamId);
@@ -26,13 +27,13 @@ const JamsId = () => {
     return (
         <Layout>
             <NavBarJam />
-            <Div pad="50px" back="orange">
-                <Txt>NO SECTION CHOSEN</Txt>
+            <Div col pad="50px" back="orange">
+                <SubTitle>Rooms</SubTitle>
+                <Txt>JamName: {jamName}</Txt>
+                <Txt>JamId: {jamId}</Txt>
             </Div>
         </Layout>
     );
-}
+};
 
-
-export default JamsId;
-
+export default Rooms;

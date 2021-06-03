@@ -5,10 +5,8 @@ import { useForm } from "react-hook-form";
 import DataService from '../../services/DataService';
 import Calculations from "../../services/Calculations";
 
-import { Div, SubTitle, InputSubmit } from '../../styledComps';
+import { Div, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
-import FormSelect from '../../components/FormSelect';
-
 
 const formStyle = {
     display: 'flex',
@@ -16,7 +14,7 @@ const formStyle = {
     justifyContent: 'center'
 };
 
-const JoinForm = ({userId}) => {
+const JoinForm = () => {
     const [typeOfJam, setJamType] = useState('');
     // const [nrOfRooms, setNrOfRooms] = useState(0)
     
@@ -72,7 +70,6 @@ const JoinForm = ({userId}) => {
 
     };
     
-
 
     return (
         <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(joinJam)}>

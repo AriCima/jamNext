@@ -2,35 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/Link';
 import { useSelector } from 'react-redux';
 
-import styled from 'styled-components';
-import { Div, NavBar, Txt  } from '../../styledComps';
-
+import { Div, JamNavBarItem  } from '../../styledComps';
 import Calculations from '../../services/Calculations';
 
-const NavBarItem = styled.a`
-    role: button;
-    height: 100%;
-    padding: 5px 10px;
-    margin: 0 20px;
-    color: green;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid gray;
-    &:hover{
-      background-color: rgb(85, 187, 151);
-      p{
-         color: white;
-      }
-    }
-    transition: 0.3s;
-    &:hover{
-        background-color: rgb(226,226,226);
-        cursor: pointer;
-    }
-
-}`;
 
 const NavBarJam = () => {
     const [jamSections, setJamSections] = useState([]);
@@ -49,9 +23,10 @@ const NavBarJam = () => {
 
     const renderJamSections = () => {
         return jamSections.map((section, key) => {
+            const sec = section.toLowerCase();
             return(
-                <Link href={`/jam/${jamId}/`} key={key}>
-                    <NavBarItem>{section}</NavBarItem>
+                <Link href={`/jam/${jamId}/${sec}`} key={key}>
+                    <JamNavBarItem className="navBarItem">{section}</JamNavBarItem>
                 </Link>
             )
         })
@@ -59,14 +34,9 @@ const NavBarJam = () => {
 
     const sectionsLoaded = jamSections.length !== 0;
     return(
-        <NavBar className="Jam-NavBar">
-            <Div w="20%" just="flex-start">
-                <Txt>{jamName}</Txt>
-            </Div>
-            <Div className="jam-sections" w="80%" just="space-around" align="center">
+            <Div className="navBar Jams" w="100%" h="60px" just="space-around" align="center">
                 {sectionsLoaded && renderJamSections()}
             </Div>
-        </NavBar>
     )
 }
 

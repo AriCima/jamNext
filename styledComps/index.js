@@ -11,9 +11,11 @@ import Input from './input';
 import InputSubmit from './inputSubmit';
 import Select from './select';
 import JamCard from './jamCard';
+import JamCover from './jamCover';
+import JamNavBarItem from './JamNavBarItem';
 import Label from './label';
 import Main from './main';
-import NavBar from './navBar';
+import NavBarIcon from './navBarIcon';
 import ProfileBox from './profileBox';
 import SmallTxt from './smallTxt';
 import SubTitle from './subTitle';
@@ -34,10 +36,12 @@ export {
   Input,
   InputSubmit,
   JamCard,
+  JamCover,
+  JamNavBarItem,
   Label,
   Main,
   MenuItem,
-  NavBar,
+  NavBarIcon,
   ProfileBox,
   Select,
   SmallTxt,
