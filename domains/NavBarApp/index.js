@@ -24,7 +24,7 @@ const NavBarApp = ({w}) => {
         <Div pos="fixed" w={w} h="60px" just="space-between" align="center" border="lightgray">
             <Txt>Welcome to Jammint</Txt>
             <Div h="100%" just="flex-end">
-                <Div mgL="10px" w="80px" h="100%" back="green" just="center" align="center"
+                <Div mgL="10px" w="80px" h="100%" just="center" align="center"
                     onClick={() => {
                         setShowModal(true);
                         setIsLogin(true);

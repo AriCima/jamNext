@@ -28,8 +28,7 @@ const NavBarJam = () => {
             const sec = section.toLowerCase();
             const active = activeSection === sec;
             return(
-                <Link
-                    href={`/jam/${jamId}/${sec}`} key={key} passHref>
+                <Link href={`/jam/${jamId}/${sec}`} key={key} passHref>
                     <JamNavBarItem active onClick={(sec) => dispatch(setActiveSection(sec))} back="red" back="red">{section}</JamNavBarItem>
                 </Link>
             )
@@ -38,7 +37,7 @@ const NavBarJam = () => {
 
     const sectionsLoaded = jamSections.length !== 0;
     return(
-            <Div className="navBar Jams" back="green" w="100%" h="60px" just="space-around" align="center">
+            <Div className="navBar Jams" w="100%" h="60px" just="space-around" align="center">
                 {sectionsLoaded && renderJamSections()}
             </Div>
     )

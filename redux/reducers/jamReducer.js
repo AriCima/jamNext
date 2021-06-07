@@ -9,7 +9,6 @@ const defaultState = {
 }; 
 
 function setJamReducer(state = defaultState, action) {
-    console.log('tyle = ', action.type);
     switch(action.type){
         case 'JAM_INFO':
             return {

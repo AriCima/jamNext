@@ -12,7 +12,7 @@ const LeftMenu = ({openModal, showCreate}) => {
         setShowProfile(!showProfile);
     };
     return (
-        <Div className="LeftMenu" col >
+        <Div className="LeftMenu" col flexG="0.2">
             <LeftNavBar openModal={openModal} showCreate={showCreate}/>
             {showProfile && <ProfileMenu showProfileMenu={showProfileMenu}/>}
             <JamsList/>
