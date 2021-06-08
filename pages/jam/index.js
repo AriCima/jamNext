@@ -5,8 +5,6 @@ import { Div } from "../../styledComps";
 import Layout from '../../domains/Layout';
 import NavBarJam from '../../domains/NavBarJam';
 
-
-
 const Jams = () => {
     const { userJams } = useSelector(state => state.userReducer);
     const renderJamsList = userJams.length > 0;

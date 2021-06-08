@@ -12,7 +12,7 @@ import InputSubmit from './inputSubmit';
 import Select from './select';
 import JamCard from './jamCard';
 import JamCover from './jamCover';
-import JamNavBarItem from './JamNavBarItem';
+import JamNavBarItem from './jamNavBarItem';
 import Label from './label';
 import Main from './main';
 import NavBarIcon from './navBarIcon';

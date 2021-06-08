@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import LeftMenu from '../LeftMenu';
 import Modal from '../../components/Modal';
@@ -7,13 +7,13 @@ import CreateForm from '../CreateForm';
 import JoinForm from '../JoinForm';
 import { Div, SubTitle, AppWrapper } from '../../styledComps';
 
-const Layout = ({ children, leftMenu }) => {
+const Layout = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [showCreate, setShowCreate] = useState(true);
 
   return (
     <AppWrapper>
-      <LeftMenu openModal={() => setShowModal(true)} showCreate={(x) => setShowCreate(x)}/>
+      <LeftMenu openModal={() => setShowModal(true)} showCreate={(x) => setShowCreate(x)} />
 
       <Div className="AppBody" col back="lightblue" flexG="3">
         {children}

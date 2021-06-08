@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Link from 'next/Link';
+import Link from 'next/link';
 import { resetUserInfo } from '../../redux/actions/userActions';
 import { Div, Txt, ProfileBox, MenuItem } from "../../styledComps";
 
