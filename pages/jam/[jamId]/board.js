@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import FormInput from '../../../components/FormInput';
 
 import Layout from '../../../domains/Layout';
 import BoardContent from '../../../domains/BoardContent';
@@ -47,7 +48,7 @@ const Board = () => {
     />
   ));
 
-  const showSenMessageForm = userRole === 'admin';
+  const showMessageForm = userRole === 'admin';
 
   const onSubmit = (data) => {
     const date = new Date();
@@ -67,16 +68,28 @@ const Board = () => {
   return (
     <Layout>
       <NavBarJam />
-      {renderBoardContent()}
-      {showSenMessageForm
+      <Div col w="90%" just="flex-start" align="center">
+        {renderBoardContent()}
+        {showMessageForm
                 && (
-                <div className="landlord-board-form">
+                <Div className="landlord-board-form" w="90%">
                   <form
                     autoComplete="off"
                     className="board-form"
                     onSubmit={handleSubmit(onSubmit)}
                     id="board-message-form"
                   >
+                    <FormInput
+                      w="70%"
+                      type="text"
+                      placeholder="Subject"
+                      name="messageTitle"
+                      mgR="20px"
+                      error={errors.messageTitle}
+                      errorMessage="A title is mandatory"
+                      register={register}
+                      registerObject={{ required: true }}
+                    />
                     <textarea
                       rows="1"
                       name="message"
@@ -88,8 +101,9 @@ const Board = () => {
                       <button type="submit">Send</button>
                     </div>
                   </form>
-                </div>
+                </Div>
                 )}
+      </Div>
     </Layout>
   );
 };

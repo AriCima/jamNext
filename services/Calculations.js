@@ -1,3 +1,5 @@
+import { format } from 'date-fns/';
+
 const generateJamCode = () => {
   // type: 4aG-89n --> 14.776.336 combinations
 
@@ -365,15 +367,20 @@ const getSelectOptions = (listType) => {
 };
 
 const getMessageDate = (timestamp) => {
-  const currentDate = moment(new Date()).format('DD/MM/YYYY');
-  const messageDate = moment(timestamp.toDate()).format('DD/MM/YYYY');
+  const date = timestamp.toDate();
+  const currentDate = format(new Date(), 'iii - dd/MMM/yyyy');
+  const messageDate = format(date, 'iii') + format(date, 'dd/MMM/yyyy');
+  console.log('currentDate: ', currentDate);
+  console.log('messageDate: ', messageDate);
   let messageTime = '';
 
   if (messageDate === currentDate) {
-    messageTime = `today at ${moment(timestamp.toDate()).format('h:mm')}`;
+    messageTime = `today at ${format(date, 'h:mm')}`;
   } else {
-    messageTime = moment(timestamp.toDate()).format('DD/MM');
+    messageTime = format(date, 'dd/MMM');
+    console.log('messageTime 2: ', messageTime);
   }
+  console.log('messageTime: ', messageTime);
   return messageTime;
 };
 

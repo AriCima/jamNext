@@ -1,146 +1,144 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import DataService from '../../services/DataService';
-import Calculations from "../../services/Calculations";
+import Calculations from '../../services/Calculations';
 
 import { Div, SubTitle, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
 
-
 const formStyle = {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'center'
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'center',
 };
 
-const CreateForm = ({showModal}) => {
-    const [typeOfJam, setJamType] = useState('');
-    const [roomsNr, setRoomsNr] = useState(0)
+const CreateForm = ({ showModal }) => {
+  const [typeOfJam, setJamType] = useState('');
+  const [roomsNr, setRoomsNr] = useState(0);
 
-    const { userId } = useSelector(state => state.userReducer);
-    console.log('userId: ', userId);
-    
-    const { register, errors, handleSubmit } = useForm();
-    const router = useRouter()
-    
-    const createNewJam = (data) => {
-        const { jamName, jamDesc, jamType } = data;
-        
-        const jamCode = Calculations.generateJamCode();
-        const createdAt = new Date();
-        const updatedAt = '';
-        let jamRules = {};
-        let contractInfo = {};
-        let jamDetails = {};
+  const { userId, firstName } = useSelector((state) => state.userReducer);
 
-        if (jamType === 'rooms-rental') {
+  const { register, errors, handleSubmit } = useForm();
+  const router = useRouter();
 
-            jamRules = Calculations.getJamRules(jamType);
+  const createNewJam = (data) => {
+    const { jamName, jamDesc, jamType } = data;
 
-            contractInfo = {
-                landlordInfo: {},
-                apartmentInfo: {}
-            };
+    const jamCode = Calculations.generateJamCode();
+    const createdAt = new Date();
+    const updatedAt = '';
+    let jamRules = {};
+    let contractInfo = {};
+    let jamDetails = {};
 
-            jamDetails = {rooms: parseInt(roomsNr, 10), jamRules, contractInfo}
-        };
-        
-        const newJamInfo = {
-            adminId: userId,
-            jamCode,
-            jamName,
-            jamDesc,
-            jamType,
-            jamDetails,
-            createdAt,
-            updatedAt,
-            lastActivity: createdAt
-        };
+    if (jamType === 'rooms-rental') {
+      jamRules = Calculations.getJamRules(jamType);
 
-        DataService.createJam(newJamInfo)
-        .then(res => {
-            console.log('res', res);
-            const jamId = res.id;
-            showModal(false)
-            router.push(`/jam/${jamId}`)
+      contractInfo = {
+        landlordInfo: {},
+        apartmentInfo: {},
+      };
 
-            const jamSummary = {adminId: userId, createdAt}
-            DataService.addJamToUser(userId, jamId, jamSummary)
-        })
+      jamDetails = { rooms: [], jamRules, contractInfo };
+    }
+
+    const newJamInfo = {
+      adminId: userId,
+      jamCode,
+      jamName,
+      jamDesc,
+      jamType,
+      jamDetails,
+      createdAt,
+      updatedAt,
+      jamUsers: [],
+      lastActivity: createdAt,
     };
 
-    const nrOfRooms = Calculations.getSelectOptions('nrOfRooms');
-    const typeOfJams = Calculations.getSelectOptions('jamTypes');
+    DataService.createJam(newJamInfo)
+      .then((res) => {
+        const jamId = res.id;
+        showModal(false);
+        router.push(`/jam/${jamId}`);
 
-    return (
-        <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(createNewJam)}>
-            <Div w="100%" col just="center" align="flex-start">
-                <SubTitle>Jam Info</SubTitle>
-                <FormInput
-                    w="70%"
-                    label="Jam Name"
-                    type='text'
-                    name="jamName"
-                    mgR="20px"
-                    error={errors.jamName}
-                    errorMessage="Jam Name is mandatory"
-                    register={register}
-                    registerObject={{required: true}}
-                />
+        const jamSummary = { adminId: userId, adminName: firstName, createdAt };
+        DataService.addJamToUser(userId, jamId, jamSummary);
+      });
+  };
 
-                <FormInput
-                    w="100%"
-                    label="Desription"
-                    type='text'
-                    name="jamDesc"
-                    error={errors.jamDesc}
-                    errorMessage="A brief description is mandatory"
-                    register={register}
-                    registerObject={{required: true}}
-                />
+  const nrOfRooms = Calculations.getSelectOptions('nrOfRooms');
+  const typeOfJams = Calculations.getSelectOptions('jamTypes');
 
-                <FormSelect
-                    w="50%"
-                    label="Jam type"
-                    name="jamType"
-                    type='text'
-                    error={errors.jamType}
-                    errorMessage="Please select a jam type"
-                    register={register}
-                    registerObject={{required: true}}
-                    onChange={e => setJamType(e.target.value)}
-                    reportValue={val => setJamType(val)}
-                    options={typeOfJams}
-                />
+  return (
+    <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(createNewJam)}>
+      <Div w="100%" col just="center" align="flex-start">
+        <SubTitle>Jam Info</SubTitle>
+        <FormInput
+          w="70%"
+          label="Jam Name"
+          type="text"
+          name="jamName"
+          mgR="20px"
+          error={errors.jamName}
+          errorMessage="Jam Name is mandatory"
+          register={register}
+          registerObject={{ required: true }}
+        />
 
-                {typeOfJam === 'rooms-rental' && 
+        <FormInput
+          w="100%"
+          label="Desription"
+          type="text"
+          name="jamDesc"
+          error={errors.jamDesc}
+          errorMessage="A brief description is mandatory"
+          register={register}
+          registerObject={{ required: true }}
+        />
+
+        <FormSelect
+          w="50%"
+          label="Jam type"
+          name="jamType"
+          type="text"
+          error={errors.jamType}
+          errorMessage="Please select a jam type"
+          register={register}
+          registerObject={{ required: true }}
+          onChange={(e) => setJamType(e.target.value)}
+          reportValue={(val) => setJamType(val)}
+          options={typeOfJams}
+        />
+
+        {typeOfJam === 'rooms-rental'
+                    && (
                     <FormSelect
-                        w="50%"
-                        label="Nr. of Rooms"
-                        name="nrOfRooms"
-                        type='text'
-                        error={errors.nrOfRooms}
-                        errorMessage="Please select the nr of Rrooms"
-                        register={register}
-                        registerObject={{required: true}}
-                        options={nrOfRooms}
-                        reportValue={val => setRoomsNr(val)}
+                      w="50%"
+                      label="Nr. of Rooms"
+                      name="nrOfRooms"
+                      type="text"
+                      error={errors.nrOfRooms}
+                      errorMessage="Please select the nr of Rrooms"
+                      register={register}
+                      registerObject={{ required: true }}
+                      options={nrOfRooms}
+                      reportValue={(val) => setRoomsNr(val)}
                     />
-                }
+                    )}
 
-                <InputSubmit
-                    w="100%"
-                    back='rgb(85, 187, 151)'
-                    type="submit"
-                    value="submit"
-                />
-            </Div>
-        </form>
-    );
+        <InputSubmit
+          w="100%"
+          back="rgb(85, 187, 151)"
+          type="submit"
+          value="submit"
+        />
+      </Div>
+    </form>
+  );
 };
 
 export default CreateForm;

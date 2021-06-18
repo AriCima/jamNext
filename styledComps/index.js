@@ -15,6 +15,7 @@ import JamCover from './jamCover';
 import JamNavBarItem from './jamNavBarItem';
 import Label from './label';
 import Main from './main';
+import MessageContainer from './messageContainer';
 import NavBarIcon from './navBarIcon';
 import ProfileBox from './profileBox';
 import SmallTxt from './smallTxt';
@@ -40,6 +41,7 @@ export {
   JamNavBarItem,
   Label,
   Main,
+  MessageContainer,
   MenuItem,
   NavBarIcon,
   ProfileBox,

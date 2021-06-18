@@ -1,49 +1,53 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Calculations from '../../services/Calculations';
+
+import { Div, Txt, MessageContainer } from '../../styledComps';
 
 const BoardContent = ({ boardContent }) => {
   const messageTime = Calculations.getMessageDate(boardContent.createdAt);
+  const { adminName } = useSelector((state) => state.jamReducer);
 
   const renderMessage = (messageType) => {
     switch (messageType) {
       case 'publi':
         return (
-          <div className="board-publi-item">
+          <MessageContainer>
             <div className="publi-img" />
             <div className="publi-info">
               <div className="publi-title" />
               <div className="publi-text" />
               <div className="publi-time" />
             </div>
-          </div>
+          </MessageContainer>
         );
       default:
         return (
-          <div className="board-message-item">
-            <div className="board-message">
-              <p>{boardContent.messageText}</p>
-            </div>
-            <div className="board-message-info">
-              <div className="board-message-time">
-                <p>
-                  {boardContent.adminName}
-                  {' '}
-                  -
-                  {' '}
-                  {messageTime}
-                </p>
-              </div>
-            </div>
-          </div>
+          <MessageContainer>
+            <Div className="board-title" w="100%" just="flex-start" align="center">
+              <Txt bold fSize="16px" mgL="5px">{boardContent.title}</Txt>
+            </Div>
+            <Div className="board-message" just="flex-start" align="center" mg="10px 10px 16px 20px">
+              <Txt fSize="14px" mgL="10px">{boardContent.desc}</Txt>
+            </Div>
+            <Div className="message-info" w="100%" just="flex-start" align="center">
+              <Txt>
+                {adminName}
+                {' '}
+                -
+                {' '}
+                {messageTime}
+              </Txt>
+            </Div>
+          </MessageContainer>
         );
-                // console.log('no navbar item matched')
     }
   };
 
   return (
-    <>
+    <Div col w="90%" borderR="5px">
       {renderMessage(boardContent.messageType)}
-    </>
+    </Div>
   );
 };
 export default BoardContent;
