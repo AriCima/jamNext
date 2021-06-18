@@ -1,8 +1,9 @@
-import { setUserInfo} from './userActions'
-import { setJamInfo, setActiveSection } from './jamActions'
+import { setUserInfo, setUserRole } from './userActions';
+import { setJamInfo, setActiveSection } from './jamActions';
 
 export {
-    setJamInfo,
-    setUserInfo,
-    setActiveSection,
-}
+  setJamInfo,
+  setUserInfo,
+  setActiveSection,
+  setUserRole,
+};

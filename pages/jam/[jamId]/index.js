@@ -1,38 +1,16 @@
-import React, { useEffect } from "react";
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { setJamInfo } from '../../../redux/actions';
+import React from 'react';
 
-import { Div , Txt} from "../../../styledComps";
+import { Div, Txt } from '../../../styledComps';
 import Layout from '../../../domains/Layout';
-import NavBarJam  from '../../../domains/NavBarJam';
-import DataService from '../../../services/DataService';
+import NavBarJam from '../../../domains/NavBarJam';
 
-
-const JamsId = () => {
-    const dispatch = useDispatch()
-    const router = useRouter();
-    const { jamId } = router.query;
-
-    const getJamInfo = async (jamId) => {
-        const res = await DataService.getJamInfoById(jamId);
-        dispatch(setJamInfo(res));
-    };
-
-    useEffect(() => {
-        jamId && getJamInfo(jamId);
-    }, [jamId]);
-
-    return (
-        <Layout>
-            <NavBarJam />
-            <Div pad="50px" back="orange">
-                <Txt>NO SECTION CHOSEN</Txt>
-            </Div>
-        </Layout>
-    );
-}
-
+const JamsId = () => (
+  <Layout>
+    <NavBarJam />
+    <Div pad="50px" back="orange">
+      <Txt>NO SECTION CHOSEN</Txt>
+    </Div>
+  </Layout>
+);
 
 export default JamsId;
-
