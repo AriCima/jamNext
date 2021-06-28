@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useCallback,
+} from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -10,6 +12,13 @@ import { Div } from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 
+const RenderBoardContent = ({ boardInfo }) => boardInfo.map((bC, i) => (
+  <BoardContent
+    key={i}
+    boardContent={bC}
+  />
+));
+
 const Board = () => {
   const [boardInfo, setBoardInfo] = useState([]);
   const { userId, userRole } = useSelector((state) => state.userReducer);
@@ -18,36 +27,16 @@ const Board = () => {
   const router = useRouter();
   const { jamId } = router.query;
 
-  const getInfo = async () => {
-    const res = await DataService.getBoardInfo(jamId);
+  const getInfo = useCallback(async (id) => {
+    const res = await DataService.getBoardInfo(id);
     setBoardInfo(res);
-  };
+  }, [setBoardInfo]);
 
   useEffect(() => {
     jamId && getInfo(jamId);
-  }, [jamId]);
-
-  const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    // messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-  };
-
-  useEffect(() => {
-    if (boardInfo.length > 0) {
-      scrollToBottom();
-    }
-  }, [boardInfo]);
+  }, [jamId, getInfo]);
 
   const { register, errors, handleSubmit } = useForm();
-
-  const renderBoardContent = () => boardInfo.map((bC, i) => (
-    <BoardContent
-      key={i}
-      boardContent={bC}
-      ref={messagesEndRef}
-    />
-  ));
-
   const showMessageForm = userRole === 'admin';
 
   const onSubmit = (data) => {
@@ -57,11 +46,10 @@ const Board = () => {
       userId,
       adminName,
       jamId,
-      section: 'board',
       createdAt: date,
       messageType: 'message',
     };
-    DataService.saveBoardMessage(jamId, section, messageInfo);
+    DataService.saveBoardMessage(jamId, messageInfo);
     document.getElementById('board-message-form').reset();
   };
 
@@ -69,7 +57,7 @@ const Board = () => {
     <Layout>
       <NavBarJam />
       <Div col w="90%" just="flex-start" align="center">
-        {renderBoardContent()}
+        <RenderBoardContent boardInfo={boardInfo} />
         {showMessageForm
                 && (
                 <Div className="landlord-board-form" w="90%">
