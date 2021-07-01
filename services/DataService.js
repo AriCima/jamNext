@@ -180,6 +180,22 @@ const getSettingsInfo = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
+const saveBoardMessage = (jamId, messageInfo) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .doc(jamId)
+    .collection('board')
+    .add(messageInfo)
+    .then(
+      console.log('Message saved correctly'),
+    )
+
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log('Message could not be sent: ', errorCode);
+    });
+});
+
 const DataService = {
   addJamToUser,
   checkIfEmialExists,
@@ -189,6 +205,7 @@ const DataService = {
   getSettingsInfo,
   getUserInfo,
   getUserJams,
+  saveBoardMessage,
   saveUserInfoInFirestore,
   updateCompanyInfo,
 };
