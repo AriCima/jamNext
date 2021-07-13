@@ -140,28 +140,9 @@ const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
+// < - - - - - BOARD - - - - - > //
 const getBoardInfo = (jamId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams').doc(jamId).collection('board')
-    .get()
-    .then((querySnapshot) => {
-      const res = [];
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        const board = doc.data();
-        board.id = doc.id;
-        res.push(board);
-      });
-      resolve(res);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
-    });
-});
-
-const getSettingsInfo = (jamId) => new Promise((resolve, reject) => {
-  firebase.firestore().collection('jams').doc(jamId).collection('settings')
     .get()
     .then((querySnapshot) => {
       const res = [];
@@ -196,6 +177,25 @@ const saveBoardMessage = (jamId, messageInfo) => new Promise((resolve, reject) =
     });
 });
 
+const getSettingsInfo = (jamId) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams').doc(jamId).collection('settings')
+    .get()
+    .then((querySnapshot) => {
+      const res = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const board = doc.data();
+        board.id = doc.id;
+        res.push(board);
+      });
+      resolve(res);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
+    });
+});
 const DataService = {
   addJamToUser,
   checkIfEmialExists,
