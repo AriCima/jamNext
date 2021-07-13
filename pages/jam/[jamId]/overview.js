@@ -24,8 +24,8 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    jamId && getJamInfo(jamId);
-  }, [jamId]);
+    userId && jamId && getJamInfo(jamId);
+  }, [jamId, userId]);
 
   return (
     <Layout>

@@ -11,7 +11,7 @@ import { SubTitle, Txt, Div, Title, Footer, AppContainer } from '../styledComps'
 
 const Home = () => {
   const router = useRouter();
-  const { userId } = useSelector(state => state.userReducer)
+  const { userId } = useSelector(state => state.userReducer);
 
   useEffect(() => {
     userId && router.push('/jam');

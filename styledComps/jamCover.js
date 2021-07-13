@@ -6,20 +6,19 @@ const JamCover = styled.a`
     height: 60px;
     padding: 5px 10px;
     margin: 0;
-    color: ${({active}) => active ? "white" : 'black'};
-    background-color: ${({active}) => active ? "rgba(85, 187, 151, 1)" : 'rgb(255, 255, 255)'};
+    background-color: ${({selected}) => selected ? "rgba(85, 187, 151, 1)" : 'rgb(255, 255, 255)'};
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     border: 1px solid gray;
     span{
-      color: black;
+      color: ${({selected}) => selected ? "white" : 'black'};
       margin-left: 10px;
     }
     &:hover{
-      background-color: ${({active}) => active ? "rgba(85, 187, 151, 1)" : 'rgb(85, 187, 151)'};
-      cursor: ${({active}) => active ? ")" : 'pointer'};
+      background-color: ${({selected}) => selected ? "rgba(85, 187, 151, 1)" : 'rgb(85, 187, 151)'};
+      cursor: ${({selected}) => selected ? "text" : 'pointer'};
       span{
          color: white;
       }
@@ -28,4 +27,4 @@ const JamCover = styled.a`
 
 }`;
 
-export default JamCover
+export default JamCover;
