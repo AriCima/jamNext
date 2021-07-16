@@ -5,6 +5,13 @@ function setJamInfo(jamInfo) {
   };
 }
 
+function setEditedJammers(jammers) {
+  return {
+    type: 'EDITED_JAMMERS',
+    payload: jammers,
+  };
+}
+
 function setActiveSection(section) {
   return {
     type: 'ACTIVE_SECTION',
@@ -12,4 +19,4 @@ function setActiveSection(section) {
   };
 }
 
-export { setJamInfo, setActiveSection };
+export { setJamInfo, setActiveSection, setEditedJammers };

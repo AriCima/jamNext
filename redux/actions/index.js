@@ -1,9 +1,10 @@
 import { setUserInfo, setUserRole } from './userActions';
-import { setJamInfo, setActiveSection } from './jamActions';
+import { setJamInfo, setActiveSection, setEditedJammers } from './jamActions';
 
 export {
+  setActiveSection,
+  setEditedJammers,
   setJamInfo,
   setUserInfo,
-  setActiveSection,
   setUserRole,
 };

@@ -6,6 +6,7 @@ const defaultState = {
   jamId: '',
   jamName: '',
   activeSection: 'overview',
+  editedJammers: {},
 };
 
 function setJamReducer(state = defaultState, action) {
@@ -19,6 +20,11 @@ function setJamReducer(state = defaultState, action) {
       return {
         ...state,
         activeSection: action.payload,
+      };
+    case 'EDITED_JAMMERS':
+      return {
+        ...state,
+        editedJammers: action.payload,
       };
     default:
       return state;
