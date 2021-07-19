@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
@@ -7,7 +7,9 @@ import moment from 'moment';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactSelect from 'react-select';
+import isAfter from 'date-fns/isAfter';
 
+import { isBefore } from 'date-fns';
 import { Div, SubTitle, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
@@ -16,7 +18,7 @@ import DataService from '../../services/DataService';
 import Calculations from '../../services/Calculations';
 
 const useInviteJammerForm = ({
-  jamId, jamName, adminName, jammers, rooms, jamDetails,
+  jamId, jamName, adminName, jammers, rooms, jamDetails, roomNr = '',
 }) => {
   // const [ organizedJammers, setOrganizedJammers ] = useState([]);
   // const [ showModal, setShowModal ] = useState(false);
@@ -34,7 +36,6 @@ const useInviteJammerForm = ({
   const [second, setShowSecond] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [third, setShowThird] = useState(false);
-  const [options, setOptions] = useState([]);
 
   const [defaultValues, setDefaultValues] = useState({
     checkIn,
@@ -43,6 +44,7 @@ const useInviteJammerForm = ({
     nrOfTenants: 1,
     rent: '',
     contractMode: jamDetails.contractMode,
+    roomNr,
   });
 
   const {
@@ -93,28 +95,30 @@ const useInviteJammerForm = ({
 
   const onSubmit = (data) => {
     setShowErrorMessage(false);
-    const cIn = checkIn;
-    const cOut = checkOut;
+    const cIn = new Date(checkIn);
+    const cOut = new Date(checkOut);
 
-    const outLater = moment(cOut).isAfter(cIn);
-    // if (!outLater) {
-    //     setErrorMessage('Check-out date must be greater than check-In date');
-    //     return;
-    // } else {
-    //     const roomJammers = jammers.filter(e => e.roomNr === data.roomNr);
+    const outLater = isAfter(cOut, cIn);
+    if (outLater) {
+      setErrorMessage('Check-out date must be greater than check-In date');
+      return;
+    }
+    const roomJammers = jammers.filter((e) => e.roomNr === data.roomNr);
 
-    //     for (let i = 0; i < roomJammers.length; i ++) {
-    //         const inIsBetween = moment(cIn).isBetween(roomJammers[i].checkIn, roomJammers[i].checkOut);
-    //         const outIsBetween = moment(cOut).isBetween(roomJammers[i].checkIn, roomJammers[i].checkOut);
-    //         if (inIsBetween || outIsBetween) {
-    //             const { firstName, lastName, roomNr, checkIn, checkOut } = roomJammers[i];
-    //             setErrorMessage('There is dates overlapping with');
-    //             setErrorDesc(`Tenant: ${firstName} ${lastName}, roomNr: ${roomNr}, check-In: ${checkIn}, check-out: ${checkOut}`);
-    //             setShowErrorMessage(true);
-    //             return;
-    //         }
-    //     }
-    // };
+    for (let i = 0; i < roomJammers.length; i++) {
+      const inIsBetween = isAfter(cIn, roomJammers[i].checkIn) && isBefore(cIn, roomJammers[i].checkOut);
+      const outIsBetween = isAfter(cOut, roomJammers[i].checkIn) && isBefore(cOut, roomJammers[i].checkOut);
+      const isOverlapping = inIsBetween || outIsBetween;
+      if (isOverlapping) {
+        const {
+          firstName, lastName, roomNr, checkIn, checkOut,
+        } = roomJammers[i];
+        setErrorMessage('There is dates overlapping with');
+        setErrorDesc(`Tenant: ${firstName} ${lastName}, roomNr: ${roomNr}, check-In: ${checkIn}, check-out: ${checkOut}`);
+        setShowErrorMessage(true);
+        return;
+      }
+    }
 
     const rentsArray = Calculations.getTenantPayments(data.rent, data.contractMode, cIn, cOut);
 
@@ -125,8 +129,6 @@ const useInviteJammerForm = ({
     data.contractCode = Calculations.generateCode();
     data.checkIn = moment(cIn).format('DD-MMM-YYYY');
     data.checkOut = moment(cOut).format('DD-MMM-YYYY');
-    data.roomNr = data.roomObj.label;
-    delete data.roomObj;
     console.log('data: ', data);
 
     setInvitationInfo(data);
@@ -145,22 +147,22 @@ const useInviteJammerForm = ({
 
     if (nrOfTenants === 2) {
       tenantsInfo.push({
-        firstName: data.secondFirstName,
-        lastName: data.secondLastName,
-        emial: data.secondEmail,
+        firstName: data.firstName2,
+        lastName: data.lastName2,
+        emial: data.email2,
       });
     }
 
     if (nrOfTenants === 3) {
       tenantsInfo.push({
-        firstName: data.secondFirstName,
-        lastName: data.secondLastName,
-        emial: data.secondEmail,
+        firstName: data.firstName2,
+        lastName: data.lastName2,
+        emial: data.email2,
       });
       tenantsInfo.push({
-        firstName: data.thirdFirstName,
-        lastName: data.thirdLastName,
-        email: data.thirdEmail,
+        firstName: data.firstName3,
+        lastName: data.lastName3,
+        email: data.email3,
       });
     }
 
@@ -171,14 +173,11 @@ const useInviteJammerForm = ({
           // eslint-disable-next-line max-len
           // CHAPUZA AQUI HAY QUE AUTOMATIZAR FUNCION DE INVITACION Y PASAR EL USER UN EMAIL CON EL LINK
           const registrationURL = `/register/${jamId}/${invId}`;
+          console.log('registrationURL: ', registrationURL);
           // eslint-disable-next-line max-len
           // history.push(`/register/${jamId}/${jamName}/${adminName}/${firstName}/${lastName}/${invId}`);
         });
     }
-  };
-
-  const takeMeToJammerInfo = () => {
-    console.log('HELLO WORLD');
   };
 
   const typeOfContracts = Calculations.getTypeOfContracts();
@@ -190,71 +189,33 @@ const useInviteJammerForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
 
-      <div className="form-section">
-        <div className="form-section-title">
-          <p>Contract Info</p>
-        </div>
-
-        { showErrorMessage && (
-        <div className="form-error-line">
-          <div className="form-error-message">
-            <h4>{errorMessage}</h4>
-          </div>
-          <div
-            className="form-error-desc"
-            onClick={(e) => {
-              e.preventDefault();
-              takeMeToJammerInfo(room.roomId);
-            }}
-          >
-            <p>{errorDesc}</p>
-          </div>
-        </div>
-
-        )}
-
-        <FormInput
-          w="70%"
-          label="Nr of tenants to include in the contact"
-          type="text"
-          name="nrOfTenants"
-          mgR="20px"
-          error={errors.nrOfTenants}
-          errorMessage="This is mandatory"
-          register={register}
-          registerObject={{ required: true }}
-          onChange={(e) => setNrOfTenants(e.target.value)}
-
-        />
-
-        <div className="form-line">
-
-          <div className="custom-input-block">
-            <div className="block-label">
-              <label>Room Nr</label>
-              {errors.roomNr && <div className="field-error">{`nr between 0 and ${rooms.length - 1}`}</div>}
-            </div>
-            <Controller
-              as={ReactSelect}
-              options={options}
-              defaultValue={options[0]}
-              name="roomObj"
-              isClearable
-              control={control}
-            />
-          </div>
-
-          <div className="rules-custom-input-block midWidth">
-            <div className="block-label">
-              <label>ContractMode</label>
-            </div>
-            <select className="input-styled" name="contractMode" ref={register}>
-              <option value="daily">daily</option>
-              <option value="fortnightly">fortnightly</option>
-              <option value="monhtly">monhtly</option>
-            </select>
-          </div>
-
+      <Div w="100%" col just="center" align="flex-start">
+        <SubTitle>Jam info</SubTitle>
+        <Div w="100%" col just="center" align="flex-start">
+          <FormInput
+            w="70%"
+            label="Nr of tenants to include in the contact"
+            type="text"
+            name="nrOfTenants"
+            mgR="20px"
+            error={errors.nrOfTenants}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+            onChange={(e) => setNrOfTenants(e.target.value)}
+          />
+          <FormSelect
+            w="50%"
+            label="Room Nr"
+            name="roomNr"
+            type="text"
+            error={errors.roomNr}
+            errorMessage="Room Nr is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+                    // reportValue={(val) => setContractMode(val)}
+            options={typeOfContracts}
+          />
           <FormSelect
             w="50%"
             label="Contract Mode"
@@ -264,10 +225,9 @@ const useInviteJammerForm = ({
             errorMessage="Please select the type of contract"
             register={register}
             registerObject={{ required: true }}
-            // reportValue={(val) => setContractMode(val)}
+                    // reportValue={(val) => setContractMode(val)}
             options={typeOfContracts}
           />
-
           <div className="custom-input-block midWidth">
             <div className="block-label ">
               <label>Check In</label>
@@ -286,7 +246,6 @@ const useInviteJammerForm = ({
               )}
             />
           </div>
-
           <div className="custom-input-block midWidth">
             <div className="block-label ">
               <label>Check Out</label>
@@ -305,193 +264,157 @@ const useInviteJammerForm = ({
               )}
             />
           </div>
+          <FormInput
+            w="70%"
+            label="Rent €/Mo"
+            type="text"
+            name="rent"
+            mgR="20px"
+            error={errors.rent}
+            errorMessage="Rent value is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Deposit €"
+            type="text"
+            name="deposit"
+            mgR="20px"
+            error={errors.deposit}
+            errorMessage="Deposit value mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+        </Div>
+        <SubTitle>Personal info</SubTitle>
+        <Div w="100%" just="center" align="flex-start">
+          <FormInput
+            w="70%"
+            label="First Name"
+            type="text"
+            name="firstName"
+            mgR="20px"
+            error={errors.firstName}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Last Name"
+            type="text"
+            name="lastName"
+            mgR="20px"
+            error={errors.lastName}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Email"
+            type="text"
+            name="email"
+            mgR="20px"
+            error={errors.email}
+            errorMessage="This is mandatory"
+            register={register({
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
+            registerObject={{ required: true }}
+          />
+        </Div>
+        { second && (
+        <Div w="100%" just="center" align="flex-start">
+          <SubTitle>Personal info 2nd tenant</SubTitle>
+          <FormInput
+            w="70%"
+            label="First Name"
+            type="text"
+            name="firstName2"
+            mgR="20px"
+            error={errors.firstName2}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Last Name"
+            type="text"
+            name="lastName2"
+            mgR="20px"
+            error={errors.lastName2}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Email"
+            type="text"
+            name="email2"
+            mgR="20px"
+            error={errors.email2}
+            errorMessage="This is mandatory"
+            register={register({
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
+            registerObject={{ required: true }}
+          />
+        </Div>
+        )}
+        {third && (
+        <Div w="100%" just="center" align="flex-start">
+          <SubTitle>Personal info 3rd tenant</SubTitle>
+          <FormInput
+            w="70%"
+            label="First Name"
+            type="text"
+            name="firstName3"
+            mgR="20px"
+            error={errors.firstName3}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Last Name"
+            type="text"
+            name="lastName3"
+            mgR="20px"
+            error={errors.lastName3}
+            errorMessage="This is mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput
+            w="70%"
+            label="Email"
+            type="text"
+            name="email3"
+            mgR="20px"
+            error={errors.email3}
+            errorMessage="This is mandatory"
+            register={register({
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
+            registerObject={{ required: true }}
+          />
+        </Div>
+        )}
+      </Div>
+      <InputSubmit
+        w="100%"
+        back="rgb(85, 187, 151)"
+        type="submit"
+        value="submit"
+      />
 
-          <div className="custom-input-block">
-            <div className="block-label">
-              <label>Rent €/Mo</label>
-              {errors.rent && <div className="field-error">Required</div>}
-            </div>
-            <input
-              name="rent"
-              defaultValue={defaultValues.rent}
-              ref={register({
-                required: true,
-              })}
-            />
-          </div>
-          <div className="custom-input-block">
-            <div className="block-label">
-              <label>Deposit €</label>
-              {errors.deposit && <div className="field-error">Required</div>}
-            </div>
-            <input
-              name="deposit"
-              ref={register({
-                required: true,
-              })}
-            />
-          </div>
-
-        </div>
-      </div>
-      <div className="form-section">
-        <div className="form-section-title">
-          <p>Personal information</p>
-        </div>
-
-        <div className="form-line">
-          <div className="custom-input-block">
-            <div className="block-label">
-              <label>First name</label>
-              {errors.firstName && <div className="field-error">Required</div>}
-            </div>
-            <input
-              name="firstName"
-              ref={register({
-                required: true,
-              })}
-            />
-          </div>
-          <div className="custom-input-block">
-            <div className="block-label">
-              <label>Last name</label>
-              {errors.lastName && <div className="field-error">Required</div>}
-            </div>
-            <input
-              name="lastName"
-              ref={register({
-                required: true,
-              })}
-            />
-          </div>
-          <div className="custom-input-block">
-            <div className="block-label">
-              <label>Email</label>
-              {errors.email && <div className="field-error">Non valid address</div>}
-            </div>
-            <input
-              name="email"
-              ref={register({
-                required: true,
-                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              })}
-            />
-          </div>
-        </div>
-
-      </div>
-      { second && (
-        <div className="form-section">
-          <div className="form-section-title">
-            <p>Personal information 2nd tenant</p>
-          </div>
-
-          <div className="form-line">
-            <div className="custom-input-block">
-              <div className="block-label">
-                <label>First name</label>
-                {errors.secondFirstName && <div className="field-error">Required</div>}
-              </div>
-              <input
-                name="secondFirstName"
-                ref={register({
-                  required: true,
-                })}
-              />
-            </div>
-            <div className="custom-input-block">
-              <div className="block-label">
-                <label>Last name</label>
-                {errors.secondLastName && <div className="field-error">Required</div>}
-              </div>
-              <input
-                name="secondLastName"
-                ref={register({
-                  required: true,
-                })}
-              />
-            </div>
-            <div className="custom-input-block">
-              <div className="block-label">
-                <label>Email</label>
-                {errors.secondEmail && <div className="field-error">Non valid address</div>}
-              </div>
-              <input
-                name="secondEmail"
-                ref={register({
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                })}
-              />
-            </div>
-          </div>
-
-        </div>
-      )}
-      { third && (
-        <div className="form-section">
-          <div className="form-section-title">
-            <p>Personal information 3rd tenant</p>
-          </div>
-
-          <div className="form-line">
-            <div className="custom-input-block">
-              <div className="block-label">
-                <label>First name</label>
-                {errors.thirdFirstName && <div className="field-error">Required</div>}
-              </div>
-              <input
-                name="thirdFirstName"
-                ref={register({
-                  required: true,
-                })}
-              />
-            </div>
-            <div className="custom-input-block">
-              <div className="block-label">
-                <label>Last name</label>
-                {errors.thirdLastName && <div className="field-error">Required</div>}
-              </div>
-              <input
-                name="thirdLastName"
-                ref={register({
-                  required: true,
-                })}
-              />
-            </div>
-            <div className="custom-input-block">
-              <div className="block-label">
-                <label>Email</label>
-                {errors.thirdEmail && <div className="field-error">Non valid address</div>}
-              </div>
-              <input
-                name="thirdEmail"
-                ref={register({
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                })}
-              />
-            </div>
-          </div>
-
-        </div>
-      )}
-
-      <div className="hook-form-buttonArea">
-        <input type="submit" />
-      </div>
     </form>
   );
 };
 
-const mapStateToProps = (state) => {
-  const { jamId } = state.nav;
-  const {
-    jamName, adminName, jammers, rooms, jamDetails,
-  } = state.jamInfo;
-  return {
-    jamId, jamName, adminName, jammers, rooms, jamDetails,
-  };
-};
-
-export default connect(mapStateToProps, null)(useInviteJammerForm);
+export default useInviteJammerForm;
