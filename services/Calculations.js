@@ -384,6 +384,75 @@ const getMessageDate = (timestamp) => {
   return messageTime;
 };
 
+const getTenantPayments = (rent, cMode, cIn, cOut) => {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const chIn = cIn;
+  const inYY = Number(chIn.getFullYear());
+  const inM = Number(chIn.getMonth()); // CheckIn Month in numbers
+  const inDays = moment(cIn).date();
+
+  const chOut = cOut;
+  const outYY = Number(chOut.getFullYear());
+  const outM = Number(chOut.getMonth()); // CheckOut Month in numbers
+  const outDays = moment(cOut).date();
+
+  let inRent = parseInt(rent);
+  let outRent = parseInt(rent);
+
+  switch (cMode) {
+    case 'daily':
+      inRent = (parseInt(rent) / 30) * (30 - inDays);
+      outRent = (parseInt(rent) / 30) * outDays;
+      break;
+    case 'fortnightly':
+      if (inDays > 15) {
+        inRent = parseInt(rent) / 2;
+      }
+      if (outDays <= 15) {
+        outRent = parseInt(rent) / 2;
+      }
+      break;
+    default:
+      break;
+  }
+
+  const rentsArray = [{
+    month: months[inM], rent: inRent, paidRent: 0, difOK: false,
+  }];
+
+  if (inYY === outYY) {
+    for (let s = inM + 1; s < outM; s++) {
+      const pay = {
+        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
+      };
+      rentsArray.push(pay);
+    }
+  } else {
+    for (let s = inM; s <= 11; s++) {
+      const pay = {
+        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
+      };
+      rentsArray.push(pay);
+    }
+
+    for (let s = 0; s < outM; s++) {
+      const pay = {
+        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
+      };
+      rentsArray.push(pay);
+    }
+  }
+
+  rentsArray.push({
+    month: months[outM], rent: outRent, paidRent: 0, difOK: false,
+  });
+
+  return rentsArray;
+};
+
+const getTypeOfContracts = () => ['daily', 'fortnightly', 'monthly'];
+
 const Calculations = {
   generateJamCode,
   getJamAdminSections,
@@ -391,6 +460,8 @@ const Calculations = {
   getJamRules,
   getMessageDate,
   getSelectOptions,
+  getTenantPayments,
+  getTypeOfContracts,
 };
 
 export default Calculations;

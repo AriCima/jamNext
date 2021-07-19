@@ -140,6 +140,25 @@ const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
+// < - - - - - INVITATIONS - - - - - > //
+
+const saveInvitation = (jamId, data) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .doc(jamId)
+    .collection('invitations')
+    .add(data)
+    .then((docRef) => {
+      const invitationId = docRef.id
+      console.log('Document written with ID: ', invitationId);
+      resolve(invitationId);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log('Invitation could not be saved: ', errorCode);
+    });
+});
+
 // < - - - - - BOARD - - - - - > //
 const getBoardInfo = (jamId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams').doc(jamId).collection('board')
@@ -206,6 +225,7 @@ const DataService = {
   getUserInfo,
   getUserJams,
   saveBoardMessage,
+  saveInvitation,
   saveUserInfoInFirestore,
   updateCompanyInfo,
 };
