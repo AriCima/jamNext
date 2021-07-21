@@ -384,22 +384,15 @@ const getMessageDate = (timestamp) => {
   return messageTime;
 };
 
-const sortByRoomNr = (rooms) => {
-  function compare(a, b) {
-    const varB = b.roomNr;
-    const varA = a.roomNr;
-
-    let comparison = 0;
-    if (varA < varB) {
-      comparison = -1;
-    } else if (varA > varB) {
-      comparison = 1;
-    }
-    return comparison;
+const sortByField = ({ elements, asc = true, field = 'roomNr' }) => elements.sort((a, b) => {
+  if (a[field] === b[field]) {
+    return 0;
   }
-
-  return rooms.sort(compare);
-};
+  if (a[field] < b[field]) {
+    return asc ? -1 : 1;
+  }
+  return asc ? 1 : -1;
+});
 
 const removeAmdinFromJammers = (tenants) => {
   const noAdmin = tenants.filter((obj) => obj.checkIn !== undefined);
@@ -464,7 +457,7 @@ const Calculations = {
   getSelectOptions,
   getTenantsByRooms,
   removeAmdinFromJammers,
-  sortByRoomNr,
+  sortByField,
 };
 
 export default Calculations;
