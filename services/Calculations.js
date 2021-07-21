@@ -453,15 +453,82 @@ const getTenantPayments = (rent, cMode, cIn, cOut) => {
 
 const getTypeOfContracts = () => ['daily', 'fortnightly', 'monthly'];
 
+const sortByField = ({ elements, asc = true, field = 'roomNr' }) => elements.sort((a, b) => {
+  if (a[field] === b[field]) {
+    return 0;
+  }
+  if (a[field] < b[field]) {
+    return asc ? -1 : 1;
+  }
+  return asc ? 1 : -1;
+});
+
+const removeAmdinFromJammers = (tenants) => {
+  const noAdmin = tenants.filter((obj) => obj.checkIn !== undefined);
+  return noAdmin;
+};
+
+const getTenantsByRooms = (tenants, nrOfRooms) => { // separa los tenants por habitaciones
+  const tenantsByRooms = {};
+
+  for (let i = 1; i <= nrOfRooms; i++) {
+    const roomNr = i.toString();
+    const tenantsInOneRoom = tenants.filter((e) => e.roomNr === roomNr);
+    tenantsByRooms[`${roomNr}`] = tenantsInOneRoom;
+  }
+  // FORNAT --> tenantsByRooms = {1:[{..}, {..}], 2:[{..} . . . {..}],  . . }
+  return tenantsByRooms;
+};
+
+const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inquilinos de cada room
+  const result = [];
+  const today = new Date();
+
+  for (let i = 1; i <= nrOfRooms; i++) {
+    const tenants = tenantsByRooms[i];
+    const tL = tenants.length;
+
+    const organizedTenants = {
+      currentTenant: [],
+      // nextTenant: {},
+      formerTenants: [],
+      futureTenants: [],
+    };
+
+    for (let j = 0; j < tL; j++) {
+      const tenant = tenants[j];
+
+      const cOut = new Date(tenant.checkOut);
+      const cIn = new Date(tenant.checkIn);
+
+      if (cIn < today && cOut > today) {
+        organizedTenants.currentTenant.push(tenant);
+      } else if (cIn < today && cOut < today) {
+        organizedTenants.formerTenants.push(tenant);
+      } else if (cIn > today) {
+        organizedTenants.futureTenants.push(tenant);
+      }
+    }
+
+    result.push(organizedTenants);
+  }
+  // FORNAT --> tenantsByRooms = {1:[{..}, {..}], 2:[{..} . . . {..}],  . . }
+  return result;
+};
+
 const Calculations = {
   generateJamCode,
   getJamAdminSections,
   getJamGuestSections,
   getJamRules,
   getMessageDate,
+  getOrganizedTenants,
   getSelectOptions,
   getTenantPayments,
   getTypeOfContracts,
+  getTenantsByRooms,
+  removeAmdinFromJammers,
+  sortByField,
 };
 
 export default Calculations;

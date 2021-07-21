@@ -159,6 +159,21 @@ const saveInvitation = (jamId, data) => new Promise((resolve, reject) => {
     });
 });
 
+// < - - - - - JOIN REQUESTS  - - - - - > //
+const saveJoinRequest = (jamId, jammer) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .doc(jamId)
+    .collection('joinRequests')
+    .add(jammer)
+    .then((doc) => {
+      console.log('doc del create: ', doc);
+    })
+    .catch((error) => {
+      console.error('Error creating Jam: ', error);
+    });
+});
+
 // < - - - - - BOARD - - - - - > //
 const getBoardInfo = (jamId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams').doc(jamId).collection('board')
@@ -215,17 +230,71 @@ const getSettingsInfo = (jamId) => new Promise((resolve, reject) => {
       console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
     });
 });
+
+// < - - - - - JAMMERS - - - - - > //
+
+const getJammers = (jamId) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('jammers')
+    .get()
+    .then((result) => {
+      const jammers = [];
+      result.docs.forEach((d) => {
+        const j = d.data();
+        j.userId = d.id;
+        jammers.push(j);
+      });
+      resolve(jammers);
+    })
+
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Error al cargar los Jammers: ', errorCode, errorMessage);
+    });
+});
+
+// < - - - - - ROOMS - - - - - > //
+
+const getJamRooms = (jamId) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .doc(jamId)
+    .collection('rooms')
+    .get()
+    .then((result) => {
+      const rooms = [];
+      result.docs.forEach((d) => {
+        const j = d.data();
+        j.roomId = d.id;
+        rooms.push(j);
+      });
+      resolve(rooms);
+    })
+
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Error al cargar las Rooms: ', errorCode, errorMessage);
+    });
+});
+
+
 const DataService = {
   addJamToUser,
   checkIfEmialExists,
   createJam,
   getBoardInfo,
   getJamInfoById,
+  getJammers,
+  getJamRooms,
   getSettingsInfo,
   getUserInfo,
   getUserJams,
   saveBoardMessage,
   saveInvitation,
+  saveJoinRequest,
   saveUserInfoInFirestore,
   updateCompanyInfo,
 };

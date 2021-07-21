@@ -56,6 +56,7 @@ const CreateForm = ({ showModal }) => {
       createdAt,
       updatedAt,
       jamUsers: [],
+      privacy: 'private',
       lastActivity: createdAt,
     };
 

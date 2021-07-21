@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+
 import { useForm } from 'react-hook-form';
 
 import DataService from '../../services/DataService';
-import Calculations from '../../services/Calculations';
 
 import { Div, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
@@ -15,19 +16,32 @@ const formStyle = {
 };
 
 const JoinForm = () => {
-  const [typeOfJam, setJamType] = useState('');
-  // const [nrOfRooms, setNrOfRooms] = useState(0)
+  const [jamIds, setJamIds] = useState([]);
+  const {
+    userId, email, firstName, lastName,
+  } = useSelector((state) => state.userReducer);
+
+  // CHECK IF ALREADY JOINED IN THIS JAM
+  DataService.getUserJams(userId)
+    .then((result) => {
+      for (let i = 0; i < result.length; i++) {
+        jamIds[i] = result[i].jamId;
+      }
+      setJamIds(jamIds);
+    }).catch((error) => {
+      console.log(error);
+    });
 
   const { register, errors, handleSubmit } = useForm();
-  const router = useRouter();
 
-  const joinJam = (e) => {
+  const joinJam = (e, data) => {
     e.preventDefault();
+    const { jamCode, message } = data;
 
     DataService.getJamInfoByCode(jamCode)
       .then((result) => {
         const {
-          jamName, jamType, jamDesc, jamAdminId, jamAdminName, jamId,
+          jamName, jamType, jamDesc, adminId, jamAdminName, jamId, privacy,
         } = result;
 
         if (jamIds.includes(jamId)) {
@@ -43,27 +57,35 @@ const JoinForm = () => {
           jamDesc,
           joinedAt,
           jamType,
-          jamAdminId,
+          adminId,
           jamAdminName,
           lastActivity: joinedAt,
         };
-
-        DataService.addJamToUser(jamId, userId, jamInfo)
-          .then((result) => {
-            console.log('result del addJamToUser', result);
-          }).catch((error) => {
-            console.log(error);
-          });
-
-        const userInfo = {
-          userId, email, firstName, lastName,
+        const jammer = {
+          userId, firstName, lastName, email,
         };
-        DataService.addJammerToJam(jamId, userInfo)
-          .then((result) => {
-            console.log('result del updatJammers', result);
-          }).catch((error) => {
-            console.log(error);
-          });
+
+        if (privacy === 'private') {
+          DataService.saveJoinRequest(jamId, jammer);
+        } else {
+          DataService.addJamToUser(jamId, userId, jamInfo)
+            .then(
+              console.log('result del addJamToUser', result),
+            ).catch((error) => {
+              console.log(error);
+            });
+
+          const userInfo = {
+            userId, email, firstName, lastName,
+          };
+
+          DataService.addJammerToJam(jamId, userInfo)
+            .then(
+              console.log('result del updatJammers', result),
+            ).catch((error) => {
+              console.log(error);
+            });
+        }
       }).catch((error) => {
         console.log(error);
       });
@@ -80,6 +102,17 @@ const JoinForm = () => {
           name="jamCode"
           error={errors.jamCode}
           errorMessage="Jam code is mandatory"
+          register={register}
+          registerObject={{ required: true }}
+        />
+
+        <FormInput
+          w="60%"
+          label="Message for the Admin"
+          type="text"
+          name="message"
+          error={errors.message}
+          errorMessage="Message is mandatory"
           register={register}
           registerObject={{ required: true }}
         />
