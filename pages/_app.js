@@ -33,6 +33,7 @@ const MyComponent = ({ Component, pageProps }) => {
       dispatch(setUserInfo({ userId: user.uid, ...userInfo }));
     }
   });
+
   const getUserJams = async () => {
     try {
       const jams = await DataService.getUserJams(userId);

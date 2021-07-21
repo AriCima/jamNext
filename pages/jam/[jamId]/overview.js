@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
-import { setJamInfo, setUserRole } from '../../../redux/actions';
+import { setJamInfo, setUserRole, setEditedJammers } from '../../../redux/actions';
 
 import Layout from '../../../domains/Layout';
 import { Div, Txt, Button } from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
+import Calculations from '../../../services/Calculations';
 
 const Overview = () => {
   const { userId, userRole } = useSelector((state) => state.userReducer);
@@ -17,15 +18,40 @@ const Overview = () => {
 
   const getJamInfo = async () => {
     const res = await DataService.getJamInfoById(jamId);
-    const { adminId } = res;
+    const { adminId, jamType } = res;
+
     const role = userId === adminId ? 'admin' : 'guest';
+
+    if (jamType === 'rooms-rental') {
+      const jammers = await DataService.getJammers(jamId);
+      const rooms = await DataService.getJamRooms(jamId);
+      const nrOfRooms = rooms.length.toString();
+      const newRooms = [{ roomNr: 'Alfa', roomSize: 1 }, { roomNr: 'bravo', roomSize: 5 }, { roomNr: 3, roomSize: 8 }];
+      const editedJammers = Calculations.removeAmdinFromJammers(jammers);
+      const tenantsByRooms = Calculations.getTenantsByRooms(editedJammers, nrOfRooms);
+      const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
+      const sortedRooms = Calculations.sortByField({ elements: newRooms, asc: false });
+      console.log('sortedRooms: ', sortedRooms);
+
+      if (rooms.length > 0) {
+        for (let i = 0; i < rooms.length; i++) {
+          const oT = organizedTenantsByRoom[i];
+          sortedRooms[i].currentTenant = oT.currentTenant;
+          sortedRooms[i].formerTenants = oT.formerTenants;
+          sortedRooms[i].futureTenants = oT.futureTenants;
+        }
+      }
+      // Info en Redux
+
+      dispatch(setEditedJammers(editedJammers));
+    }
     dispatch(setJamInfo(res));
     dispatch(setUserRole(role));
   };
 
   useEffect(() => {
-    jamId && getJamInfo(jamId);
-  }, [jamId]);
+    userId && jamId && getJamInfo(jamId);
+  }, [jamId, userId]);
 
   return (
     <Layout>

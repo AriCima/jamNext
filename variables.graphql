@@ -43,6 +43,7 @@ type Jam {
     jamDesc: String!,
     jamUsers: [User!],
     jamCompanies: [Company!],
+    privacy: String!
     jamDetails: {
         Address: Address!,
         houseRules: {

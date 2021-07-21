@@ -22,7 +22,7 @@ const JamsList = () => {
     const active = jam.jamId === currentJamId;
     return (
       <Link key={jamId} href="/jam/[jamId]/overview" as={`/jam/${jamId}/overview`} passHref>
-        <JamCover active={active}>
+        <JamCover selected={active}>
           <span>{jamName}</span>
           <span>{jamDesc}</span>
         </JamCover>
