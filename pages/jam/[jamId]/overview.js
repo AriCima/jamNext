@@ -26,11 +26,11 @@ const Overview = () => {
       const jammers = await DataService.getJammers(jamId);
       const rooms = await DataService.getJamRooms(jamId);
       const nrOfRooms = rooms.length.toString();
-      const newRooms = [{ roomNr: 'alfa', roomSize: 1 }, { roomNr: 'bravo', roomSize: 5 }, { roomNr: 3, roomSize: 8 }];
+      const newRooms = [{ roomNr: 'Alfa', roomSize: 1 }, { roomNr: 'bravo', roomSize: 5 }, { roomNr: 3, roomSize: 8 }];
       const editedJammers = Calculations.removeAmdinFromJammers(jammers);
       const tenantsByRooms = Calculations.getTenantsByRooms(editedJammers, nrOfRooms);
       const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
-      const sortedRooms = Calculations.sortByField({ elements: newRooms });
+      const sortedRooms = Calculations.sortByField({ elements: newRooms, asc: false });
       console.log('sortedRooms: ', sortedRooms);
 
       if (rooms.length > 0) {
