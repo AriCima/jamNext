@@ -384,10 +384,10 @@ const getMessageDate = (timestamp) => {
   return messageTime;
 };
 
-const sortByRoomNr = (x) => {
+const sortByRoomNr = (rooms) => {
   function compare(a, b) {
-    const varA = new Date(a.roomNr);
-    const varB = new Date(b.roomNr);
+    const varB = b.roomNr;
+    const varA = a.roomNr;
 
     let comparison = 0;
     if (varA < varB) {
@@ -398,7 +398,7 @@ const sortByRoomNr = (x) => {
     return comparison;
   }
 
-  return x.sort(compare);
+  return rooms.sort(compare);
 };
 
 const removeAmdinFromJammers = (tenants) => {
