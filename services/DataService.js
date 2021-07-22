@@ -71,19 +71,50 @@ const updateCompanyInfo = (data) => new Promise(() => {
     });
 });
 
-const createJam = (data) => {
-  console.log('data: ', data);
-  return new Promise((resolve, reject) => {
-    firebase.firestore().collection('jams').add(data)
-      .then((doc) => {
-        console.log('doc del create: ', doc);
-        resolve({ id: doc.id });
-      })
-      .catch((error) => {
-        console.error('Error creating Jam: ', error);
-      });
-  });
-};
+const addNewRoom = (jamId, roomInfo) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('rooms')
+    .add(roomInfo)
+    .then((doc) => {
+      console.log('room succesfully added to jam: ', doc.data());
+      resolve(doc);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log('Room could not be created: ', errorCode);
+    });
+});
+
+const createJam = (data) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .add(data)
+    .then((doc) => {
+      console.log('doc del create: ', doc);
+      const jamId = doc.id;
+      if (data.jamType === 'rooms-rental') {
+        const rooms = Number(data.nrOfRooms);
+        for (let i = 0; i < rooms; i++) {
+          const roomNr = i + 1;
+          const roomInfo = {
+            balcony: '',
+            deposit: '',
+            exterior: '',
+            rent: '',
+            privBath: '',
+            roomNr,
+            sqm: '',
+          };
+          addNewRoom(jamId, roomInfo);
+        }
+      }
+      resolve({ id: doc.id });
+    })
+    .catch((error) => {
+      console.error('Error creating Jam: ', error);
+    });
+});
 
 const addJamToUser = (userId, jamId, data) => new Promise((resolve, reject) => {
   firebase.firestore().collection('users').doc(userId)
@@ -149,7 +180,7 @@ const saveInvitation = (jamId, data) => new Promise((resolve, reject) => {
     .collection('invitations')
     .add(data)
     .then((docRef) => {
-      const invitationId = docRef.id
+      const invitationId = docRef.id;
       console.log('Document written with ID: ', invitationId);
       resolve(invitationId);
     })
@@ -279,7 +310,6 @@ const getJamRooms = (jamId) => new Promise((resolve, reject) => {
       console.log('Error al cargar las Rooms: ', errorCode, errorMessage);
     });
 });
-
 
 const DataService = {
   addJamToUser,
