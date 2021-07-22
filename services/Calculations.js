@@ -350,7 +350,7 @@ const getSelectOptions = (listType) => {
         { id: 7, name: '7' },
         { id: 8, name: '8' },
         { id: 9, name: '9' },
-        { id: 1, name: '10' },
+        { id: 10, name: '10' },
       ];
       break;
     case 'jamTypes':

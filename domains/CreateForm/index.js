@@ -26,7 +26,7 @@ const CreateForm = ({ showModal }) => {
   const router = useRouter();
 
   const createNewJam = (data) => {
-    const { jamName, jamDesc, jamType } = data;
+    const { jamName, jamDesc, jamType, nrOfRooms } = data;
 
     const jamCode = Calculations.generateJamCode();
     const createdAt = new Date();
@@ -58,16 +58,19 @@ const CreateForm = ({ showModal }) => {
       jamUsers: [],
       privacy: 'private',
       lastActivity: createdAt,
+      nrOfRooms,
     };
 
-    DataService.createJam(newJamInfo)
+    const adminId = userId;
+
+    DataService.createJam(newJamInfo, adminId)
       .then((res) => {
         const jamId = res.id;
         showModal(false);
-        router.push(`/jam/${jamId}`);
+        router.push(`/jam/${jamId}/overview`);
 
-        const jamSummary = { adminId: userId, adminName: firstName, createdAt };
-        DataService.addJamToUser(userId, jamId, jamSummary);
+        // const jamSummary = { adminId: userId, adminName: firstName, createdAt };
+        // DataService.addJamToUser(userId, jamId, jamSummary);
       });
   };
 
@@ -121,7 +124,7 @@ const CreateForm = ({ showModal }) => {
                       w="50%"
                       label="Nr. of Rooms"
                       name="nrOfRooms"
-                      type="text"
+                      type="number"
                       error={errors.nrOfRooms}
                       errorMessage="Please select the nr of Rrooms"
                       register={register}

@@ -31,7 +31,6 @@ const Overview = () => {
       const tenantsByRooms = Calculations.getTenantsByRooms(editedJammers, nrOfRooms);
       const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
       const sortedRooms = Calculations.sortByField({ elements: newRooms, asc: false });
-      console.log('sortedRooms: ', sortedRooms);
 
       if (rooms.length > 0) {
         for (let i = 0; i < rooms.length; i++) {
