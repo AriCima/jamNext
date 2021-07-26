@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useCallback,
 } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import FormInput from '../../../components/FormInput';
 
@@ -11,6 +11,8 @@ import BoardContent from '../../../domains/BoardContent';
 import { Div } from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
+import useUserPermisions from '../../../hooks/useUserPermisions';
+import { setActiveSection } from '../../../redux/actions/jamActions';
 
 const RenderBoardContent = ({ boardInfo }) => boardInfo.map((bC, i) => (
   <BoardContent
@@ -21,23 +23,27 @@ const RenderBoardContent = ({ boardInfo }) => boardInfo.map((bC, i) => (
 
 const Board = () => {
   const [boardInfo, setBoardInfo] = useState([]);
-  const { userId, userRole } = useSelector((state) => state.userReducer);
-  const { adminName } = useSelector((state) => state.jamReducer);
+  const { userId } = useSelector((state) => state.userReducer);
+  const { adminName, jamName } = useSelector((state) => state.jamReducer);
 
   const router = useRouter();
+  const dispatch = useDispatch();
   const { jamId } = router.query;
+  const { role } = useUserPermisions(jamId);
 
   const getInfo = useCallback(async (id) => {
     const res = await DataService.getBoardInfo(id);
     setBoardInfo(res);
-  }, [setBoardInfo]);
+  }, [setBoardInfo, jamName]);
 
   useEffect(() => {
     jamId && getInfo(jamId);
+    dispatch(setActiveSection('board'));
   }, [jamId, getInfo]);
 
+
   const { register, errors, handleSubmit } = useForm();
-  const showMessageForm = userRole === 'admin';
+  const showMessageForm = role === 'admin';
 
   const onSubmit = (data) => {
     const date = new Date();

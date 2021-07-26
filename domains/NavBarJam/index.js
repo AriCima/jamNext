@@ -4,31 +4,29 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Div, JamNavBarItem } from '../../styledComps';
 import Calculations from '../../services/Calculations';
-import { setActiveSection } from '../../redux/actions/jamActions';
+import useUserPermisions from '../../hooks/useUserPermisions';
 
 const NavBarJam = () => {
   const [jamSections, setJamSections] = useState([]);
-  const dispatch = useDispatch();
-  const { jamType, adminId } = useSelector((state) => state.jamReducer);
-  const { userId } = useSelector((state) => state.userReducer);
-  const { jamId } = useSelector((state) => state.jamReducer);
+  const { jamId, jamType, activeSection } = useSelector((state) => state.jamReducer);
+
+  const { role } = useUserPermisions();
 
   useEffect(() => {
-    if (jamType) {
-      const userIsAdmin = userId === adminId;
+    if (jamType && role !== 'loading') {
+      const userIsAdmin = role === 'admin';
       const sections = userIsAdmin
         ? Calculations.getJamAdminSections(jamType)
         : Calculations.getJamGuestSections(jamType);
       setJamSections(sections);
     }
-  }, [jamType]);
+  }, [jamType, role]);
 
   const renderJamSections = () => jamSections.map((section) => {
     const sec = section.toLowerCase();
-    // const active = activeSection === sec;
     return (
       <Link href={`/jam/${jamId}/${sec}`} key={section + jamId} passHref>
-        <JamNavBarItem active onClick={() => dispatch(setActiveSection(sec))} back="red">{section}</JamNavBarItem>
+        <JamNavBarItem active={sec === activeSection} back="red">{section}</JamNavBarItem>
       </Link>
     );
   });
