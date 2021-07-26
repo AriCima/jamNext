@@ -23,6 +23,7 @@ import SubTitle from './subTitle';
 import Title from './title';
 import Txt from './txt';
 import MenuItem from './menuItem';
+import StartChat from './startChat';
 
 export {
   AppContainer,
@@ -47,6 +48,7 @@ export {
   ProfileBox,
   Select,
   SmallTxt,
+  StartChat,
   SubTitle,
   Title,
   Txt,

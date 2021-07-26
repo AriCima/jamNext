@@ -56,6 +56,9 @@ const getJamAdminSections = (type) => {
     case 'accommodation':
       sections = ['Board', 'Jammers', 'MyJam', 'Settings'];
       break;
+    case 'standard':
+      sections = ['Board', 'Jammers'];
+      break;
     case 'rooms-rental':
       sections = ['Overview', 'Board', 'Tenants', 'Rooms', 'Settings'];
       break;
@@ -74,6 +77,9 @@ const getJamGuestSections = (type) => {
     case 'accommodation':
       sections = ['Board', 'Jammers', 'MyJam', 'Settings'];
       break;
+    case 'standard':
+      sections = ['Board', 'Jammers'];
+      break;
     case 'rooms-rental':
       sections = ['Overview', 'Board', 'Flatmates'];
       break;
@@ -81,7 +87,7 @@ const getJamGuestSections = (type) => {
       sections = ['Chat'];
       break;
     default:
-          // console.log('no reconoce tipo')
+      // console.log('no reconoce tipo')
   }
   return sections;
 };
@@ -357,7 +363,7 @@ const getSelectOptions = (listType) => {
       list = [
         { id: 'select', name: 'Select . . . ' },
         { id: 'rooms-rental', name: 'Rooms Rental' },
-        { id: 'standard', name: 'Just a jam' },
+        { id: 'standard', name: 'standard' },
       ];
       break;
     default:
@@ -516,6 +522,33 @@ const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inq
   return result;
 };
 
+const missingRoomsInfo = (roomsInfo) => {
+  const rL = roomsInfo.length;
+  let missingInfo = false;
+  const missingArr = [];
+
+  for (let i = 0; i < rL; i++) {
+    let room = [];
+    room.push(roomsInfo[i]);
+    const missingObj = { roomNr: room.roomNr };
+    console.log('room: ', typeof room);
+    let pushObj = false;
+    room.forEach((value, key) => {
+      console.log('value: ', value);
+      if (value === '') {
+        missingInfo = true;
+        pushObj = true;
+        missingObj[key] = value;
+      }
+    });
+    if (pushObj) {
+      missingArr.push(missingObj);
+    }
+  }
+  const result = { missingInfo, missingArr };
+  return result;
+};
+
 const Calculations = {
   generateJamCode,
   getJamAdminSections,
@@ -527,6 +560,7 @@ const Calculations = {
   getTenantPayments,
   getTypeOfContracts,
   getTenantsByRooms,
+  missingRoomsInfo,
   removeAmdinFromJammers,
   sortByField,
 };

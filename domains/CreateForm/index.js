@@ -20,7 +20,7 @@ const CreateForm = ({ showModal }) => {
   const [typeOfJam, setJamType] = useState('');
   const [roomsNr, setRoomsNr] = useState(0);
 
-  const { userId, firstName } = useSelector((state) => state.userReducer);
+  const { userId, firstName, lastName } = useSelector((state) => state.userReducer);
 
   const { register, errors, handleSubmit } = useForm();
   const router = useRouter();
@@ -48,6 +48,8 @@ const CreateForm = ({ showModal }) => {
 
     const newJamInfo = {
       adminId: userId,
+      adminName: firstName,
+      adminLastName: lastName,
       jamCode,
       jamName,
       jamDesc,

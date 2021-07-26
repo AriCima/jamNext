@@ -1,0 +1,159 @@
+@import '../../../../variables.scss';
+
+.admin-overview-wrapper{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    .overview-activity{
+        width: 100%;
+        margin: 20px 0;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        .overview-section-title{
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            h2{
+                font-size: $bigFont;
+                color: $titleColor;
+            }
+        }
+        .overview-section-activity{
+            width: 100%;
+            height: 200px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: scroll;
+            // border: 1px solid $lightGray;
+            border-radius: 5px;
+            box-shadow: $shadow;
+            .activity-line{
+                width: 100%;
+                padding: 10px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin: 10px 0;
+                border: 1px solid $lightGray;
+                &:hover{
+                    cursor: pointer;
+                    box-shadow: $shadow;
+                } 
+
+                .activity-img{
+                    width: 15%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .walking-icon{
+                        width: 50%;
+                        color: $checkIn;
+                        font-size: 25px;
+                    }
+                    .door-icon{
+                        width: 50%;
+                        color: $checkIn;
+                        font-size: 25px;
+                        transform: scaleX(-1);
+                    }
+                }
+                .activity-img-isOut{
+                    width: 15%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .walking-icon-isOut{
+                        width: 50%;
+                        color: $checkOut;
+                        font-size: 25px;
+                        transform: scaleX(-1);
+                        
+                    }
+                    .door-icon-isOut{
+                        width: 50%;
+                        color: $checkOut;
+                        font-size: 25px;
+                        transform: scaleX(-1);
+                    }
+                }
+                .activity-info{
+                    width: 85%;
+                    margin-left: 20px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    p{
+                        font-size: $midFont;
+                        margin: 0;
+                        span{ 
+                            font-weight: 700;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    .overview-ocupation{
+        width: 100%;
+        margin: 20px 0;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        .ocupation-label{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            p{ 
+                margin: 0;
+                font-size: $bigFont;
+                color: $titleColor;
+                margin-bottom: 10px;
+            }   
+        }
+    }
+    .overview-incomes{
+        width: 100%;
+        margin: 20px 0;
+        padding: 0 20px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .incomes-label{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            p{ 
+                margin: 0;
+                font-size: $bigFont;
+                color: $titleColor;
+            }        
+        }
+        .incomes-value{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-left: 20px;
+            p{ 
+                margin: 0;
+                font-size: $bigFont;
+                color: $prim;
+                font-weight: 700
+            }    
+        }
+    }
+}
+
