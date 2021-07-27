@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
+import {  useDispatch } from 'react-redux';
 import { setJamInfo } from '../../../redux/actions';
 import useUserPermisions from '../../../hooks/useUserPermisions';
 
@@ -9,6 +9,7 @@ import NavBarJam from '../../../domains/NavBarJam';
 import AdminOverview from '../../../domains/AdminOverview';
 import GuestOverview from '../../../domains/GuestOverview';
 import DataService from '../../../services/DataService';
+import { setActiveSection } from '../../../redux/actions/jamActions';
 
 
 const Overview = () => {
@@ -24,6 +25,7 @@ const Overview = () => {
 
   useEffect(() => {
     jamId && getJamInfo(jamId);
+    dispatch(setActiveSection('overview'));
   }, [jamId]);
 
   switch (role) {

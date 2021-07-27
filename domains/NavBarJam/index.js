@@ -24,6 +24,8 @@ const NavBarJam = () => {
 
   const renderJamSections = () => jamSections.map((section) => {
     const sec = section.toLowerCase();
+    console.log('sec: ', sec);
+    console.log('activeSection: ', activeSection);
     return (
       <Link href={`/jam/${jamId}/${sec}`} key={section + jamId} passHref>
         <JamNavBarItem active={sec === activeSection} back="red">{section}</JamNavBarItem>
