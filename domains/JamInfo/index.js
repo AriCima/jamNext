@@ -6,7 +6,7 @@ import StartChatButton from '../StartChatButton';
 const JamInfo = () => {
   const {
     adminId,
-    adminName,
+    adminFirstName,
     adminLastName,
     jamCode,
     jamDesc,
@@ -59,11 +59,11 @@ const JamInfo = () => {
 
         {userRole === 'guest' && (
         <Div className="jamInfo-adminInfo">
-          <Div className="jamInfo-adminName">
+          <Div className="jamInfo-adminFirstName">
             <Txt>
               The administrator of this jam is:
               <span>
-                {adminName}
+                {adminFirstName}
                 {' '}
                 {adminLastName}
               </span>
@@ -71,9 +71,9 @@ const JamInfo = () => {
           </Div>
           <StartChatButton
             adminId={userId}
-            adminName={firstName}
+            adminFirstName={firstName}
             adminLastName={lastName}
-            jammers={[{ userId: adminId, firstName: adminName, lastName: adminLastName }]}
+            jammers={[{ userId: adminId, firstName: adminFirstName, lastName: adminLastName }]}
             jamDesc={jamName}
             originJamId={jamId}
           />

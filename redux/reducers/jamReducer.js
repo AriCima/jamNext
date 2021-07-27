@@ -8,6 +8,10 @@ const defaultState = {
   activeSection: 'overview',
   tenantsList: {},
   roomsInfo: [],
+  adminId: '',
+  adminFirstName: '',
+  adminLastName: '',
+  adminEmail: '',
 };
 
 function setJamReducer(state = defaultState, action) {

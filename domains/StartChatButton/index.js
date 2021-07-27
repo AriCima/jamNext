@@ -10,7 +10,7 @@ import DataService from '../../services/DataService';
 
 const StartChatButton = ({
   adminId,
-  adminName,
+  adminFirstName,
   adminLastName,
   jammers,
   jamDesc,
@@ -42,7 +42,7 @@ const StartChatButton = ({
     const chatInfo = {
       createdAt: new Date(),
       adminId,
-      adminName,
+      adminFirstName,
       adminLastName,
       jammers,
       jamId: chatId,

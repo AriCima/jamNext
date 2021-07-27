@@ -82,8 +82,8 @@ const AdminOverview = () => {
   };
 
   useEffect(() => {
-    getAdminJamInfo();
-  }, []);
+    getAdminJamInfo(jamId);
+  }, [jamId]);
 
   const takeMeToTenantInfo = (e, userId) => {
     e.preventDefault();

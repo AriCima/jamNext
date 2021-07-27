@@ -24,7 +24,7 @@ const RenderBoardContent = ({ boardInfo }) => boardInfo.map((bC, i) => (
 const Board = () => {
   const [boardInfo, setBoardInfo] = useState([]);
   const { userId } = useSelector((state) => state.userReducer);
-  const { adminName, jamName } = useSelector((state) => state.jamReducer);
+  const { adminFirstName, jamName } = useSelector((state) => state.jamReducer);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const Board = () => {
     const messageInfo = {
       messageText: data.message,
       userId,
-      adminName,
+      adminFirstName,
       jamId,
       createdAt: date,
       messageType: 'message',

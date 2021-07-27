@@ -41,7 +41,7 @@ const JoinForm = () => {
     DataService.getJamInfoByCode(jamCode)
       .then((result) => {
         const {
-          jamName, jamType, jamDesc, adminId, jamAdminName, jamId, privacy,
+          jamName, jamType, jamDesc, adminId, jamadminFirstName, jamId, privacy,
         } = result;
 
         if (jamIds.includes(jamId)) {
@@ -58,7 +58,7 @@ const JoinForm = () => {
           joinedAt,
           jamType,
           adminId,
-          jamAdminName,
+          jamadminFirstName,
           lastActivity: joinedAt,
         };
         const jammer = {

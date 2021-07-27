@@ -6,7 +6,7 @@ import { Div, Txt, MessageContainer } from '../../styledComps';
 
 const BoardContent = ({ boardContent }) => {
   const messageTime = Calculations.getMessageDate(boardContent.createdAt);
-  const { adminName } = useSelector((state) => state.jamReducer);
+  const { adminFirstName } = useSelector((state) => state.jamReducer);
 
   const renderMessage = (messageType) => {
     switch (messageType) {
@@ -32,7 +32,7 @@ const BoardContent = ({ boardContent }) => {
             </Div>
             <Div className="message-info" w="100%" just="flex-start" align="center">
               <Txt>
-                {adminName}
+                {adminFirstName}
                 {' '}
                 -
                 {' '}

@@ -18,7 +18,7 @@ import DataService from '../../services/DataService';
 import Calculations from '../../services/Calculations';
 
 const useInviteJammerForm = ({
-  jamId, jamName, adminName, jammers, rooms, jamDetails, roomNr = '',
+  jamId, jamName, adminFirstName, jammers, rooms, jamDetails, roomNr = '',
 }) => {
   // const [ organizedJammers, setOrganizedJammers ] = useState([]);
   // const [ showModal, setShowModal ] = useState(false);
@@ -125,7 +125,7 @@ const useInviteJammerForm = ({
     data.rentsArray = rentsArray;
     data.registeredUser = false;
     data.jamName = jamName;
-    data.adminName = adminName;
+    data.adminFirstName = adminFirstName;
     data.contractCode = Calculations.generateCode();
     data.checkIn = moment(cIn).format('DD-MMM-YYYY');
     data.checkOut = moment(cOut).format('DD-MMM-YYYY');
@@ -175,7 +175,7 @@ const useInviteJammerForm = ({
           const registrationURL = `/register/${jamId}/${invId}`;
           console.log('registrationURL: ', registrationURL);
           // eslint-disable-next-line max-len
-          // history.push(`/register/${jamId}/${jamName}/${adminName}/${firstName}/${lastName}/${invId}`);
+          // history.push(`/register/${jamId}/${jamName}/${adminFirstName}/${firstName}/${lastName}/${invId}`);
         });
     }
   };
