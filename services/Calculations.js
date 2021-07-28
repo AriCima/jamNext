@@ -366,6 +366,13 @@ const getSelectOptions = (listType) => {
         { id: 'standard', name: 'standard' },
       ];
       break;
+    case 'messageType':
+      list = [
+        { id: 'select', name: 'Select . . .' },
+        { id: 'message', name: 'Message' },
+        { id: 'adv', name: 'Advertisement' },
+      ];
+      break;
     default:
   }
 
@@ -478,7 +485,7 @@ const getTenantsByRooms = (tenants, nrOfRooms) => { // separa los tenants por ha
   const tenantsByRooms = {};
 
   for (let i = 1; i <= nrOfRooms; i++) {
-    const roomNr = i.toString();
+    const roomNr = i;
     const tenantsInOneRoom = tenants.filter((e) => e.roomNr === roomNr);
     tenantsByRooms[`${roomNr}`] = tenantsInOneRoom;
   }

@@ -169,7 +169,6 @@ const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
     .get()
     .then((result) => {
       const jamInfo = result.data();
-      const jamId = result.id;
       jamInfo.jamId = jamId;
       resolve(jamInfo);
     })

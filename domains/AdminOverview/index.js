@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWalking, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 import { format } from 'date-fns/';
+import { TENANTS } from '../../config';
 import { Div, Txt } from '../../styledComps';
 
 // import { DayPicker } from 'react-dates';
@@ -47,15 +48,14 @@ const AdminOverview = () => {
     if (jamType === 'rooms-rental') {
       const jammers = await DataService.getJammers(jamId);
       const rooms = await DataService.getJamRooms(jamId);
-      console.log('rooms: ', rooms);
       const nrOfRooms = rooms.length.toString();
 
-      const tenantsList = Calculations.removeAmdinFromJammers(jammers);
-      const tenantsByRooms = Calculations.getTenantsByRooms(tenantsList, nrOfRooms);
+      // const tenantsList = Calculations.removeAmdinFromJammers(jammers);
+      // const tenantsByRooms = Calculations.getTenantsByRooms(tenantsList, nrOfRooms);
+      const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
       const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
 
       const sortedRooms = Calculations.sortByField({ elements: rooms, asc: true, field: 'roomNr' });
-      console.log('sortedRooms: ', sortedRooms);
 
       if (rooms.length > 0) {
         for (let i = 0; i < rooms.length; i++) {
@@ -130,19 +130,6 @@ const AdminOverview = () => {
   return (
     <Div w="100%" col >
       <Txt color="BLUE" fSize="44px">ADMIN OVERVIEW</Txt>
-      {roomsInfo.length > 0
-          && roomsInfo.map((room, index) => (
-            <Div key={index}>
-              <Txt mg="0 20px">
-                RoomNr :
-                {room.roomNr}
-              </Txt>
-              <Txt>
-                sqm :
-                {room.sqm}
-              </Txt>
-            </Div>
-          ))}
     </Div>
   // <div className="admin-overview-wrapper">
 

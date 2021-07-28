@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
     <AppWrapper>
       <LeftMenu openModal={() => setShowModal(true)} showCreate={(x) => setShowCreate(x)} />
 
-      <Div className="AppBody" col back="lightblue" flexG="3">
+      <Div className="AppBody" h="100Vh" col back="lightblue" flexG="3">
         {children}
       </Div>
 

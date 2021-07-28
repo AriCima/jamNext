@@ -11,7 +11,6 @@ import Layout from '../../domains/Layout';
 
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
-import Calculations from "../../services/Calculations";
 
 
 const CreateJam = () => {

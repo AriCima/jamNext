@@ -1,32 +1,53 @@
 // src: https://codesandbox.io/s/tables-styled-components-v7vgb?from-embed=&file=/src/components/kit/Table/index.js:0-1752
-
-import React from "react";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Table = styled.table`
-    caption-side: top;
+  caption-side: top;
+  border: none;
+  border-collapse: collapse;
+  /* border-collapse: separate; */
+  /* border-spacing: 5px 10px; */
+
+  caption-side: bottom;
+  /* empty-cell: show | hide;  */
+  /* empty-cell is a property of table or the cells themselves */
+
+  /* vertical-align: baseline | sub | super | text-top | 
+                text-bottom | middle | top | bottom | 
+                <percentage> | <length> */
+
+  /* tbody {
+    vertical-align: top;
+  }              */
+  td,
+  thead {
     border: none;
-    border-collapse: collapse;
-    caption-side: bottom;
-    th {
-        border: 1px solid red;
-        background-color: yellow;
+  }
+  /* td,
+  thead {
+    border: 1px solid;
+  } */
+
+  td {
+    padding: 5px 10px;
+  }
+
+  tbody tr {
+    :nth-of-type(odd) {
+      background-color: #efefef;
     }
-    th > td {
-        background-color: green;
+    :hover {
+      background-color: lightpink;
     }
-    tr {
-        :hover {
-          background-color: lightpink;
-        }
-    }
-    tr > td {
-      padding: 5px 10px;
-      color: black;
-      :hover {
-        background-color: blue;
-      }
-    }
+  }
+  thead > tr {
+    background-color: #c2c2c2;
+  }
+  caption {
+    font-size: 0.9em;
+    padding: 5px;
+    font-weight: bold;
+  }
 `;
 
 export default Table;
