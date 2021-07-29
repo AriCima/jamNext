@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -12,14 +13,15 @@ import { setJamInfo, setTenantsList, setRoomsInfo } from '../../../redux/actions
 import { setActiveSection } from '../../../redux/actions/jamActions';
 
 import Layout from '../../../domains/Layout';
-import { Div, Txt, SubTitle, Table } from '../../../styledComps';
+import {
+  Div, Txt, SubTitle, Table, StartChat,
+} from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
 
 const Rooms = () => {
   const { roomsInfo } = useSelector((state) => state.jamReducer);
-  console.log('roomsInfo en Rooms: ', roomsInfo);
   const dispatch = useDispatch();
   const router = useRouter();
   const { jamId } = router.query;
@@ -120,31 +122,80 @@ const Rooms = () => {
   //   };
 
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
-    console.log('room: ', room);
-    const current = room.currentTenant ? room.currentTenant : [];
+    const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
+    let checkIn; let checkOut; let firstName; let lastName; let rent; let deposit;
+
+    if (current.length > 0) {
+      checkIn = current[0].checkIn;
+      checkOut = current[0].checkOut;
+      firstName = current[0].firstName;
+      lastName = current[0].lastName;
+      rent = current[0].rent;
+      deposit = current[0].deposit;
+    }
+    const future = room.futureTenants ? room.futureTenants : [];
     const isVacant = !room.currentTenant || isEmpty(room.currentTenant);
     const { roomId } = room;
-    const { checkIn = '', checkOut = '', firstName = '', lastName = '' } = current;
-    const cIn = checkIn ? checkIn.split('-') : '';
-    const cOut = checkIn ? checkOut.split('-') : '';
-    const newIn = new Date(cIn[2], cIn[1] - 1, cIn[0]);
-    console.log('newIn: ', newIn);
-    const newOut = new Date( cOut[2], cOut[1] - 1, cOut[0]);
-    console.log('newOut: ', newOut);
-    
+
+    const existNextTenant = future.length !== 0;
+    let nextTenant = [];
+
+    if (existNextTenant) {
+      nextTenant = future[0];
+    }
+
+    const centerTd = {
+      textAlign: 'center',
+    };
+
+    const vacant = {
+      textAlign: 'center',
+      color: 'red',
+      fontSize: '12px',
+    };
+
+    const vacantUntil = {
+      textAlign: 'center',
+      fontSize: '12px',
+    };
+
+    const flexTd = {
+      display: 'flex',
+      justifyContent: 'flex-start',
+    };
     return (
-      <Link key={roomId} href={`/jam/${jamId}/room/${roomId}]`}>
+      <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
         <tr>
-          {isVacant ? (
-            <td>
-              <Txt color="red">Currently Vacant</Txt>
-            </td>
+          { isVacant ? (
+            existNextTenant
+              ? (
+                <>
+                  <td style={centerTd}>
+                    {room.roomNr}
+                  </td>
+                  <td colSpan="5" style={centerTd}>
+                    Vacant until
+                    {' '}
+                    {nextTenant.checkIn}
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td style={centerTd}>
+                    {room.roomNr}
+                  </td>
+                  <td colSpan="6" style={vacant}>
+                    Currently Vacant
+                  </td>
+                </>
+              )
+
           ) : (
             <>
-              <td>
+              <td style={centerTd}>
                 {room.roomNr}
               </td>
-              <td>
+              <td style={flexTd}>
                 {firstName}
                 {' '}
                 {lastName}
@@ -152,6 +203,8 @@ const Rooms = () => {
                 <Div
                   just="center"
                   align="center"
+                  mgL="15px"
+                //   onClick={StartChat()}
                 >
                   <FontAwesomeIcon
                     icon={faComments}
@@ -159,16 +212,16 @@ const Rooms = () => {
                 </Div>
               </td>
               <td>
-                {newIn && format(newIn, 'dd/MMM/yyyy')}
+                {checkIn}
               </td>
               <td>
-                {newOut && format(newOut, 'dd/MMM/yyyy')}
+                {checkOut}
               </td>
               <td>
-                {current.rent}
+                {rent}
               </td>
               <td>
-                {current.deposit}
+                {deposit}
               </td>
             </>
           )}
@@ -178,6 +231,11 @@ const Rooms = () => {
   });
 
   const showInfo = roomsInfo.length !== 0;
+  const captionStyle = {
+    fontSize: '10px',
+    fontWeight: '500',
+    color: 'gray',
+  };
 
   return (
     <Layout>
@@ -186,7 +244,7 @@ const Rooms = () => {
         <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle>
         <Div w="100%" just="center" align="center">
           <Table>
-            <caption>select a room</caption>
+            <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
                 <td>Room Nr</td>

@@ -2,34 +2,18 @@
 import styled from 'styled-components';
 
 const Table = styled.table`
-  caption-side: top;
   border: none;
   border-collapse: collapse;
-  /* border-collapse: separate; */
-  /* border-spacing: 5px 10px; */
-
   caption-side: bottom;
-  /* empty-cell: show | hide;  */
-  /* empty-cell is a property of table or the cells themselves */
-
-  /* vertical-align: baseline | sub | super | text-top | 
-                text-bottom | middle | top | bottom | 
-                <percentage> | <length> */
-
-  /* tbody {
-    vertical-align: top;
-  }              */
-  td,
-  thead {
+  td, thead {
     border: none;
   }
-  /* td,
-  thead {
-    border: 1px solid;
-  } */
-
+tr > td {
+  font-size: 10px;
+}
   td {
     padding: 5px 10px;
+    font-size: 10px;
   }
 
   tbody tr {

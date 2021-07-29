@@ -26,4 +26,11 @@ function setRoomsInfo(rooms) {
   };
 }
 
+// function setSelectedRoomInfo(room) {
+//   return {
+//     type: 'SELECTED_ROOM_INFO',
+//     payload: room,
+//   };
+// }
+
 export { setJamInfo, setActiveSection, setTenantsList, setRoomsInfo };

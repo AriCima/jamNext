@@ -12,6 +12,7 @@ const defaultState = {
   adminFirstName: '',
   adminLastName: '',
   adminEmail: '',
+  selectedRoomInfo: {},
 };
 
 function setJamReducer(state = defaultState, action) {
@@ -36,6 +37,11 @@ function setJamReducer(state = defaultState, action) {
         ...state,
         roomsInfo: action.payload,
       };
+    // case 'SELECTED_ROOM_INFO':
+    //   return {
+    //     ...state,
+    //     ...action.payload,
+    //   };
     default:
       return state;
   }

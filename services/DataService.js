@@ -126,6 +126,7 @@ const createJam = (data, userId) => new Promise((resolve, reject) => {
             privBath: '',
             roomNr,
             sqm: '',
+            expenses: '',
           };
           addNewRoom(jamId, roomInfo);
         }
@@ -138,7 +139,6 @@ const createJam = (data, userId) => new Promise((resolve, reject) => {
       console.error('Error creating Jam: ', error);
     });
 });
-
 
 const getUserJamsDB = (userId, field, comparation) => new Promise((resolve, reject) => {
   firebase.firestore()
@@ -316,6 +316,20 @@ const getJamRooms = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
+const getRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('rooms')
+    .doc(roomId)
+    .get()
+    .then((res) => {
+      resolve(res.data());
+    })
+    .catch((error) => {
+      console.log('error: ', error);
+    });
+});
+
 const DataService = {
   addJammerToJam,
   addJamToUser,
@@ -325,6 +339,7 @@ const DataService = {
   getJamInfoById,
   getJammers,
   getJamRooms,
+  getRoomInfo,
   getSettingsInfo,
   getUserInfo,
   getUserJams,
