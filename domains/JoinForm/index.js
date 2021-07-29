@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -16,21 +16,9 @@ const formStyle = {
 };
 
 const JoinForm = () => {
-  const [jamIds, setJamIds] = useState([]);
   const {
-    userId, email, firstName, lastName,
+    userId, email, firstName, lastName, userJams,
   } = useSelector((state) => state.userReducer);
-
-  // CHECK IF ALREADY JOINED IN THIS JAM
-  DataService.getUserJams(userId)
-    .then((result) => {
-      for (let i = 0; i < result.length; i++) {
-        jamIds[i] = result[i].jamId;
-      }
-      setJamIds(jamIds);
-    }).catch((error) => {
-      console.log(error);
-    });
 
   const { register, errors, handleSubmit } = useForm();
 
@@ -44,7 +32,8 @@ const JoinForm = () => {
           jamName, jamType, jamDesc, adminId, jamadminFirstName, jamId, privacy,
         } = result;
 
-        if (jamIds.includes(jamId)) {
+        // CHECK IF ALREADY JOINED IN THIS JAM
+        if (userJams.includes(jamId)) {
           alert(`You are already jammer in ${jamName}`);
           return;
         }

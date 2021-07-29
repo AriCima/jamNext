@@ -5,7 +5,6 @@ import Calculations from '../../services/Calculations';
 import { Div, Txt, MessageContainer } from '../../styledComps';
 
 const BoardContent = ({ boardContent }) => {
-  console.log('boardContent: ', boardContent);
   const messageTime = Calculations.getMessageDate(boardContent.createdAt);
   const { adminFirstName } = useSelector((state) => state.jamReducer);
 

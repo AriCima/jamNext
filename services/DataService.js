@@ -140,29 +140,28 @@ const createJam = (data, userId) => new Promise((resolve, reject) => {
     });
 });
 
-const getUserJamsDB = (userId, field, comparation) => new Promise((resolve, reject) => {
+const getUserJamsDB = (userId, field, comparation, userJams) => new Promise(() => {
   firebase.firestore()
     .collection('jams')
     .where(field, comparation, userId)
-    .get()
-    .then((result) => {
+    .orderBy('createdAt')
+    .onSnapshot((result) => {
       const jams = [];
       result.forEach((doc) => {
         const j = doc.data();
         j.jamId = doc.id;
         jams.push(j);
       });
-      resolve(jams);
+      console.log('DB: ', jams);
+      userJams(jams);
     });
 });
-const getUserJams = async (userId) => {
-  const JamsAdmin = getUserJamsDB(userId, 'adminId', '==');
-  const JamsUsers = getUserJamsDB(userId, 'jamUsers', 'array-contains');
-  return await Promise.all([JamsAdmin, JamsUsers]).then(([resultJamsAdmin, resultJamsUsers]) => {
-    const jams = [...resultJamsAdmin, ...resultJamsUsers];
-    return jams;
-  });
+const getUserJams = async (userId, adminJams, userJams) => {
+  const JamsAdmin = getUserJamsDB(userId, 'adminId', '==', adminJams);
+  const JamsUsers = getUserJamsDB(userId, 'jammers', 'array-contains', userJams);
+  return Promise.all([JamsAdmin, JamsUsers]);
 };
+
 const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams')
     .doc(jamId)

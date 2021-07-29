@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/globals.css';
 
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,8 @@ const theme = {
 };
 
 const MyComponent = ({ Component, pageProps }) => {
+  const [userJams, setUserJam] = useState([]);
+  const [adminJams, setAdminJams] = useState([]);
   const dispatch = useDispatch();
 
   const { userId } = useSelector((state) => state.userReducer);
@@ -34,17 +36,19 @@ const MyComponent = ({ Component, pageProps }) => {
     }
   });
 
-  const getUserJams = async () => {
-    try {
-      const jams = await DataService.getUserJams(userId);
-      dispatch(setUserJams(jams));
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
-    userId && getUserJams();
+    if (userId) {
+      const unsubscribe = DataService.getUserJams(
+        userId,
+        (jams) => setAdminJams(jams),
+        (jams) => setUserJam(jams)
+      );
+      return unsubscribe;
+    }
   }, [userId]);
+  useEffect(() => {
+    dispatch(setUserJams([...adminJams, ...userJams]));
+  }, [userJams, adminJams, dispatch]);
 
   return <Component {...pageProps} />;
 };

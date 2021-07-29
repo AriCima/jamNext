@@ -383,17 +383,13 @@ const getMessageDate = (timestamp) => {
   const date = timestamp.toDate();
   const currentDate = format(new Date(), 'iii - dd/MMM/yyyy');
   const messageDate = format(date, 'iii') + format(date, 'dd/MMM/yyyy');
-  console.log('currentDate: ', currentDate);
-  console.log('messageDate: ', messageDate);
   let messageTime = '';
 
   if (messageDate === currentDate) {
     messageTime = `today at ${format(date, 'h:mm')}`;
   } else {
     messageTime = format(date, 'dd/MMM');
-    console.log('messageTime 2: ', messageTime);
   }
-  console.log('messageTime: ', messageTime);
   return messageTime;
 };
 
