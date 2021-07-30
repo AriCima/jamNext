@@ -56,6 +56,9 @@ const getJamAdminSections = (type) => {
     case 'accommodation':
       sections = ['Board', 'Jammers', 'MyJam', 'Settings'];
       break;
+    case 'standard':
+      sections = ['Board', 'Jammers'];
+      break;
     case 'rooms-rental':
       sections = ['Overview', 'Board', 'Tenants', 'Rooms', 'Settings'];
       break;
@@ -74,6 +77,9 @@ const getJamGuestSections = (type) => {
     case 'accommodation':
       sections = ['Board', 'Jammers', 'MyJam', 'Settings'];
       break;
+    case 'standard':
+      sections = ['Board', 'Jammers'];
+      break;
     case 'rooms-rental':
       sections = ['Overview', 'Board', 'Flatmates'];
       break;
@@ -81,7 +87,7 @@ const getJamGuestSections = (type) => {
       sections = ['Chat'];
       break;
     default:
-          // console.log('no reconoce tipo')
+      // console.log('no reconoce tipo')
   }
   return sections;
 };
@@ -350,14 +356,21 @@ const getSelectOptions = (listType) => {
         { id: 7, name: '7' },
         { id: 8, name: '8' },
         { id: 9, name: '9' },
-        { id: 1, name: '10' },
+        { id: 10, name: '10' },
       ];
       break;
     case 'jamTypes':
       list = [
         { id: 'select', name: 'Select . . . ' },
         { id: 'rooms-rental', name: 'Rooms Rental' },
-        { id: 'standard', name: 'Just a jam' },
+        { id: 'standard', name: 'standard' },
+      ];
+      break;
+    case 'messageType':
+      list = [
+        { id: 'select', name: 'Select . . .' },
+        { id: 'message', name: 'Message' },
+        { id: 'adv', name: 'Advertisement' },
       ];
       break;
     default:
@@ -370,19 +383,84 @@ const getMessageDate = (timestamp) => {
   const date = timestamp.toDate();
   const currentDate = format(new Date(), 'iii - dd/MMM/yyyy');
   const messageDate = format(date, 'iii') + format(date, 'dd/MMM/yyyy');
-  console.log('currentDate: ', currentDate);
-  console.log('messageDate: ', messageDate);
   let messageTime = '';
 
   if (messageDate === currentDate) {
     messageTime = `today at ${format(date, 'h:mm')}`;
   } else {
     messageTime = format(date, 'dd/MMM');
-    console.log('messageTime 2: ', messageTime);
   }
-  console.log('messageTime: ', messageTime);
   return messageTime;
 };
+
+const getTenantPayments = (rent, cMode, cIn, cOut) => {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const chIn = cIn;
+  const inYY = Number(chIn.getFullYear());
+  const inM = Number(chIn.getMonth()); // CheckIn Month in numbers
+  const inDays = moment(cIn).date();
+
+  const chOut = cOut;
+  const outYY = Number(chOut.getFullYear());
+  const outM = Number(chOut.getMonth()); // CheckOut Month in numbers
+  const outDays = moment(cOut).date();
+
+  let inRent = parseInt(rent);
+  let outRent = parseInt(rent);
+
+  switch (cMode) {
+    case 'daily':
+      inRent = (parseInt(rent) / 30) * (30 - inDays);
+      outRent = (parseInt(rent) / 30) * outDays;
+      break;
+    case 'fortnightly':
+      if (inDays > 15) {
+        inRent = parseInt(rent) / 2;
+      }
+      if (outDays <= 15) {
+        outRent = parseInt(rent) / 2;
+      }
+      break;
+    default:
+      break;
+  }
+
+  const rentsArray = [{
+    month: months[inM], rent: inRent, paidRent: 0, difOK: false,
+  }];
+
+  if (inYY === outYY) {
+    for (let s = inM + 1; s < outM; s++) {
+      const pay = {
+        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
+      };
+      rentsArray.push(pay);
+    }
+  } else {
+    for (let s = inM; s <= 11; s++) {
+      const pay = {
+        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
+      };
+      rentsArray.push(pay);
+    }
+
+    for (let s = 0; s < outM; s++) {
+      const pay = {
+        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
+      };
+      rentsArray.push(pay);
+    }
+  }
+
+  rentsArray.push({
+    month: months[outM], rent: outRent, paidRent: 0, difOK: false,
+  });
+
+  return rentsArray;
+};
+
+const getTypeOfContracts = () => ['daily', 'fortnightly', 'monthly'];
 
 const sortByField = ({ elements, asc = true, field = 'roomNr' }) => elements.sort((a, b) => {
   if (a[field] === b[field]) {
@@ -403,7 +481,7 @@ const getTenantsByRooms = (tenants, nrOfRooms) => { // separa los tenants por ha
   const tenantsByRooms = {};
 
   for (let i = 1; i <= nrOfRooms; i++) {
-    const roomNr = i.toString();
+    const roomNr = i;
     const tenantsInOneRoom = tenants.filter((e) => e.roomNr === roomNr);
     tenantsByRooms[`${roomNr}`] = tenantsInOneRoom;
   }
@@ -447,6 +525,33 @@ const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inq
   return result;
 };
 
+const missingRoomsInfo = (roomsInfo) => {
+  const rL = roomsInfo.length;
+  let missingInfo = false;
+  const missingArr = [];
+
+  for (let i = 0; i < rL; i++) {
+    let room = [];
+    room.push(roomsInfo[i]);
+    const missingObj = { roomNr: room.roomNr };
+    console.log('room: ', typeof room);
+    let pushObj = false;
+    room.forEach((value, key) => {
+      console.log('value: ', value);
+      if (value === '') {
+        missingInfo = true;
+        pushObj = true;
+        missingObj[key] = value;
+      }
+    });
+    if (pushObj) {
+      missingArr.push(missingObj);
+    }
+  }
+  const result = { missingInfo, missingArr };
+  return result;
+};
+
 const Calculations = {
   generateJamCode,
   getJamAdminSections,
@@ -455,7 +560,10 @@ const Calculations = {
   getMessageDate,
   getOrganizedTenants,
   getSelectOptions,
+  getTenantPayments,
+  getTypeOfContracts,
   getTenantsByRooms,
+  missingRoomsInfo,
   removeAmdinFromJammers,
   sortByField,
 };

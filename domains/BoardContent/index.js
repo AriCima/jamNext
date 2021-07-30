@@ -6,13 +6,13 @@ import { Div, Txt, MessageContainer } from '../../styledComps';
 
 const BoardContent = ({ boardContent }) => {
   const messageTime = Calculations.getMessageDate(boardContent.createdAt);
-  const { adminName } = useSelector((state) => state.jamReducer);
+  const { adminFirstName } = useSelector((state) => state.jamReducer);
 
   const renderMessage = (messageType) => {
     switch (messageType) {
       case 'publi':
         return (
-          <MessageContainer>
+          <MessageContainer className="publi-container">
             <div className="publi-img" />
             <div className="publi-info">
               <div className="publi-title" />
@@ -23,16 +23,16 @@ const BoardContent = ({ boardContent }) => {
         );
       default:
         return (
-          <MessageContainer>
-            <Div className="board-title" w="100%" just="flex-start" align="center">
+          <MessageContainer className="message-container">
+            {/* <Div className="board-title" w="100%" just="flex-start" align="center">
               <Txt bold fSize="16px" mgL="5px">{boardContent.title}</Txt>
+            </Div> */}
+            <Div className="board-message" mgL="5px" just="flex-start" align="center" mg="10px 10px 16px 20px">
+              <Txt fSize="14px" mgL="10px">{boardContent.content}</Txt>
             </Div>
-            <Div className="board-message" just="flex-start" align="center" mg="10px 10px 16px 20px">
-              <Txt fSize="14px" mgL="10px">{boardContent.desc}</Txt>
-            </Div>
-            <Div className="message-info" w="100%" just="flex-start" align="center">
-              <Txt>
-                {adminName}
+            <Div className="message-info" w="100%" mgL="5px" mgT="15px" just="flex-start" align="center">
+              <Txt fSize="10px">
+                {adminFirstName}
                 {' '}
                 -
                 {' '}

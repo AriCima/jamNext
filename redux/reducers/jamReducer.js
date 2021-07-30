@@ -6,7 +6,13 @@ const defaultState = {
   jamId: '',
   jamName: '',
   activeSection: 'overview',
-  editedJammers: {},
+  tenantsList: {},
+  roomsInfo: [],
+  adminId: '',
+  adminFirstName: '',
+  adminLastName: '',
+  adminEmail: '',
+  selectedRoomInfo: {},
 };
 
 function setJamReducer(state = defaultState, action) {
@@ -21,11 +27,21 @@ function setJamReducer(state = defaultState, action) {
         ...state,
         activeSection: action.payload,
       };
-    case 'EDITED_JAMMERS':
+    case 'TENANTS_LIST':
       return {
         ...state,
-        editedJammers: action.payload,
+        tenantsList: action.payload,
       };
+    case 'ROOMS_INFO':
+      return {
+        ...state,
+        roomsInfo: action.payload,
+      };
+    // case 'SELECTED_ROOM_INFO':
+    //   return {
+    //     ...state,
+    //     ...action.payload,
+    //   };
     default:
       return state;
   }

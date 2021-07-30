@@ -18,13 +18,6 @@ function setUserJams(jamsList) {
   };
 }
 
-function setUserRole(userRole) {
-  return {
-    type: 'USER_ROLE',
-    payload: userRole,
-  };
-}
-
 export {
-  setUserInfo, setUserJams, resetUserInfo, setUserRole,
+  setUserInfo, setUserJams, resetUserInfo,
 };

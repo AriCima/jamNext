@@ -1,0 +1,201 @@
+@import '../../../../variables.scss';
+
+.overview-wrapper{
+    width: 100%;
+    padding: 0 40px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .jamInfo-wrapper{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .jamInfo-section{
+            width: 95%;
+            margin: 0px 0 20px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            
+            .jamInfo-section-title{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 10px 0;
+                .backLine{
+                    width: 95%;
+                    height: 3px;
+                    background-color: $lightGray;
+                    position: absolute;
+                }
+                .title{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 10px 0;
+                    padding: 10px;
+                    border: 2px solid $secondary;
+                    background-color: white;
+                    z-index: 1;
+                    p{
+                        margin: 0 ;
+                        color: $primary;
+                        font-size: $smallFont;
+                        font-weight: 700;
+                    }
+                }
+            }
+        
+            .jamInfo-adminInfo{
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                p{
+                    margin: 0;
+                    font-size: $midFont;
+                    span{
+                        font-weight: 700;
+                        margin: 0 20px;
+                    }
+                }
+            }
+
+            .jamInfo-info{
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                font-size: $midFont;
+                .name-desc-block{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    .jamInfo-jamName{
+                        width: 100%;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        margin-bottom: 10px;
+                        p{
+                            margin: 0;
+                            font-weight: 700;
+                        }
+                    }
+                    .jamInfo-jamDesc{
+                        width: 100%;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        min-height: 80px;
+                        border-radius: 5px;
+                        background-color: $backCream;
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        p{
+                            margin: 0 0 0 20px;
+                            font-style: italic;
+                            font-weight: 400;
+                        }
+                    }
+                    .jamInfo-line{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        margin: 10px 0;
+                        p{
+                            margin: 0;
+
+                            span{
+                                margin-left: 20px;
+                                font-weight: 700;
+                            }
+                        }
+                    }
+                }
+
+                .jamInfo-jamName{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    p{
+                        font-weight: 700;
+                    }
+                }
+                .jamInfo-jamDesc{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    p{
+                        font-weight: 700;
+                    }
+                }
+            }
+
+        }
+    }
+    .jammer-info-section{
+        width: 95%;
+        margin: 0px 0 20px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        position: relative;
+        .jammer-info-section-title{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+            .backLine{
+                width: 95%;
+                height: 3px;
+                background-color: $lightGray;
+                position: absolute;
+            }
+            .title{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 10px 0;
+                padding: 10px;
+                border: 2px solid $secondary;
+                background-color: white;
+                z-index: 0;
+                p{
+                    margin: 0 ;
+                    color: $primary;
+                    font-size: $smallFont;
+                    font-weight: 700;
+                }
+            }
+        }
+    
+        .jammer-info-section-contractInfo{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .jammer-info-section-personalInfo{
+            width: 100%;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+    }
+}

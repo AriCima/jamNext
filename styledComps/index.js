@@ -20,9 +20,11 @@ import NavBarIcon from './navBarIcon';
 import ProfileBox from './profileBox';
 import SmallTxt from './smallTxt';
 import SubTitle from './subTitle';
+import Table from './table';
 import Title from './title';
 import Txt from './txt';
 import MenuItem from './menuItem';
+import StartChat from './startChat';
 
 export {
   AppContainer,
@@ -47,7 +49,9 @@ export {
   ProfileBox,
   Select,
   SmallTxt,
+  StartChat,
   SubTitle,
+  Table,
   Title,
   Txt,
 };

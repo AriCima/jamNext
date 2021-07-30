@@ -14,6 +14,12 @@ const JamCover = styled.a`
     border: 1px solid gray;
     span{
       color: ${({selected}) => selected ? "white" : 'black'};
+      font-size: ${({selected}) => selected ? "16px" : '12px'};
+    }
+    p{
+      color: ${({selected}) => selected ? "lightgray" : 'gray'};
+      font-size: ${({selected}) => selected ? "12px" : '10px'};
+      margin: 0;
       margin-left: 10px;
     }
     &:hover{

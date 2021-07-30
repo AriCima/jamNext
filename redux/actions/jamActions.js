@@ -5,9 +5,9 @@ function setJamInfo(jamInfo) {
   };
 }
 
-function setEditedJammers(jammers) {
+function setTenantsList(jammers) {
   return {
-    type: 'EDITED_JAMMERS',
+    type: 'TENANTS_LIST',
     payload: jammers,
   };
 }
@@ -19,4 +19,18 @@ function setActiveSection(section) {
   };
 }
 
-export { setJamInfo, setActiveSection, setEditedJammers };
+function setRoomsInfo(rooms) {
+  return {
+    type: 'ROOMS_INFO',
+    payload: rooms,
+  };
+}
+
+// function setSelectedRoomInfo(room) {
+//   return {
+//     type: 'SELECTED_ROOM_INFO',
+//     payload: room,
+//   };
+// }
+
+export { setJamInfo, setActiveSection, setTenantsList, setRoomsInfo };

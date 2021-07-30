@@ -19,14 +19,17 @@ const formStyle = {
 const CreateForm = ({ showModal }) => {
   const [typeOfJam, setJamType] = useState('');
   const [roomsNr, setRoomsNr] = useState(0);
+  const [selectedCountry, setSelectedCountry] = useState('');
 
-  const { userId, firstName } = useSelector((state) => state.userReducer);
+  const { userId, firstName, lastName } = useSelector((state) => state.userReducer);
 
   const { register, errors, handleSubmit } = useForm();
   const router = useRouter();
 
   const createNewJam = (data) => {
-    const { jamName, jamDesc, jamType } = data;
+    const {
+      jamName, jamDesc, jamType, nrOfRooms, address, floor, door, zipCode, country, city
+    } = data;
 
     const jamCode = Calculations.generateJamCode();
     const createdAt = new Date();
@@ -43,36 +46,47 @@ const CreateForm = ({ showModal }) => {
         apartmentInfo: {},
       };
 
-      jamDetails = { rooms: [], jamRules, contractInfo };
+      jamDetails = { jamRules, contractInfo };
     }
 
     const newJamInfo = {
       adminId: userId,
-      jamCode,
-      jamName,
-      jamDesc,
-      jamType,
-      jamDetails,
+      adminLastName: lastName,
+      adminFirstName: firstName,
       createdAt,
-      updatedAt,
-      jamUsers: [],
-      privacy: 'private',
+      jamCode,
+      jamDesc,
+      jamDetails,
+      jamName,
+      address,
+      floor,
+      door,
+      zipCode,
+      country,
+      city,
+      jamType,
       lastActivity: createdAt,
+      nrOfRooms,
+      privacy: 'private',
+      updatedAt,
     };
 
-    DataService.createJam(newJamInfo)
+    const adminId = userId;
+
+    DataService.createJam(newJamInfo, adminId)
       .then((res) => {
         const jamId = res.id;
         showModal(false);
-        router.push(`/jam/${jamId}`);
+        router.push(`/jam/${jamId}/overview`);
 
-        const jamSummary = { adminId: userId, adminName: firstName, createdAt };
-        DataService.addJamToUser(userId, jamId, jamSummary);
+        // const jamSummary = { adminId: userId, adminFirstName: firstName, createdAt };
+        // DataService.addJamToUser(userId, jamId, jamSummary);
       });
   };
 
   const nrOfRooms = Calculations.getSelectOptions('nrOfRooms');
   const typeOfJams = Calculations.getSelectOptions('jamTypes');
+  const countries = Calculations.getSelectOptions('countries');
 
   return (
     <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(createNewJam)}>
@@ -116,20 +130,91 @@ const CreateForm = ({ showModal }) => {
         />
 
         {typeOfJam === 'rooms-rental'
-                    && (
-                    <FormSelect
-                      w="50%"
-                      label="Nr. of Rooms"
-                      name="nrOfRooms"
-                      type="text"
-                      error={errors.nrOfRooms}
-                      errorMessage="Please select the nr of Rrooms"
-                      register={register}
-                      registerObject={{ required: true }}
-                      options={nrOfRooms}
-                      reportValue={(val) => setRoomsNr(val)}
-                    />
-                    )}
+            && (
+              <Div w="100%" col just="center" align="flex-start">
+                <FormSelect
+                  w="50%"
+                  label="Nr. of Rooms"
+                  name="nrOfRooms"
+                  type="number"
+                  error={errors.nrOfRooms}
+                  errorMessage="Please select the nr of Rrooms"
+                  register={register}
+                  registerObject={{ required: true }}
+                  options={nrOfRooms}
+                  reportValue={(val) => setRoomsNr(val)}
+                />
+                <SubTitle>Jam Address</SubTitle>
+                <FormInput
+                  w="70%"
+                  label="Address (street and house Nr)"
+                  type="text"
+                  name="address"
+                  mgR="20px"
+                  error={errors.address}
+                  errorMessage="Jam address is mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                />
+                <FormInput
+                  w="70%"
+                  label="Floor"
+                  type="text"
+                  name="floor"
+                  mgR="20px"
+                  error={errors.floor}
+                  errorMessage="Jam floor is mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                />
+                <FormInput
+                  w="70%"
+                  label="Door"
+                  type="text"
+                  name="door"
+                  mgR="20px"
+                  error={errors.door}
+                  errorMessage="Jam door is mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                />
+                <FormInput
+                  w="70%"
+                  label="ZipCode"
+                  type="text"
+                  name="zipCode"
+                  mgR="20px"
+                  error={errors.zipCode}
+                  errorMessage="Jam zipCode is mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                />
+
+                <FormSelect
+                  w="50%"
+                  label="Country"
+                  name="country"
+                  type="text"
+                  error={errors.country}
+                  errorMessage="Please select a country"
+                  register={register}
+                  registerObject={{ required: true }}
+                  options={countries}
+                  reportValue={(val) => setSelectedCountry(val)}
+                />
+                <FormInput
+                  w="70%"
+                  label="City"
+                  type="text"
+                  name="city"
+                  mgR="20px"
+                  error={errors.city}
+                  errorMessage="Jam city is mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                />
+              </Div>
+            )}
 
         <InputSubmit
           w="100%"

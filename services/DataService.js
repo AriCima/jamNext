@@ -33,7 +33,6 @@ const checkIfEmialExists = (email) => new Promise((resolve, reject) => {
     const errorCode = error.code;
     // console.log('Usuario No Existe : ', errorCode);
   });
-
 const getUserInfo = (userId) => new Promise((resolve, reject) => {
   firebase.firestore()
     .collection('users')
@@ -50,7 +49,6 @@ const getUserInfo = (userId) => new Promise((resolve, reject) => {
       console.log('Error getting document:', error);
     });
 });
-
 const updateCompanyInfo = (data) => new Promise(() => {
   firebase.firestore()
     .collection('companies')
@@ -70,56 +68,98 @@ const updateCompanyInfo = (data) => new Promise(() => {
       console.error('Error adding document: ', error);
     });
 });
-
-const createJam = (data) => {
-  console.log('data: ', data);
-  return new Promise((resolve, reject) => {
-    firebase.firestore().collection('jams').add(data)
-      .then((doc) => {
-        console.log('doc del create: ', doc);
-        resolve({ id: doc.id });
-      })
-      .catch((error) => {
-        console.error('Error creating Jam: ', error);
-      });
-  });
-};
-
-const addJamToUser = (userId, jamId, data) => new Promise((resolve, reject) => {
-  firebase.firestore().collection('users').doc(userId)
-    .collection(userJams)
+const addNewRoom = (jamId, roomInfo) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
     .doc(jamId)
+    .collection('rooms')
+    .add(roomInfo)
+    .then(console.log('room succesfully added to jam: '))
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log('Room could not be created: ', errorCode);
+    });
+});
+const addJamToUser = (jamId, userId) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('userJams')
+    .doc(jamId)
+    .set({ jamId })
+    .then((res) => { console.log('jam added to user OK', res); })
+    .catch((error) => {
+      console.error('Error creating adding Jam to user: ', error);
+    });
+});
+const addJammerToJam = (jamId, userId) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .doc(jamId)
+    .collection('jammers')
+    .doc(userId)
+    .set({ userId })
+    .then((result) => {
+      console.log('Jammers added to Jam', result);
+      resolve(result);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log('ERROR Jam NOT added to user: ', errorCode);
+    });
+});
+const createJam = (data, userId) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
     .add(data)
     .then((doc) => {
-      console.log('doc del create: ', doc);
+      const jamId = doc.id;
+      if (data.jamType === 'rooms-rental') {
+        const rooms = Number(data.nrOfRooms);
+        for (let i = 0; i < rooms; i++) {
+          const roomNr = i + 1;
+          const roomInfo = {
+            balcony: '',
+            deposit: '',
+            exterior: '',
+            rent: '',
+            privBath: '',
+            roomNr,
+            sqm: '',
+            expenses: '',
+          };
+          addNewRoom(jamId, roomInfo);
+        }
+      }
+      addJamToUser(jamId, userId);
+      addJammerToJam(jamId, userId);
+      resolve({ id: doc.id });
     })
     .catch((error) => {
       console.error('Error creating Jam: ', error);
     });
 });
 
-const getUserJamsDB = (userId, field, comparation) => new Promise((resolve, reject) => {
+const getUserJamsDB = (userId, field, comparation, userJams) => new Promise(() => {
   firebase.firestore()
     .collection('jams')
     .where(field, comparation, userId)
-    .get()
-    .then((result) => {
+    .orderBy('createdAt')
+    .onSnapshot((result) => {
       const jams = [];
       result.forEach((doc) => {
         const j = doc.data();
         j.jamId = doc.id;
         jams.push(j);
       });
-      resolve(jams);
+      console.log('DB: ', jams);
+      userJams(jams);
     });
 });
-const getUserJams = async (userId) => {
-  const JamsAdmin = getUserJamsDB(userId, 'adminId', '==');
-  const JamsUsers = getUserJamsDB(userId, 'jamUsers', 'array-contains');
-  return await Promise.all([JamsAdmin, JamsUsers]).then(([resultJamsAdmin, resultJamsUsers]) => {
-    const jams = [...resultJamsAdmin, ...resultJamsUsers];
-    return jams;
-  });
+const getUserJams = async (userId, adminJams, userJams) => {
+  const JamsAdmin = getUserJamsDB(userId, 'adminId', '==', adminJams);
+  const JamsUsers = getUserJamsDB(userId, 'jammers', 'array-contains', userJams);
+  return Promise.all([JamsAdmin, JamsUsers]);
 };
 
 const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
@@ -128,7 +168,6 @@ const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
     .get()
     .then((result) => {
       const jamInfo = result.data();
-      const jamId = result.id;
       jamInfo.jamId = jamId;
       resolve(jamInfo);
     })
@@ -137,6 +176,24 @@ const getJamInfoById = (jamId) => new Promise((resolve, reject) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
+    });
+});
+
+// < - - - - - INVITATIONS - - - - - > //
+const saveInvitation = (jamId, data) => new Promise((resolve, reject) => {
+  firebase.firestore()
+    .collection('jams')
+    .doc(jamId)
+    .collection('invitations')
+    .add(data)
+    .then((docRef) => {
+      const invitationId = docRef.id;
+      console.log('Document written with ID: ', invitationId);
+      resolve(invitationId);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log('Invitation could not be saved: ', errorCode);
     });
 });
 
@@ -175,7 +232,6 @@ const getBoardInfo = (jamId) => new Promise((resolve, reject) => {
       console.log('Error al cargar la JamInfo: ', errorCode, errorMessage);
     });
 });
-
 const saveBoardMessage = (jamId, messageInfo) => new Promise((resolve, reject) => {
   firebase.firestore()
     .collection('jams')
@@ -191,7 +247,6 @@ const saveBoardMessage = (jamId, messageInfo) => new Promise((resolve, reject) =
       console.log('Message could not be sent: ', errorCode);
     });
 });
-
 const getSettingsInfo = (jamId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams').doc(jamId).collection('settings')
     .get()
@@ -213,7 +268,6 @@ const getSettingsInfo = (jamId) => new Promise((resolve, reject) => {
 });
 
 // < - - - - - JAMMERS - - - - - > //
-
 const getJammers = (jamId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams')
     .doc(jamId)
@@ -261,8 +315,22 @@ const getJamRooms = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
+const getRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('rooms')
+    .doc(roomId)
+    .get()
+    .then((res) => {
+      resolve(res.data());
+    })
+    .catch((error) => {
+      console.log('error: ', error);
+    });
+});
 
 const DataService = {
+  addJammerToJam,
   addJamToUser,
   checkIfEmialExists,
   createJam,
@@ -270,10 +338,12 @@ const DataService = {
   getJamInfoById,
   getJammers,
   getJamRooms,
+  getRoomInfo,
   getSettingsInfo,
   getUserInfo,
   getUserJams,
   saveBoardMessage,
+  saveInvitation,
   saveJoinRequest,
   saveUserInfoInFirestore,
   updateCompanyInfo,

@@ -5,7 +5,6 @@ const defaultState = {
   email: '',
   userJams: [],
   company: [],
-  userRole: '',
 };
 
 function setUserReducer(state = defaultState, action) {
@@ -25,12 +24,6 @@ function setUserReducer(state = defaultState, action) {
         ...state,
         userJams: action.payload,
       };
-    case 'USER_ROLE':
-      return {
-        ...state,
-        userRole: action.payload,
-      };
-
     default:
       return state;
   }
