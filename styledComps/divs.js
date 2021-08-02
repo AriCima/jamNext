@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const Div = styled.div`
     align-items: ${({ align }) => align || 'stretch'};
     background-color: ${({ back }) => back || 'transparent'};
-    border: ${({ border }) => (border ? `1px solid ${border}` : 'none')};
+    border: ${({ border }) => (border ? `1px solid ${border}` : 'none')};
+    border-bottom:  ${({ bordB }) => (bordB ? `1px solid ${bordB}` : 'none')};
     border-radius: ${({ borderR }) => (borderR || '')};
     bottom: ${({ bot }) => bot || 'auto'};
     box-shadow: ${({ shad }) => shad || 'none'};

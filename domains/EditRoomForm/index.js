@@ -76,7 +76,7 @@ const EditRoomForm = ({ jamId, roomInfo }) => {
         <Div className="roomInfo-buttonArea">
 
           {disabled ? (
-            <Div
+            <Div back="blue" pad="5px" borderR="5px" color="white"
               className="edit-button"
               onClick={(e) => { e.preventDefault(); enableEditForm(true); }}
             >
@@ -84,8 +84,7 @@ const EditRoomForm = ({ jamId, roomInfo }) => {
             </Div>
           ) : (
             <>
-              <input type="submit" />
-              <Div
+              <Div back="lightgray" pad="5px" borderR="5px" color="white"
                 className="cancel-button"
                 onClick={(e) => { e.preventDefault(); enableEditForm(false); }}
               >

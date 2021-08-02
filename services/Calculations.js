@@ -1,4 +1,5 @@
 import { format } from 'date-fns/';
+import isEmpty from 'lodash/isEmpty';
 
 const generateJamCode = () => {
   // type: 4aG-89n --> 14.776.336 combinations
@@ -488,7 +489,6 @@ const getTenantsByRooms = (tenants, nrOfRooms) => { // separa los tenants por ha
   // FORNAT --> tenantsByRooms = {1:[{..}, {..}], 2:[{..} . . . {..}],  . . }
   return tenantsByRooms;
 };
-
 const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inquilinos de cada room
   const result = [];
   const today = new Date();
@@ -524,6 +524,37 @@ const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inq
   // FORNAT --> tenantsByRooms = {1:[{..}, {..}], 2:[{..} . . . {..}],  . . }
   return result;
 };
+const getSingleRoomOrganizedTenants = (jammers) => { // Organiza los inquilinos de cada room
+  const today = new Date();
+
+  const tL = jammers.length;
+
+  let currentTenant = {};
+  const formerTenants = [];
+  const futureTenants = [];
+
+  for (let j = 0; j < tL; j++) {
+    const tenant = jammers[j];
+
+    const cOut = new Date(tenant.checkOut);
+    const cIn = new Date(tenant.checkIn);
+
+    if (cIn < today && cOut > today) {
+      currentTenant = tenant;
+    } else if (cIn < today && cOut < today) {
+      formerTenants.push(tenant);
+    } else if (cIn > today) {
+      futureTenants.push(tenant);
+    }
+  }
+  const singleRoomTenants = {
+    currentTenant,
+    formerTenants,
+    futureTenants,
+    nextTenant: !isEmpty(futureTenants) ? futureTenants[0] : [],
+  };
+  return singleRoomTenants;
+};
 
 const missingRoomsInfo = (roomsInfo) => {
   const rL = roomsInfo.length;
@@ -531,7 +562,7 @@ const missingRoomsInfo = (roomsInfo) => {
   const missingArr = [];
 
   for (let i = 0; i < rL; i++) {
-    let room = [];
+    const room = [];
     room.push(roomsInfo[i]);
     const missingObj = { roomNr: room.roomNr };
     console.log('room: ', typeof room);
@@ -560,6 +591,7 @@ const Calculations = {
   getMessageDate,
   getOrganizedTenants,
   getSelectOptions,
+  getSingleRoomOrganizedTenants,
   getTenantPayments,
   getTypeOfContracts,
   getTenantsByRooms,

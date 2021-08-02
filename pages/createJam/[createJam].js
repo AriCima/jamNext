@@ -49,7 +49,8 @@ const CreateJam = () => {
             jamDetails,
             createdAt,
             updatedAt,
-            lastActivity: createdAt
+            lastActivity: createdAt,
+            state: 'active'
         };
 
         DataService.createJam(newJamInfo);
