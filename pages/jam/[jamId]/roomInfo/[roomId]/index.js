@@ -11,7 +11,7 @@ import Layout from '../../../../../domains/Layout';
 import NavBarJam from '../../../../../domains/NavBarJam';
 import DataService from '../../../../../services/DataService';
 import Calculations from '../../../../../services/Calculations';
-import CurrentTenant from '../../../../../domains/CurrentTenant';
+import TenantSummary from '../../../../../domains/TenantSummary';
 import EditRoomForm from '../../../../../domains/EditRoomForm';
 
 const RoomInfo = () => {
@@ -54,8 +54,8 @@ const RoomInfo = () => {
           <SubTitle w="100%">Room Nr: </SubTitle>
           <Txt mgL="15px" color="gray" fSize="1.5rem" bold="700">{roomNr}</Txt>
         </Div>
-        {!isVacant && <CurrentTenant tenantType="current" jamId={jamId} tenant={current} />}
-        {isVacant && thereIsNext && <CurrentTenant tenantType="next" jamId={jamId} tenant={next} />}        
+        {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
+        {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}        
         <EditRoomForm jamId={jamId} roomInfo={info} />
       </Div>
     </Layout>

@@ -6,7 +6,7 @@ import { Div, Txt, DivShadow } from '../../styledComps';
 // import JammerContractInfo from '../../../../Reusables/JammerContractInfo';
 import StartChatButton from '../StartChatButton';
 
-const CurrentTenant = ({ tenantType, tenant, jamId }) => {
+const TenantSummary = ({ tenantType, tenant, jamId }) => {
   const {
     adminFirstName, adminLastName, adminId, jamName,
   } = useSelector((state) => state.jamReducer);
@@ -23,7 +23,7 @@ const CurrentTenant = ({ tenantType, tenant, jamId }) => {
       <Txt mgB="10px" fSize="14px" color="gray" bold>{tenantTitle}</Txt>
 
       <Link href="/jam/[jamId]/jammerInfo/[jammerId]" as={`/jam/${jamId}/jammerInfo/${userId}`} passHref>
-        <DivShadow className="currentTenantInfo" hoverC="pointer" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="20px">
+        <DivShadow className="TenantSummaryInfo" hoverC="pointer" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="20px">
           <Txt>
             {firstName}
             {' '}
@@ -54,11 +54,11 @@ const CurrentTenant = ({ tenantType, tenant, jamId }) => {
         </DivShadow>
       </Link>
 
-      {/* <JammerContractInfo contractInfo={currentTenant} showRoomNr={false} /> */}
+      {/* <JammerContractInfo contractInfo={TenantSummary} showRoomNr={false} /> */}
 
     </Div>
 
   );
 };
 
-export default CurrentTenant;
+export default TenantSummary;
