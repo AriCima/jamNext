@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 
 const Table = styled.table`
+  margin: ${({ mg }) => mg || '0'};
+  width: ${({ w }) => w || ''};
   border: none;
   border-collapse: collapse;
   caption-side: bottom;

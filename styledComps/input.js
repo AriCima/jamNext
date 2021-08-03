@@ -2,11 +2,13 @@ import styled from 'styled-components';
 
 const Input = styled.input`
     display: block;
-    background-color: ${({back}) => back || 'rgba(240, 239, 235, 0.6)'};
+    background-color: ${({disabled}) => disabled ? 'rgba(107, 107, 107, 0.4)' : 'rgba(240, 239, 235, 0.6)'};
+    color: ${({disabled}) => disabled ? 'lightgray' : 'black'};
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.16);
     padding: 15px;
     margin-bottom: 10px;
     width: ${({w}) => w || '100%'};
+
 ` 
 export default Input;

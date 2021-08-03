@@ -4,6 +4,7 @@ import Aside from './aside';
 import Button from './button';
 import CloseButton from './closeButton';
 import Div from './divs';
+import DivShadow from './divShadow';
 import Footer from './footer';
 import FormError from './formError';
 import GlobalStyle from './global';
@@ -33,6 +34,7 @@ export {
   Button,
   CloseButton,
   Div,
+  DivShadow,
   Footer,
   FormError,
   GlobalStyle,

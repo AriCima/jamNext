@@ -13,13 +13,12 @@ const Button = styled.button`
     justify-content: flex-end;
     align-items: center;
     border: ${({border}) => `1px solid ${border}` || 'none'};
+    border-radius: 5px;
     &:hover{
-        background-color: rgb(85, 187, 151);
-        p{
-            color: white;
-        }
+        background-color: ${({ backHov }) => backHov || 'rgb(85, 187, 151)'};
+        color: ${({ colorHov }) => colorHov || 'white'};
     }
-}`
+}`;
 
 export default Button;
 // flex-direction: ${props => (props.col ? 'column' : 'row')};
