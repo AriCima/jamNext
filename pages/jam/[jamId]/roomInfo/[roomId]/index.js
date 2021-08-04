@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { setJamInfo, setActiveSection } from '../../../../../redux/actions';
 
-import { TENANTS, SINGLE_ROOM_TENANTS } from '../../../../../config';
+import { SINGLE_ROOM_TENANTS } from '../../../../../config';
 import { Div, Txt, SubTitle } from '../../../../../styledComps';
 import Layout from '../../../../../domains/Layout';
 import NavBarJam from '../../../../../domains/NavBarJam';
