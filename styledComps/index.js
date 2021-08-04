@@ -7,6 +7,9 @@ import Div from './divs';
 import DivShadow from './divShadow';
 import Footer from './footer';
 import FormError from './formError';
+import FormSection from './formSection';
+import FormRow from './formRow';
+import FormSubtitle from './formSubtitle';
 import GlobalStyle from './global';
 import Input from './input';
 import InputSubmit from './inputSubmit';
@@ -37,6 +40,9 @@ export {
   DivShadow,
   Footer,
   FormError,
+  FormRow,
+  FormSection,
+  FormSubtitle,
   GlobalStyle,
   Input,
   InputSubmit,
@@ -45,8 +51,8 @@ export {
   JamNavBarItem,
   Label,
   Main,
-  MessageContainer,
   MenuItem,
+  MessageContainer,
   NavBarIcon,
   ProfileBox,
   Select,

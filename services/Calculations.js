@@ -374,6 +374,15 @@ const getSelectOptions = (listType) => {
         { id: 'adv', name: 'Advertisement' },
       ];
       break;
+    case 'contracts':
+      list = [
+        { id: 'select', name: 'Select . . .' },
+        { id: 'monthly', name: 'Monthly' },
+        { id: 'fortnightly', name: 'fortnightly' },
+        { id: 'daily', name: 'Daily' },
+
+      ];
+      break;
     default:
   }
 
