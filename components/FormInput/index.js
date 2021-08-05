@@ -4,7 +4,7 @@ import {
 } from '../../styledComps';
 
 const FormInput = ({
-  w, mgL, mgR, label, name, error, errorMessage, register, placeholder = '', registerObject, type = 'text',
+  w, mgL, mgR, label, name, error, errorMessage, register, placeholder = '', registerObject, type = 'text', disabled
 }) => (
   <Div
     col
@@ -29,6 +29,7 @@ const FormInput = ({
       name={name}
       placeholder={placeholder}
       ref={register(registerObject)}
+      disabled={disabled}
     />
   </Div>
 );

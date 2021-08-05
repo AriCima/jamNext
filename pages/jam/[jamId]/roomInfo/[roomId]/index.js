@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
+import { isEmpty } from 'lodash';
 import { setJamInfo, setActiveSection } from '../../../../../redux/actions';
 
-import FormSelect from '../../../../../components/FormSelect';
-import FormInput from '../../../../../components/FormInput';
-
+import { SINGLE_ROOM_TENANTS } from '../../../../../config';
 import { Div, Txt, SubTitle } from '../../../../../styledComps';
 import Layout from '../../../../../domains/Layout';
 import NavBarJam from '../../../../../domains/NavBarJam';
 import DataService from '../../../../../services/DataService';
+import Calculations from '../../../../../services/Calculations';
+import TenantSummary from '../../../../../domains/TenantSummary';
 import EditRoomForm from '../../../../../domains/EditRoomForm';
+import SingleRoomInfo from '../../../../../domains/SingleRoomInfo';
 
 const RoomInfo = () => {
   const [info, setInfo] = useState({});
+  const [current, setCurrent] = useState({});
+  const [next, setNextTenant] = useState({});
+  const [editInfo, setEditInfo] = useState(false);
+
   const router = useRouter();
   const { jamId, roomId } = router.query;
   const dispatch = useDispatch();
@@ -25,25 +30,40 @@ const RoomInfo = () => {
     dispatch(setJamInfo(res));
   };
 
-  const getSingleRoomInfo = async () => {
-    const roomInfo = await DataService.getRoomInfo(jamId, roomId);
-    console.log('roomInfo: ', roomInfo);
+  const getRoomInfo = async () => {
+    const roomInfo = await DataService.getSingleRoomInfo(jamId, roomId);
+    const organizedTenant = Calculations.getSingleRoomOrganizedTenants(SINGLE_ROOM_TENANTS);
+    console.log('organizedTenant: ', organizedTenant);
+    setCurrent(organizedTenant.currentTenant);
+    setNextTenant(organizedTenant.nextTenant);
     setInfo(roomInfo);
   };
 
   useEffect(() => {
     jamId && getJamInfo(jamId);
-    roomId && jamId && getSingleRoomInfo(jamId, roomId);
+    roomId && jamId && getRoomInfo(jamId, roomId);
     dispatch(setActiveSection('rooms'));
   }, [jamId, roomId]);
 
   const { roomNr } = info;
+  const isVacant = isEmpty(current);
+  const thereIsNext = isEmpty(next);
 
   return (
     <Layout>
       <NavBarJam />
       <Div w="100%" col pad="50px">
-        <EditRoomForm jamId={jamId} roomInfo={info} />
+        <Div w="100%" just="flex-start">
+          <SubTitle w="100%">Room Nr: </SubTitle>
+          <Txt mgL="15px" color="gray" fSize="1.5rem" bold="700">{roomNr}</Txt>
+        </Div>
+        {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
+        {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
+        {isVacant && !thereIsNext && <Txt>Room is Vacant</Txt>}
+        {editInfo
+          ? <EditRoomForm jamId={jamId} roomInfo={info} edit={setEditInfo} />
+          : <SingleRoomInfo roomInfo={info} edit={setEditInfo} />}
+
       </Div>
     </Layout>
 

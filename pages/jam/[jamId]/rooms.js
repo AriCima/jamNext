@@ -154,11 +154,6 @@ const Rooms = () => {
       fontSize: '12px',
     };
 
-    const vacantUntil = {
-      textAlign: 'center',
-      fontSize: '12px',
-    };
-
     const flexTd = {
       display: 'flex',
       justifyContent: 'flex-start',

@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-const Div = styled.div`
+const DivShadow = styled.div`
     align-items: ${({ align }) => align || 'stretch'};
     background-color: ${({ back }) => back || 'transparent'};
     border: ${({ border }) => (border ? `1px solid ${border}` : 'none')};
+    border-bottom:  ${({ bordB }) => (bordB ? `1px solid ${bordB}` : 'none')};
     border-radius: ${({ borderR }) => (borderR || '')};
     bottom: ${({ bot }) => bot || 'auto'};
     box-shadow: ${({ shad }) => shad || 'none'};
@@ -32,17 +33,10 @@ const Div = styled.div`
     text-overflow: ${({ txtOver }) => txtOver || 'clip'};
     overflow: auto;
     ${({ transf }) => (transf ? `transform: ${transf};` : '')}
-    ${({ main }) => main && `
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        margin: 0 0 0 0;
-        width: 100%
-        align-items: center;
-        justify-content: flex-start;
-        height: 100vh;
-    `
-}
+    &:hover{
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.16);
+        cursor: pointer;
+    }
 }`;
 
-export default Div;
+export default DivShadow;

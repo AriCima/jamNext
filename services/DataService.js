@@ -152,7 +152,6 @@ const getUserJamsDB = (userId, field, comparation, userJams) => new Promise(() =
         j.jamId = doc.id;
         jams.push(j);
       });
-      console.log('DB: ', jams);
       userJams(jams);
     });
 });
@@ -315,7 +314,7 @@ const getJamRooms = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
-const getRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
+const getSingleRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams')
     .doc(jamId)
     .collection('rooms')
@@ -329,6 +328,21 @@ const getRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
     });
 });
 
+const updateRoomInfo = (jamId, roomId, data) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('rooms')
+    .doc(roomId)
+    .update(data)
+    .then(() => {
+      console.log('Document successfully updated!');
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating document: ', error);
+    });
+});
+
 const DataService = {
   addJammerToJam,
   addJamToUser,
@@ -338,8 +352,8 @@ const DataService = {
   getJamInfoById,
   getJammers,
   getJamRooms,
-  getRoomInfo,
   getSettingsInfo,
+  getSingleRoomInfo,
   getUserInfo,
   getUserJams,
   saveBoardMessage,
@@ -347,6 +361,7 @@ const DataService = {
   saveJoinRequest,
   saveUserInfoInFirestore,
   updateCompanyInfo,
+  updateRoomInfo,
 };
 
 export default DataService;
