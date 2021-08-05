@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
@@ -44,10 +44,12 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const Settings = () => {
+
   const {
     jamDetails, jamName, jamDesc, jamCode,
   } = useSelector((state) => state.jamReducer);
   const dispatch = useDispatch();
+
   const [selectedCountry, setSelectedCountry] = useState('');
   const [contractMode, setContractMode] = useState('');
 
@@ -72,141 +74,141 @@ const Settings = () => {
   };
 
   const { houseRules, landlordInfo } = jamDetails;
-  const {
-    checkInProcess,
-    checkOutProcess,
-    checkInFrom,
-    checkInTo,
-    checkOutBefore,
-    contractMode,
-    pets,
-    smoking,
-    smokingBalcony,
-    overnight,
-    parties,
-  } = houseRules;
+  // const {
+  //   checkInProcess,
+  //   checkOutProcess,
+  //   checkInFrom,
+  //   checkInTo,
+  //   checkOutBefore,
+  //   contractMode,
+  //   pets,
+  //   smoking,
+  //   smokingBalcony,
+  //   overnight,
+  //   parties,
+  // } = houseRules;
 
-  const defaultValues = {
-    jamName,
-    jamDesc,
-    jamCode,
-    landlordFirstName: landlordInfo.firstName,
-    landlordLastName: landlordInfo.lastName,
-    landlordDocType: landlordInfo.docType,
-    landlordDocNr: landlordInfo.docNr,
-    landlordAddress: landlordInfo.address,
-    landlordCity: landlordInfo.city,
-    landlordZipCode: landlordInfo.zipCode,
-    landlordCountry: landlordInfo.country,
-    landlordtitle: landlordInfo.title,
-    checkInProcess,
-    checkOutProcess,
-    checkInFrom,
-    checkInTo,
-    checkOutBefore,
-    contractMode,
-    pets,
-    smoking,
-    smokingBalcony,
-    overnight,
-    parties,
-    address: jamDetails.address,
-    city: jamDetails.city,
-    country: jamDetails.country,
-    zipCode: jamDetails.zipCode,
-    inviteFriends: jamDetails.houseRules.inviteFriends,
-  };
+  // const defaultValues = {
+  //   jamName,
+  //   jamDesc,
+  //   jamCode,
+  //   landlordFirstName: landlordInfo.firstName,
+  //   landlordLastName: landlordInfo.lastName,
+  //   landlordDocType: landlordInfo.docType,
+  //   landlordDocNr: landlordInfo.docNr,
+  //   landlordAddress: landlordInfo.address,
+  //   landlordCity: landlordInfo.city,
+  //   landlordZipCode: landlordInfo.zipCode,
+  //   landlordCountry: landlordInfo.country,
+  //   landlordtitle: landlordInfo.title,
+  //   checkInProcess,
+  //   checkOutProcess,
+  //   checkInFrom,
+  //   checkInTo,
+  //   checkOutBefore,
+  //   contractMode,
+  //   pets,
+  //   smoking,
+  //   smokingBalcony,
+  //   overnight,
+  //   parties,
+  //   address: jamDetails.address,
+  //   city: jamDetails.city,
+  //   country: jamDetails.country,
+  //   zipCode: jamDetails.zipCode,
+  //   inviteFriends: jamDetails.houseRules.inviteFriends,
+  // };
 
-  const {
-    register, errors, handleSubmit, control,
-  } = useForm({ defaultValues });
+  // const {
+  //   register, errors, handleSubmit, control,
+  // } = useForm({ defaultValues });
 
-  const onSubmit = (data) => {
-    const {
-      address,
-      city,
-      zipCode,
-      country,
-      checkInFrom,
-      checkInProcess,
-      checkInTo,
-      checkOutBefore,
-      checkOutProcess,
-      contractMode,
-      landlordTitle,
-      landlordFirstName,
-      landlordLastName,
-      landlordDocType,
-      landlordDocNr,
-      landlordAddress,
-      landlordCity,
-      landlordZipCode,
-      landlordCountry,
-      jamDesc,
-      jamName,
-      overnight,
-      parties,
-      pets,
-      smoking,
-      smokingBalcony,
-      inviteFriends,
-    } = data;
+  // const onSubmit = (data) => {
+  //   const {
+  //     address,
+  //     city,
+  //     zipCode,
+  //     country,
+  //     checkInFrom,
+  //     checkInProcess,
+  //     checkInTo,
+  //     checkOutBefore,
+  //     checkOutProcess,
+  //     contractMode,
+  //     landlordTitle,
+  //     landlordFirstName,
+  //     landlordLastName,
+  //     landlordDocType,
+  //     landlordDocNr,
+  //     landlordAddress,
+  //     landlordCity,
+  //     landlordZipCode,
+  //     landlordCountry,
+  //     jamDesc,
+  //     jamName,
+  //     overnight,
+  //     parties,
+  //     pets,
+  //     smoking,
+  //     smokingBalcony,
+  //     inviteFriends,
+  //   } = data;
 
-    data.jamCode = jamCode;
+  //   data.jamCode = jamCode;
 
-    const editJamMainInfo = jamName !== defaultValues.jamName || jamDesc !== defaultValues.jamDesc || contractMode !== defaultValues.contractMode;
-    const editLandlordInfo = landlordFirstName !== defaultValues.landlordFirstName || landlordLastName !== defaultValues.landlordLastName || landlordDocType !== defaultValues.landlordDocType || landlordDocNr !== defaultValues.landlordDocNr || landlordAddress !== defaultValues.landlordAddress || landlordCity !== defaultValues.landlordCity || landlordZipCode !== defaultValues.landlordZipCode || landlordCountry !== defaultValues.landlordCountry || landlordTitle !== defaultValues.landlordTitle;
-    const editJamDetails = address !== defaultValues.address || city !== defaultValues.city || zipCode !== defaultValues.zipCode || country !== defaultValues.country;
+  //   const editJamMainInfo = jamName !== defaultValues.jamName || jamDesc !== defaultValues.jamDesc || contractMode !== defaultValues.contractMode;
+  //   const editLandlordInfo = landlordFirstName !== defaultValues.landlordFirstName || landlordLastName !== defaultValues.landlordLastName || landlordDocType !== defaultValues.landlordDocType || landlordDocNr !== defaultValues.landlordDocNr || landlordAddress !== defaultValues.landlordAddress || landlordCity !== defaultValues.landlordCity || landlordZipCode !== defaultValues.landlordZipCode || landlordCountry !== defaultValues.landlordCountry || landlordTitle !== defaultValues.landlordTitle;
+  //   const editJamDetails = address !== defaultValues.address || city !== defaultValues.city || zipCode !== defaultValues.zipCode || country !== defaultValues.country;
 
-    const editHouseRules = (
-      checkInProcess !== defaultValues.checkInProcess || checkOutProcess !== defaultValues.checkOutProcess
-        || checkInFrom !== defaultValues.checkInFrom || checkInTo !== defaultValues.checkInTo
-        || checkOutBefore !== defaultValues.checkOutBefore || pets !== defaultValues.pets
-        || parties !== defaultValues.parties || overnight !== defaultValues.overnight
-        || smokingBalcony !== defaultValues.smokingBalcony || smoking !== defaultValues.smoking || inviteFriends !== defaultValues.inviteFriends
-    );
+  //   const editHouseRules = (
+  //     checkInProcess !== defaultValues.checkInProcess || checkOutProcess !== defaultValues.checkOutProcess
+  //       || checkInFrom !== defaultValues.checkInFrom || checkInTo !== defaultValues.checkInTo
+  //       || checkOutBefore !== defaultValues.checkOutBefore || pets !== defaultValues.pets
+  //       || parties !== defaultValues.parties || overnight !== defaultValues.overnight
+  //       || smokingBalcony !== defaultValues.smokingBalcony || smoking !== defaultValues.smoking || inviteFriends !== defaultValues.inviteFriends
+  //   );
 
-    if (editLandlordInfo) {
-      const info = {
-        title: landlordTitle,
-        name: landlordFirstName,
-        lastName: landlordLastName,
-        docType: landlordDocType,
-        docNr: landlordDocNr,
-        address: landlordAddress,
-        city: landlordCity,
-        zipCode: landlordZipCode,
-        country: landlordCountry,
-      };
-      DataService.editLandlordInfo(jamId, info);
-    }
-    if (editJamMainInfo) {
-      const info = { jamName, jamDesc };
-      DataService.editJamMainInfo(jamId, info);
-    }
-    if (editJamDetails) {
-      const info = {
-        address, city, zipCode, country, contractMode,
-      };
-      DataService.editJamDetails(jamId, info);
-    }
-    if (editHouseRules) {
-      const info = {
-        checkInFrom,
-        checkInProcess,
-        checkInTo,
-        checkOutBefore,
-        checkOutProcess,
-        overnight,
-        parties,
-        pets,
-        smoking,
-        smokingBalcony,
-        inviteFriends,
-      };
-      DataService.editJamHouseRules(jamId, info);
-    }
-  };
+  //   if (editLandlordInfo) {
+  //     const info = {
+  //       title: landlordTitle,
+  //       name: landlordFirstName,
+  //       lastName: landlordLastName,
+  //       docType: landlordDocType,
+  //       docNr: landlordDocNr,
+  //       address: landlordAddress,
+  //       city: landlordCity,
+  //       zipCode: landlordZipCode,
+  //       country: landlordCountry,
+  //     };
+  //     DataService.editLandlordInfo(jamId, info);
+  //   }
+  //   if (editJamMainInfo) {
+  //     const info = { jamName, jamDesc };
+  //     DataService.editJamMainInfo(jamId, info);
+  //   }
+  //   if (editJamDetails) {
+  //     const info = {
+  //       address, city, zipCode, country, contractMode,
+  //     };
+  //     DataService.editJamDetails(jamId, info);
+  //   }
+  //   if (editHouseRules) {
+  //     const info = {
+  //       checkInFrom,
+  //       checkInProcess,
+  //       checkInTo,
+  //       checkOutBefore,
+  //       checkOutProcess,
+  //       overnight,
+  //       parties,
+  //       pets,
+  //       smoking,
+  //       smokingBalcony,
+  //       inviteFriends,
+  //     };
+  //     DataService.editJamHouseRules(jamId, info);
+  //   }
+  // };
 
   const formStyle = {
     display: 'flex',
@@ -221,7 +223,8 @@ const Settings = () => {
   return (
     <Layout>
       <NavBarJam />
-      <form
+      <Div>SETTINGS</Div>
+      {/* <form
         style={formStyle}
         autoComplete="off"
         className="settings-form"
@@ -444,16 +447,11 @@ const Settings = () => {
 
         </FormSection>
 
-        <Div className="settings-section row-section">
+        <FormSection className="landlordSection">
 
-          <Div className="settings-section-title">
-            <Div className="backLine" />
-            <dic className="title">
-              <p>Landlord Info</p>
-            </dic>
-          </Div>
+          <FormSubtitle>Landlord information</FormSubtitle>
 
-          <Div className="settings-section-info row-section">
+          <FormRow className="settings-section-info row-section">
 
             <Div className="rules-custom-input-block midWidth">
               <Div className="block-label">
@@ -481,7 +479,8 @@ const Settings = () => {
               </Div>
               <input name="landlordLastName" ref={register({ required: true })} disabled={disabled} />
             </Div>
-
+          </FormRow>
+          <FormRow>
             <Div className="rules-custom-input-block midWidth">
               <Div className="block-label">
                 <label>Doc Type</label>
@@ -514,7 +513,8 @@ const Settings = () => {
                 placeholder="Street, hosue nr, floor, door . . ."
               />
             </Div>
-
+          </FormRow>
+          <FormRow>
             <Div className="rules-custom-input-block short-block">
               <Div className="block-label">
                 <label>City</label>
@@ -548,28 +548,15 @@ const Settings = () => {
                 disabled={disabled}
               />
             </Div>
+          </FormRow>
 
-          </Div>
+        </FormSection>
 
-        </Div>
-
-        <Div className="settings-section">
-
-          {/* <Div className="settings-section-title">
-                      <Div className="backLine"/>
-                      <dic className="title">
-                          <p>HOUSE RULES</p>
-                      </dic>
-                  </Div> */}
-
+        <FormSection className="settings-section">
           <Div className="settings-content rules">
-
             <Div className="houseRules-form-section">
               <Div className="form-col">
-                {/* <Div className="houseRules-text">
-                                  <p>Please activate the rules you want to apply to your apartment</p>
-                                  <p>Activated rules will be shown in your tenant's <span>"Overview"</span> page</p>
-                              </Div> */}
+
                 <table id="houseRules-table">
                   <tr>
                     <th>
@@ -796,13 +783,14 @@ const Settings = () => {
                     </td>
                   </tr>
                 </table>
+              
               </Div>
             </Div>
-
           </Div>
-        </Div>
+        </FormSection>
+      </Div>
 
-      </form>
+      </form> */}
     </Layout>
   );
 };

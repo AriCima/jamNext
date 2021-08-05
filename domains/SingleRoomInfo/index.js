@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-
 import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
+
 import {
   RadioGroup,
   FormControlLabel,
   Radio,
 } from '@material-ui/core';
 
-import {
-  Div, Txt, Table, InputSubmit, Button,
-} from '../../styledComps';
 import FormInput from '../../components/FormInput';
-import FormSelect from '../../components/FormSelect';
 
-import DataService from '../../services/DataService';
+import {
+  Div, Txt, FormSection, FormSubtitle, FormRow, Button, Table,
+} from '../../styledComps';
 
 const GreenRadio = withStyles({
   root: {
@@ -37,46 +35,43 @@ const RedRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-const EditRoomForm = ({ jamId, roomInfo, edit }) => {
-  const defaultValues = {
-    roomNr: roomInfo.roomNr,
-    sqm: roomInfo.sqm,
-    balcony: roomInfo.balcony,
-    exterior: roomInfo.exterior,
-    privBath: roomInfo.privBath,
-    deposit: roomInfo.deposit,
-    rent: roomInfo.rent,
-    expenses: roomInfo.expenses,
-  };
+const SingleRoomInfo = ({ roomInfo, edit }) => {
+  const {
+    sqm, exterior, balcony, privBath, deposit, rent, expenses,
+  } = roomInfo;
+  const defaultValues = { sqm, deposit, rent, expenses, balcony, exterior, privBath };
 
   const {
-    register, errors, handleSubmit, control,
+    register, errors, control,
   } = useForm({ defaultValues });
 
-  const onSubmit = (data) => {
-    console.log('data: ', data);
-    const { roomId } = roomInfo;
-    DataService.updateRoomInfo(jamId, roomId, data);
-  };
-
-  const disableEditForm = (e) => {
+  const enableEditForm = (e) => {
     e.preventDefault();
-    edit(false);
+    edit(true);
   };
 
-  const disabled = false;
   return (
-    <form
-      autoComplete="off"
-      className="roomInfo-form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <>
       <Div w="100%" just="space-between" align="flex-start" mgT="30px">
         <Txt mgB="10px" fSize="14px" color="gray" bold>Room Info</Txt>
+        <Div className="roomInfo-buttonArea">
+          <Button
+            w="100px"
+            h="40px"
+            pad="0 15px"
+            border="lightgray"
+            color="white"
+            className="edit-button"
+            w="auto"
+            onClick={(e) => { enableEditForm(e); }}
+          >
+            Edit Info
+          </Button>
+
+        </Div>
       </Div>
 
       <Div className="roomInfo-section">
-
         <FormInput
           w="70%"
           label="Size (sqm)"
@@ -88,7 +83,6 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
           errorMessage="Size is mandatory"
           register={register}
           registerObject={{ required: true }}
-          disabled={disabled}
         />
 
         <FormInput
@@ -102,7 +96,6 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
           errorMessage="Rent is mandatory"
           register={register}
           registerObject={{ required: true }}
-          disabled={disabled}
         />
 
         <FormInput
@@ -116,7 +109,6 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
           errorMessage="Expenses is mandatory"
           register={register}
           registerObject={{ required: false }}
-          disabled={disabled}
         />
 
         <FormInput
@@ -130,7 +122,6 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
           errorMessage="Deposit is mandatory"
           register={register}
           registerObject={{ required: true }}
-          disabled={disabled}
         />
 
       </Div>
@@ -138,7 +129,7 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
       <Table id="roomInfo-table" w="100%" mg="20px 0">
         <thead>
           <tr>
-            <td style={{ fontSize: '14px' }}>
+            <td>
               Room features
             </td>
             <td style={{ textAlign: 'right', paddingRight: '30px' }}>
@@ -167,21 +158,18 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                         <FormControlLabel
                           value="yes"
                           control={<GreenRadio />}
-                          disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
                           value="no"
                           control={<RedRadio />}
-                          disabled={disabled}
                         />
                       </Div>
                     </Div>
                   </RadioGroup>
                   )}
               />
-
             </td>
           </tr>
           <tr>
@@ -203,21 +191,18 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                         <FormControlLabel
                           value="yes"
                           control={<GreenRadio />}
-                          disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
                           value="no"
                           control={<RedRadio />}
-                          disabled={disabled}
                         />
                       </Div>
                     </Div>
                   </RadioGroup>
-                                      )}
+                  )}
               />
-
             </td>
           </tr>
 
@@ -235,7 +220,6 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                 name="privBath"
                 control={control}
                 defaultValue={defaultValues.privBath}
-                disabled={disabled}
                 as={(
                   <RadioGroup aria-label="privBath">
                     <Div className="radios-wrapper" just="flex-end">
@@ -243,54 +227,25 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                         <FormControlLabel
                           value="yes"
                           control={<GreenRadio />}
-                          disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
                           value="no"
                           control={<RedRadio />}
-                          disabled={disabled}
                         />
                       </Div>
                     </Div>
                   </RadioGroup>
-                                      )}
+                  )}
               />
-
             </td>
           </tr>
         </tbody>
       </Table>
-      {!disabled
-      && (
-      <Div w="100%" just="space-between">
-        <InputSubmit
-          w="160px"
-          h="50px"
-          back="rgb(85, 187, 151)"
-          type="submit"
-          value="submit"
-        />
-        <Div className="roomInfo-buttonArea" w="160px">
-          <Button
-            w="100%"
-            h="50px"
-            border="lightgray"
-            back="lightgray"
-            backHov="gray"
-            colorHov="white"
-            color="white"
-            className="cancel-button"
-            onClick={(e) => { disableEditForm(e); }}
-          >
-            Cancel
-          </Button>
-        </Div>
-      </Div>
-      )}
-    </form>
+      </>
+
   );
 };
 
-export default (EditRoomForm);
+export default (SingleRoomInfo);

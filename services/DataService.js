@@ -328,6 +328,20 @@ const getSingleRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
     });
 });
 
+const updateRoomInfo = (jamId, roomId, data) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('rooms')
+    .doc(roomId)
+    .update(data)
+    .then(() => {
+      console.log('Document successfully updated!');
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating document: ', error);
+    });
+});
 
 const DataService = {
   addJammerToJam,
@@ -347,6 +361,7 @@ const DataService = {
   saveJoinRequest,
   saveUserInfoInFirestore,
   updateCompanyInfo,
+  updateRoomInfo,
 };
 
 export default DataService;
