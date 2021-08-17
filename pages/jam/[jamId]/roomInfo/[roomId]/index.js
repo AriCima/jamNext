@@ -31,12 +31,10 @@ const RoomInfo = () => {
   };
 
   const getRoomInfo = async () => {
-    console.log('triggered');
     const roomInfo = await DataService.getSingleRoomInfo(jamId, roomId);
     const organizedTenant = Calculations.getSingleRoomOrganizedTenants(SINGLE_ROOM_TENANTS);
     setCurrent(organizedTenant.currentTenant);
     setNextTenant(organizedTenant.nextTenant);
-    console.log('roomInfo: ', roomInfo);
     setInfo(roomInfo);
   };
 
@@ -56,6 +54,7 @@ const RoomInfo = () => {
   const isVacant = isEmpty(current);
   const thereIsNext = isEmpty(next);
 
+
   return (
     <Layout>
       <NavBarJam />
@@ -73,8 +72,8 @@ const RoomInfo = () => {
           {isVacant && !thereIsNext && <Txt>Room is Vacant</Txt>}
         </Div>
         {editInfo
-          ? <EditRoomForm jamId={jamId} roomInfo={info} edit={setEditInfo} />
-          : <SingleRoomInfo roomInfo={info} edit={setEditInfo} />}
+          ? <EditRoomForm jamId={jamId} roomId={roomId} roomInfo={info} edit={setEditInfo} />
+          : <SingleRoomInfo jamId={jamId} roomId={roomId} roomInfo={info} edit={setEditInfo} />}
 
       </Div>
     </Layout>

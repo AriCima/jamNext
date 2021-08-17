@@ -2,7 +2,6 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
-
 import {
   RadioGroup,
   FormControlLabel,
@@ -50,6 +49,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
     e.preventDefault();
     edit(true);
   };
+
 
   return (
     <>

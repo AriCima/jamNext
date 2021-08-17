@@ -19,7 +19,7 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
 
   return (
 
-    <Div className="cTenant-header" w="100%" just="flex-start" align="center" bordB>
+    <Div className="cTenant-header" w="100%" just="center" align="center" bordB>
       <Txt fSize="14px">{tenantTitle}</Txt>
 
       <Link href="/jam/[jamId]/jammerInfo/[jammerId]" as={`/jam/${jamId}/jammerInfo/${userId}`} passHref>

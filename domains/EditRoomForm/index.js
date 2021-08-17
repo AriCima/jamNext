@@ -37,7 +37,8 @@ const RedRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-const EditRoomForm = ({ jamId, roomInfo, edit }) => {
+const EditRoomForm = ({ jamId, roomId, roomInfo, edit }) => {
+  console.log('roomInfo: ', roomInfo);
   const defaultValues = {
     roomNr: roomInfo.roomNr,
     sqm: roomInfo.sqm,
@@ -56,6 +57,7 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
   const onSubmit = (data) => {
     console.log('data: ', data);
     const { roomId } = roomInfo;
+    console.log('roomId: ', roomId);
     DataService.updateRoomInfo(jamId, roomId, data);
   };
 
