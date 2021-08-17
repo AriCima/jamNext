@@ -12,7 +12,7 @@ import {
 import FormInput from '../../components/FormInput';
 
 import {
-  Div, Txt, FormSection, FormSubtitle, FormRow, Button, Table,
+  Div, Txt, Button, Table,
 } from '../../styledComps';
 
 const GreenRadio = withStyles({
@@ -39,6 +39,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
   const {
     sqm, exterior, balcony, privBath, deposit, rent, expenses,
   } = roomInfo;
+
   const defaultValues = { sqm, deposit, rent, expenses, balcony, exterior, privBath };
 
   const {
@@ -52,7 +53,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
 
   return (
     <>
-      <Div w="100%" just="space-between" align="flex-start" mgT="30px">
+      <Div className="title-div" w="100%" h="40px" just="space-between" align="flex-start" mgT="30px">
         <Txt mgB="10px" fSize="14px" color="gray" bold>Room Info</Txt>
         <Div className="roomInfo-buttonArea">
           <Button
@@ -83,6 +84,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           errorMessage="Size is mandatory"
           register={register}
           registerObject={{ required: true }}
+          disabled
         />
 
         <FormInput
@@ -96,6 +98,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           errorMessage="Rent is mandatory"
           register={register}
           registerObject={{ required: true }}
+          disabled
         />
 
         <FormInput
@@ -109,6 +112,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           errorMessage="Expenses is mandatory"
           register={register}
           registerObject={{ required: false }}
+          disabled
         />
 
         <FormInput
@@ -122,6 +126,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           errorMessage="Deposit is mandatory"
           register={register}
           registerObject={{ required: true }}
+          disabled
         />
 
       </Div>
@@ -156,14 +161,16 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                     <Div className="radios-wrapper" just="flex-end">
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="yes"
+                          value="Yes"
                           control={<GreenRadio />}
+                          disabled
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="no"
+                          value="No"
                           control={<RedRadio />}
+                          disabled
                         />
                       </Div>
                     </Div>
@@ -189,14 +196,16 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                     <Div className="radios-wrapper" just="flex-end">
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="yes"
+                          value="Yes"
                           control={<GreenRadio />}
+                          disabled
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="no"
+                          value="No"
                           control={<RedRadio />}
+                          disabled
                         />
                       </Div>
                     </Div>
@@ -225,14 +234,16 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                     <Div className="radios-wrapper" just="flex-end">
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="yes"
+                          value="Yes"
                           control={<GreenRadio />}
+                          disabled
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="no"
+                          value="No"
                           control={<RedRadio />}
+                          disabled
                         />
                       </Div>
                     </Div>
@@ -243,7 +254,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           </tr>
         </tbody>
       </Table>
-      </>
+    </>
 
   );
 };

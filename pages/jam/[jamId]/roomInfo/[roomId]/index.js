@@ -31,11 +31,12 @@ const RoomInfo = () => {
   };
 
   const getRoomInfo = async () => {
+    console.log('triggered');
     const roomInfo = await DataService.getSingleRoomInfo(jamId, roomId);
     const organizedTenant = Calculations.getSingleRoomOrganizedTenants(SINGLE_ROOM_TENANTS);
-    console.log('organizedTenant: ', organizedTenant);
     setCurrent(organizedTenant.currentTenant);
     setNextTenant(organizedTenant.nextTenant);
+    console.log('roomInfo: ', roomInfo);
     setInfo(roomInfo);
   };
 
@@ -44,6 +45,12 @@ const RoomInfo = () => {
     roomId && jamId && getRoomInfo(jamId, roomId);
     dispatch(setActiveSection('rooms'));
   }, [jamId, roomId]);
+
+  useEffect(() => {
+    jamId && getJamInfo(jamId);
+    roomId && jamId && getRoomInfo(jamId, roomId);
+    dispatch(setActiveSection('rooms'));
+  }, [])
 
   const { roomNr } = info;
   const isVacant = isEmpty(current);
@@ -57,9 +64,14 @@ const RoomInfo = () => {
           <SubTitle w="100%">Room Nr: </SubTitle>
           <Txt mgL="15px" color="gray" fSize="1.5rem" bold="700">{roomNr}</Txt>
         </Div>
-        {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
-        {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
-        {isVacant && !thereIsNext && <Txt>Room is Vacant</Txt>}
+          <Div w="100%" just="flex-start" align="center" mgR="20px">
+            <Txt mgB="5px" fSize="14px" bold color="gray">Status</Txt>
+          </Div>
+        <Div h="40px" border="lightgray" borderR="5px" pad="5px" just="flex-start" align="center">
+          {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
+          {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
+          {isVacant && !thereIsNext && <Txt>Room is Vacant</Txt>}
+        </Div>
         {editInfo
           ? <EditRoomForm jamId={jamId} roomInfo={info} edit={setEditInfo} />
           : <SingleRoomInfo roomInfo={info} edit={setEditInfo} />}

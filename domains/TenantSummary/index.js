@@ -15,16 +15,16 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
     firstName, lastName, userId, checkIn, checkOut,
   } = tenant;
 
-  const tenantTitle = tenantType === 'current' ? 'Current Tenant' : 'Next tenant';
+  const tenantTitle = tenantType === 'current' ? 'Current Tenant :' : 'Next tenant: ';
 
   return (
 
-    <Div className="cTenant-header" col w="100%" just="flex-start" align="flex-start" mgB="10px" bordB>
-      <Txt mgB="10px" fSize="14px" color="gray" bold>{tenantTitle}</Txt>
+    <Div className="cTenant-header" w="100%" just="flex-start" align="center" bordB>
+      <Txt fSize="14px">{tenantTitle}</Txt>
 
       <Link href="/jam/[jamId]/jammerInfo/[jammerId]" as={`/jam/${jamId}/jammerInfo/${userId}`} passHref>
-        <DivShadow className="TenantSummaryInfo" hoverC="pointer" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="20px">
-          <Txt>
+        <Div className="TenantSummaryInfo" hoverC="pointer" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="5px">
+          <Txt fSize="12px">
             {firstName}
             {' '}
             {lastName}
@@ -39,19 +39,19 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
               originJamId={jamId}
             />
           </Div>
-          <Txt mgL="20px" color="gray">
+          <Txt fSize="12px" mgL="20px" color="gray">
             check-in:
           </Txt>
-          <Txt mgL="10px">{checkIn}</Txt>
-          {tenantTitle === 'current' && (
+          <Txt fSize="12px" mgL="10px">{checkIn}</Txt>
+          {tenantType === 'current' && (
           <>
-            <Txt mgL="20px" color="gray">
+            <Txt fSize="12px" mgL="20px" color="gray">
               check-out:
             </Txt>
-            <Txt mgL="10px">{checkOut}</Txt>
+            <Txt fSize="12px" mgL="10px">{checkOut}</Txt>
           </>
           )}
-        </DivShadow>
+        </Div>
       </Link>
 
       {/* <JammerContractInfo contractInfo={TenantSummary} showRoomNr={false} /> */}

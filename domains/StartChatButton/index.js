@@ -64,7 +64,7 @@ const StartChatButton = ({
       <FontAwesomeIcon
         icon={faComments}
       />
-      <Txt mg="0 5px">Chat</Txt>
+      <Txt fSize="12px" mg="0 5px">Chat</Txt>
 
     </StartChat>
   );

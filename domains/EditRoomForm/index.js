@@ -71,8 +71,8 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
       className="roomInfo-form"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Div w="100%" just="space-between" align="flex-start" mgT="30px">
-        <Txt mgB="10px" fSize="14px" color="gray" bold>Room Info</Txt>
+      <Div w="100%" h="40px"just="space-between" align="flex-start" mgT="30px">
+        <Txt mgB="10px" fSize="14px" color="gray" bold>Edit Room Info</Txt>
       </Div>
 
       <Div className="roomInfo-section">
@@ -165,14 +165,14 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                     <Div className="radios-wrapper" just="flex-end">
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="yes"
+                          value="Yes"
                           control={<GreenRadio />}
                           disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="no"
+                          value="No"
                           control={<RedRadio />}
                           disabled={disabled}
                         />
@@ -201,14 +201,14 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                     <Div className="radios-wrapper" just="flex-end">
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="yes"
+                          value="Yes"
                           control={<GreenRadio />}
                           disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="no"
+                          value="No"
                           control={<RedRadio />}
                           disabled={disabled}
                         />
@@ -241,14 +241,14 @@ const EditRoomForm = ({ jamId, roomInfo, edit }) => {
                     <Div className="radios-wrapper" just="flex-end">
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="yes"
+                          value="Yes"
                           control={<GreenRadio />}
                           disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
-                          value="no"
+                          value="No"
                           control={<RedRadio />}
                           disabled={disabled}
                         />
