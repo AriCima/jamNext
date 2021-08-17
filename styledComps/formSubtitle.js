@@ -6,9 +6,10 @@ const FormSubtitle = styled.div`
     align-items: center;
     margin: ${({ mg }) => mg || '0'};
     padding: ${({ pad }) => pad || '0'};
-    width: 95%;
+    font-weight: 700;
+    width: 100%;
     color: gray;
-    font-size: 14px;
+    font-size: 16px;
 `;
 
 export default FormSubtitle;

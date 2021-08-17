@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  Input, Div, FormError, Label,
+  TextArea, Div, FormError, Label,
 } from '../../styledComps';
 
-const FormInput = ({
+const FormTextArea = ({
   w, mgL, mgR, label, name, error, errorMessage, register, placeholder = '', registerObject, type = 'text', disabled
 }) => (
   <Div
@@ -20,10 +20,10 @@ const FormInput = ({
       just="center"
       align="flex-start"
     >
-      <Label disabled={disabled}>{label}</Label>
+      <Label>{label}</Label>
       {error && <FormError bold>{errorMessage}</FormError>}
     </Div>
-    <Input
+    <TextArea
       w="100%"
       type={type}
       name={name}
@@ -34,4 +34,4 @@ const FormInput = ({
   </Div>
 );
 
-export default FormInput;
+export default FormTextArea;

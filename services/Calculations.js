@@ -50,6 +50,34 @@ const getJamRules = (type) => {
   }
   return rules;
 };
+const getLandlordInfo = () => {
+  const landlordInfo = {
+    address: '',
+    city: '',
+    country: '',
+    docNr: '',
+    docType: '',
+    firstName: '',
+    lastName: '',
+    title: '',
+    zipCode: '',
+  };
+  return landlordInfo;
+};
+
+const getApartmentInfo = () => {
+  const apartmentInfo = {
+    address: '',
+    floor: '',
+    door: '',
+    city: '',
+    country: '',
+    nrOfRooms: '',
+    title: '',
+    zipCode: '',
+  };
+  return apartmentInfo;
+};
 
 const getJamAdminSections = (type) => {
   let sections = [];
@@ -594,10 +622,12 @@ const missingRoomsInfo = (roomsInfo) => {
 
 const Calculations = {
   generateJamCode,
+  getApartmentInfo,
   getJamAdminSections,
   getJamGuestSections,
   getJamRules,
   getMessageDate,
+  getLandlordInfo,
   getOrganizedTenants,
   getSelectOptions,
   getSingleRoomOrganizedTenants,

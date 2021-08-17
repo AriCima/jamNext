@@ -29,6 +29,7 @@ import Title from './title';
 import Txt from './txt';
 import MenuItem from './menuItem';
 import StartChat from './startChat';
+import TextArea from './textArea';
 
 export {
   AppContainer,
@@ -60,6 +61,7 @@ export {
   StartChat,
   SubTitle,
   Table,
+  TextArea,
   Title,
   Txt,
 };
