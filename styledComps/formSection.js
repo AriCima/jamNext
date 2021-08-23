@@ -6,7 +6,7 @@ const FormSection = styled.div`
     justify-content: flex-start;
     align-items: center;
     margin: ${({ mg }) => mg || '0'};
-    padding: ${({ pad }) => pad || '0'};
+    padding: ${({ pad }) => pad || '20px 10px'};
     width: 95%;
 `;
 

@@ -40,10 +40,12 @@ const CreateForm = ({ showModal }) => {
 
     if (jamType === 'rooms-rental') {
       jamRules = Calculations.getJamRules(jamType);
+      const landlordInfo = Calculations.getLandlordInfo();
+      const apartmentInfo = Calculations.getApartmentInfo();
 
       contractInfo = {
-        landlordInfo: {},
-        apartmentInfo: {},
+        landlordInfo,
+        apartmentInfo,
       };
 
       jamDetails = { jamRules, contractInfo };
