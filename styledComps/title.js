@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-const Title = styled.h1`
-    font-size: 30px;
-    font-weight: ${props => (props.bold ? '700' : '400')};
-    color: black;
+const Title = styled.p`
+    font-size: 24px;
+    color: gray;
+    font-weight: 700;
+    margin: 0 0 20px 0;
 `;
 
 export default Title;

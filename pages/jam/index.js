@@ -12,7 +12,7 @@ const Jams = () => {
   return (
     <Layout>
       <NavBarJam />
-      <Div pad="50px" back="orange">
+      <Div pad="20px" back="orange">
         {renderJamsList ? <p>select a Jam</p> : <p>You have no Jams yet, Create or Join</p>}
       </Div>
     </Layout>

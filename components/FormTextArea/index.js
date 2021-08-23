@@ -3,7 +3,7 @@ import {
   TextArea, Div, FormError, Label,
 } from '../../styledComps';
 
-const FormTextArea = ({
+const FormInput = ({
   w, mgL, mgR, label, name, error, errorMessage, register, placeholder = '', registerObject, type = 'text', disabled
 }) => (
   <Div
@@ -20,7 +20,7 @@ const FormTextArea = ({
       just="center"
       align="flex-start"
     >
-      <Label>{label}</Label>
+      <Label disabled={disabled}>{label}</Label>
       {error && <FormError bold>{errorMessage}</FormError>}
     </Div>
     <TextArea
@@ -34,4 +34,4 @@ const FormTextArea = ({
   </Div>
 );
 
-export default FormTextArea;
+export default FormInput;
