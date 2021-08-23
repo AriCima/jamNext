@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-import { Div, Txt, DivShadow } from '../../styledComps';
+import { Div, Txt, HovRow } from '../../styledComps';
 // import JammerContractInfo from '../../../../Reusables/JammerContractInfo';
 import StartChatButton from '../StartChatButton';
 
@@ -19,17 +19,30 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
 
   return (
 
-    <Div className="cTenant-header" w="100%" just="center" align="center" bordB>
-      <Txt fSize="14px">{tenantTitle}</Txt>
+    <HovRow className="cTenant-header" w="100%" just="center" align="center">
 
       <Link href="/jam/[jamId]/jammerInfo/[jammerId]" as={`/jam/${jamId}/jammerInfo/${userId}`} passHref>
-        <Div className="TenantSummaryInfo" hoverC="pointer" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="5px">
-          <Txt fSize="12px">
-            {firstName}
-            {' '}
-            {lastName}
-          </Txt>
-          <Div className="start-chatButton" just="center" align="center">
+        <>
+          <Div className="TenantSummaryInfo" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="5px">
+          <Txt>{tenantTitle}</Txt>
+            <Txt mgL="20px">
+              {firstName}
+              {' '}
+              {lastName}
+            </Txt>
+            <Txt mgL="20px" color="gray">
+              check-in:
+            </Txt>
+            <Txt mgL="10px">{checkIn}</Txt>
+            {tenantType === 'current' && (
+            <>
+              <Txt mgL="20px" color="gray">
+                check-out:
+              </Txt>
+              <Txt mgL="10px">{checkOut}</Txt>
+            </>
+            )}
+          </Div>
             <StartChatButton
               adminId={adminId}
               adminName={adminFirstName}
@@ -38,25 +51,13 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
               jamDesc={jamName}
               originJamId={jamId}
             />
-          </Div>
-          <Txt fSize="12px" mgL="20px" color="gray">
-            check-in:
-          </Txt>
-          <Txt fSize="12px" mgL="10px">{checkIn}</Txt>
-          {tenantType === 'current' && (
-          <>
-            <Txt fSize="12px" mgL="20px" color="gray">
-              check-out:
-            </Txt>
-            <Txt fSize="12px" mgL="10px">{checkOut}</Txt>
-          </>
-          )}
-        </Div>
+
+        </>
       </Link>
 
       {/* <JammerContractInfo contractInfo={TenantSummary} showRoomNr={false} /> */}
 
-    </Div>
+    </HovRow>
 
   );
 };

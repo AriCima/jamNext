@@ -28,7 +28,7 @@ const Tenants = () => {
   return (
     <Layout>
       <NavBarJam />
-      <Div col pad="50px" back="orange">
+      <Div col pad="20px" back="orange">
         <SubTitle>Tenants</SubTitle>
         <Txt>
           JamName:

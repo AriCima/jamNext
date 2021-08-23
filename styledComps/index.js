@@ -10,6 +10,7 @@ import FormError from './formError';
 import FormSection from './formSection';
 import FormRow from './formRow';
 import FormSubtitle from './formSubtitle';
+import HovRow from './hovRow';
 import GlobalStyle from './global';
 import Input from './input';
 import InputSubmit from './inputSubmit';
@@ -45,6 +46,7 @@ export {
   FormSection,
   FormSubtitle,
   GlobalStyle,
+  HovRow,
   Input,
   InputSubmit,
   JamCard,

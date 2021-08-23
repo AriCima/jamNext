@@ -279,6 +279,7 @@ const Settings = () => {
 
               </FormRow>
             </FormSection>
+
             <FormSection>
               <FormSubtitle mg="20px 0 0 0 ">Apartment info</FormSubtitle>
               <FormRow>
@@ -751,12 +752,11 @@ const Settings = () => {
                 </Div>
               </Div>
             </FormSection>
+
           </Div>
 
         </form>
       </>
-      {' '}
-      */}
     </Layout>
   );
 };

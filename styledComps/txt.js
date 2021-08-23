@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Txt = styled.p`
-    font-size: ${({ fSize }) => fSize || '1rem'};
+    font-size: ${({ fSize }) => fSize || '14px'};
     font-weight: ${(props) => (props.bold ? '700' : '400')};
     margin: ${({ mg }) => mg || '0'};
     margin-top: ${({ mgT }) => mgT || ''};
