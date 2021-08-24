@@ -5,6 +5,7 @@ const defaultState = {
   email: '',
   userJams: [],
   company: [],
+  lenguage: 'en',
 };
 
 function setUserReducer(state = defaultState, action) {

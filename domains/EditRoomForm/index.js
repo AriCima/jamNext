@@ -37,8 +37,9 @@ const RedRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-const EditRoomForm = ({ jamId, roomId, roomInfo, edit }) => {
-  console.log('roomInfo: ', roomInfo);
+const EditRoomForm = ({
+  jamId, roomId, roomInfo, edit,
+}) => {
   const defaultValues = {
     roomNr: roomInfo.roomNr,
     sqm: roomInfo.sqm,
@@ -55,10 +56,9 @@ const EditRoomForm = ({ jamId, roomId, roomInfo, edit }) => {
   } = useForm({ defaultValues });
 
   const onSubmit = (data) => {
-    console.log('data: ', data);
-    const { roomId } = roomInfo;
-    console.log('roomId: ', roomId);
-    DataService.updateRoomInfo(jamId, roomId, data);
+    DataService.updateRoomInfo(jamId, roomId, data, () => {
+      edit(false);
+    });
   };
 
   const disableEditForm = (e) => {
@@ -73,7 +73,7 @@ const EditRoomForm = ({ jamId, roomId, roomInfo, edit }) => {
       className="roomInfo-form"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Div w="100%" h="40px"just="space-between" align="flex-start" mgT="30px">
+      <Div w="100%" h="40px" just="space-between" align="flex-start" mgT="30px">
         <Txt mgB="10px" fSize="14px" color="gray" bold>Edit Room Info</Txt>
       </Div>
 

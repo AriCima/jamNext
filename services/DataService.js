@@ -1,3 +1,4 @@
+import { countBy } from 'lodash';
 import firebase from '../firebase.config';
 import Board from '../pages/jam/[jamId]/board';
 
@@ -328,7 +329,7 @@ const getSingleRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
     });
 });
 
-const updateRoomInfo = (jamId, roomId, data) => new Promise((resolve, reject) => {
+const updateRoomInfo = (jamId, roomId, data, cb) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams')
     .doc(jamId)
     .collection('rooms')
@@ -336,10 +337,12 @@ const updateRoomInfo = (jamId, roomId, data) => new Promise((resolve, reject) =>
     .update(data)
     .then(() => {
       console.log('Document successfully updated!');
+      cb();
     })
     .catch((error) => {
       // The document probably doesn't exist.
       console.error('Error updating document: ', error);
+      cb();
     });
 });
 

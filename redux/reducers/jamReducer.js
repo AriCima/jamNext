@@ -2,7 +2,13 @@ const defaultState = {
   createdAt: '',
   jamCode: '',
   jamDesc: '',
-  jamDetails: {},
+  jamDetails: {
+    jamRules: {},
+    contractInfo: {
+      landlordInfo: {},
+      apartmentInfo: {},
+    },
+  },
   jamId: '',
   jamName: '',
   activeSection: 'overview',

@@ -47,6 +47,10 @@ const RoomInfo = () => {
   }, [jamId, roomId]);
 
   useEffect(() => {
+    roomId && jamId && getRoomInfo(jamId, roomId);
+  }, [editInfo]);
+
+  useEffect(() => {
     jamId && getJamInfo(jamId);
     roomId && jamId && getRoomInfo(jamId, roomId);
     dispatch(setActiveSection('rooms'));

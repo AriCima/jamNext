@@ -35,15 +35,14 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const SingleRoomInfo = ({ roomInfo, edit }) => {
+  console.log('roomInfo: ', roomInfo);
   const {
     sqm, exterior, balcony, privBath, deposit, rent, expenses,
   } = roomInfo;
 
-  const defaultValues = { sqm, deposit, rent, expenses, balcony, exterior, privBath };
-
   const {
     register, errors, control,
-  } = useForm({ defaultValues });
+  } = useForm();
 
   const enableEditForm = (e) => {
     e.preventDefault();
@@ -76,7 +75,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         <FormInput
           w="70%"
           label="Size (sqm)"
-          placeholder={defaultValues.sqm}
+          placeholder={sqm}
           type="text"
           name="sqm"
           mgR="20px"
@@ -90,7 +89,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         <FormInput
           w="70%"
           label="Rent €/Mo"
-          placeholder={defaultValues.rent}
+          placeholder={rent}
           type="text"
           name="rent"
           mgR="20px"
@@ -104,7 +103,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         <FormInput
           w="70%"
           label="Expenses €/Mo"
-          placeholder={defaultValues.expenses}
+          placeholder={expenses}
           type="text"
           name="expenses"
           mgR="20px"
@@ -118,7 +117,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         <FormInput
           w="70%"
           label="Deposit €"
-          placeholder={defaultValues.deposit}
+          placeholder={deposit}
           type="text"
           name="deposit"
           mgR="20px"
@@ -155,7 +154,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
               <Controller
                 name="exterior"
                 control={control}
-                defaultValue={defaultValues.exterior}
+                defaultValue={exterior}
                 as={(
                   <RadioGroup aria-label="exterior">
                     <Div className="radios-wrapper" just="flex-end">
@@ -163,6 +162,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                         <FormControlLabel
                           value="Yes"
                           control={<GreenRadio />}
+                          checked={exterior === 'Yes'}
                           disabled
                         />
                       </Div>
@@ -170,6 +170,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                         <FormControlLabel
                           value="No"
                           control={<RedRadio />}
+                          checked={exterior === 'No'}
                           disabled
                         />
                       </Div>
@@ -190,7 +191,6 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
               <Controller
                 name="balcony"
                 control={control}
-                defaultValue={defaultValues.balcony}
                 as={(
                   <RadioGroup aria-label="balcony">
                     <Div className="radios-wrapper" just="flex-end">
@@ -198,6 +198,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                         <FormControlLabel
                           value="Yes"
                           control={<GreenRadio />}
+                          checked={balcony === 'Yes'}
                           disabled
                         />
                       </Div>
@@ -205,6 +206,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                         <FormControlLabel
                           value="No"
                           control={<RedRadio />}
+                          checked={balcony === 'No'}
                           disabled
                         />
                       </Div>
@@ -228,7 +230,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
               <Controller
                 name="privBath"
                 control={control}
-                defaultValue={defaultValues.privBath}
+                defaultValue={privBath}
                 as={(
                   <RadioGroup aria-label="privBath">
                     <Div className="radios-wrapper" just="flex-end">
@@ -237,6 +239,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                           value="Yes"
                           control={<GreenRadio />}
                           disabled
+                          checked={privBath === 'Yes'}
                         />
                       </Div>
                       <Div className="radio-box">
@@ -244,6 +247,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                           value="No"
                           control={<RedRadio />}
                           disabled
+                          checked={privBath === 'No'}
                         />
                       </Div>
                     </Div>
