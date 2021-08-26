@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   accordion: {
     width: '90%',
     padding: '0 10px',
+    backgroundColor: '#E5E2DC',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -68,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
   expHeading: {
     color: '#FCA311',
     fontWeight: '600',
+  },
+  expIcon: {
+    color: '#FCA311',
   },
   details: {
     flexDirection: 'column',
@@ -282,7 +286,7 @@ const Settings = () => {
                   onChange={handleChange('panel1')}
                 >
                   <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon className={expanded === 'panel1' && classes.expIcon} />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
@@ -333,10 +337,13 @@ const Settings = () => {
                     </FormRow>
                   </AccordionDetails>
                 </Accordion>
-
-                <Accordion className={classes.accordion} expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                <Accordion
+                  className={classes.accordion}
+                  expanded={expanded === 'panel2'}
+                  onChange={handleChange('panel2')}
+                >
                   <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon className={expanded === 'panel2' && classes.expIcon} />}
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                   >
@@ -403,14 +410,17 @@ const Settings = () => {
                     </FormRow>
                   </AccordionDetails>
                 </Accordion>
-
-                <Accordion className={classes.accordion} expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+                <Accordion
+                  className={classes.accordion}
+                  expanded={expanded === 'panel3'}
+                  onChange={handleChange('panel3')}
+                >
                   <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel4a-content"
-                    id="panel4a-header"
+                    expandIcon={<ExpandMoreIcon className={expanded === 'panel3' && classes.expIcon} />}
+                    aria-controls="panel3a-content"
+                    id="panel3a-header"
                   >
-                    <Typography className={expanded === 'panel4' ? classes.expHeading : classes.heading}>Landlord information</Typography>
+                    <Typography className={expanded === 'panel3' ? classes.expHeading : classes.heading}>Landlord information</Typography>
                   </AccordionSummary>
                   <AccordionDetails className={classes.details}>
 
@@ -550,14 +560,17 @@ const Settings = () => {
                   </AccordionDetails>
 
                 </Accordion>
-
-                <Accordion className={classes.accordion} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                <Accordion
+                  className={classes.accordion}
+                  expanded={expanded === 'panel4'}
+                  onChange={handleChange('panel4')}
+                >
                   <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3a-content"
-                    id="panel3a-header"
+                    expandIcon={<ExpandMoreIcon className={expanded === 'panel4' && classes.expIcon} />}
+                    aria-controls="panel4a-content"
+                    id="panel4a-header"
                   >
-                    <Typography className={expanded === 'panel3' ? classes.expHeading : classes.heading}>Check-in / Check-out procedures</Typography>
+                    <Typography className={expanded === 'panel4' ? classes.expHeading : classes.heading}>Check-in / Check-out procedures</Typography>
                   </AccordionSummary>
                   <AccordionDetails className={classes.details}>
 
@@ -628,10 +641,13 @@ const Settings = () => {
                     </FormRow>
                   </AccordionDetails>
                 </Accordion>
-
-                <Accordion className={classes.accordion} expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+                <Accordion
+                  className={classes.accordion}
+                  expanded={expanded === 'panel5'}
+                  onChange={handleChange('panel5')}
+                >
                   <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon className={expanded === 'panel5' && classes.expIcon} />}
                     aria-controls="panel5a-content"
                     id="panel5a-header"
                   >
@@ -783,7 +799,7 @@ const Settings = () => {
                         </tr>
                         <tr>
                           <td>
-                            <label>Can tenants have guest to overnight in the apartment ?</label>
+                            <label>Can tenants have guests to overnight in the apartment ?</label>
                           </td>
                           <td style={{ textAlign: 'right' }}>
 
