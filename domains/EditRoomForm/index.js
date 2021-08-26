@@ -151,7 +151,7 @@ const EditRoomForm = ({
         </thead>
         <tbody>
           <tr>
-            <td id="rules-text">
+            <td>
               Is the room
               <span> exterior</span>
               {' '}
@@ -187,7 +187,7 @@ const EditRoomForm = ({
             </td>
           </tr>
           <tr>
-            <td id="rules-text">
+            <td>
               Has the room
               <span> balcony</span>
               {' '}
@@ -224,7 +224,7 @@ const EditRoomForm = ({
           </tr>
 
           <tr>
-            <td id="rules-text">
+            <td>
               <label>
                 Has the room a
                 <span>private bathroom</span>

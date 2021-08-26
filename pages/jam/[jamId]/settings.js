@@ -27,7 +27,7 @@ import { setJamInfo } from '../../../redux/actions';
 import { setActiveSection } from '../../../redux/actions/jamActions';
 import Layout from '../../../domains/Layout';
 import {
-  Div, Button, Title, FormRow, InputSubmit,
+  Div, Button, Title, FormRow, InputSubmit, Table,
 } from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 
@@ -276,7 +276,11 @@ const Settings = () => {
             >
 
               <Div className="settingsForm" w="90%" col just="center" align="flex-start">
-                <Accordion className={classes.accordion} expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                <Accordion
+                  className={classes.accordion}
+                  expanded={expanded === 'panel1'}
+                  onChange={handleChange('panel1')}
+                >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -297,7 +301,7 @@ const Settings = () => {
                         errorMessage="Jam Name is mandatory"
                         register={register}
                         registerObject={{ required: true }}
-                        modifiedValue={() => {setShowButtons(true)}}
+                        modifiedValue={() => { setShowButtons(true); }}
                       />
                       <FormInput
                         w="70%"
@@ -400,13 +404,160 @@ const Settings = () => {
                   </AccordionDetails>
                 </Accordion>
 
+                <Accordion className={classes.accordion} expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel4a-content"
+                    id="panel4a-header"
+                  >
+                    <Typography className={expanded === 'panel4' ? classes.expHeading : classes.heading}>Landlord information</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.details}>
+
+                    <FormRow className="settings-section-info row-section">
+                      <FormSelect
+                        w="20%"
+                        mgR="20px"
+                        label="Title"
+                        name="landlordTitle"
+                        type="text"
+                        error={errors.landlordTitle}
+                        errorMessage="Please select a title"
+                        register={register}
+                        registerObject={{ required: true }}
+                        reportValue={(val) => setTitle(val)}
+                        options={[{ id: 'mr', name: 'Mr' }, { id: 'mrs', name: 'Mrs' }]}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+
+                      <FormInput
+                        w="40%"
+                        mgR="20px"
+                        label="Landlord name"
+                        type="text"
+                        name="landlordFirstName"
+                        error={errors.landlordFirstName}
+                        errorMessage="Landlord name is mandatory"
+                        register={register}
+                        registerObject={{ required: true }}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+
+                      <FormInput
+                        w="40%"
+                        mgR="20px"
+                        label="Landlord last name"
+                        type="text"
+                        name="landlordLastName"
+                        error={errors.landlordLastName}
+                        errorMessage="Landlord last name is mandatory"
+                        register={register}
+                        registerObject={{ required: true }}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+                    </FormRow>
+
+                    <FormRow>
+
+                      <FormSelect
+                        w="30%"
+                        mgR="20px"
+                        label="Document type"
+                        name="docType"
+                        type="text"
+                        error={errors.docType}
+                        errorMessage="Please select a document type"
+                        register={register}
+                        registerObject={{ required: true }}
+                        options={[
+                          { id: 'dni', name: 'DNI' },
+                          { id: 'nie', name: 'NIE' },
+                          { id: 'pass', name: 'Passport' },
+                        ]}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+
+                      <FormInput
+                        w="20%"
+                        mgR="20px"
+                        label="Doc Nr"
+                        type="text"
+                        name="docNr"
+                        error={errors.docNr}
+                        errorMessage="A document Nr is mandatory"
+                        register={register}
+                        registerObject={{ required: true }}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+
+                      <FormInput
+                        w="60%"
+                        label="Address (Street, house nr, floor, door . . .  "
+                        type="text"
+                        name="landlordAddress"
+                        error={errors.landlordAddress}
+                        errorMessage="Landlord address mandatory"
+                        register={register}
+                        registerObject={{ required: true }}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+
+                    </FormRow>
+                    <FormRow>
+
+                      <FormInput
+                        w="20%"
+                        mgR="20px"
+                        label="ZipCode"
+                        type="text"
+                        name="landlordZipCode"
+                        error={errors.landlordZipCode}
+                        errorMessage="Landlord zipCode is mandatory"
+                        register={register}
+                        registerObject={{ required: true }}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+
+                      <FormSelect
+                        w="40%"
+                        mgR="20px"
+                        label="Country"
+                        name="landlordCountry"
+                        type="text"
+                        error={errors.landlordCountry}
+                        errorMessage="Please select a country"
+                        register={register}
+                        registerObject={{ required: true }}
+                        options={countries}
+                        reportValue={(val) => setSelectedCountry(val)}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+                      <FormInput
+                        w="40%"
+                        mgR="20px"
+                        label="City"
+                        type="text"
+                        name="landlordCity"
+                        mgR="20px"
+                        error={errors.landlordCity}
+                        errorMessage="Landlord city is mandatory"
+                        register={register}
+                        registerObject={{ required: true }}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
+                    </FormRow>
+
+                  </AccordionDetails>
+
+                </Accordion>
+
                 <Accordion className={classes.accordion} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel3a-content"
                     id="panel3a-header"
                   >
-                    <Typography className={expanded === 'panel3' ? classes.expHeading : classes.heading}>House rules</Typography>
+                    <Typography className={expanded === 'panel3' ? classes.expHeading : classes.heading}>Check-in / Check-out procedures</Typography>
                   </AccordionSummary>
                   <AccordionDetails className={classes.details}>
 
@@ -478,145 +629,6 @@ const Settings = () => {
                   </AccordionDetails>
                 </Accordion>
 
-                <Accordion className={classes.accordion} expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel4a-content"
-                    id="panel4a-header"
-                  >
-                    <Typography className={expanded === 'panel4' ? classes.expHeading : classes.heading}>Landlord information</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.details}>
-
-                    <FormRow className="settings-section-info row-section">
-                      <FormSelect
-                        w="50%"
-                        label="Title"
-                        name="landlordTitle"
-                        type="text"
-                        error={errors.landlordTitle}
-                        errorMessage="Please select a title"
-                        register={register}
-                        registerObject={{ required: true }}
-                        reportValue={(val) => setTitle(val)}
-                        options={[{ id: 'mr', name: 'Mr' }, { id: 'mrs', name: 'Mrs' }]}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-
-                      <FormInput
-                        w="100%"
-                        label="Landlord name"
-                        type="text"
-                        name="landlordFirstName"
-                        error={errors.landlordFirstName}
-                        errorMessage="Landlord name is mandatory"
-                        register={register}
-                        registerObject={{ required: true }}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-
-                      <FormInput
-                        w="100%"
-                        label="Landlord last name"
-                        type="text"
-                        name="landlordLastName"
-                        error={errors.landlordLastName}
-                        errorMessage="Landlord last name is mandatory"
-                        register={register}
-                        registerObject={{ required: true }}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-                    </FormRow>
-
-                    <FormRow>
-
-                      <FormSelect
-                        w="50%"
-                        label="Document type"
-                        name="docType"
-                        type="text"
-                        error={errors.docType}
-                        errorMessage="Please select a document type"
-                        register={register}
-                        registerObject={{ required: true }}
-                        options={[
-                          { id: 'dni', name: 'DNI' },
-                          { id: 'nie', name: 'NIE' },
-                          { id: 'pass', name: 'Passport' },
-                        ]}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-
-                      <FormInput
-                        w="100%"
-                        label="Document Nr"
-                        type="text"
-                        name="docNr"
-                        error={errors.docNr}
-                        errorMessage="A document Nr is mandatory"
-                        register={register}
-                        registerObject={{ required: true }}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-
-                      <FormInput
-                        w="100%"
-                        label="Address (Street, house nr, floor, door . . .  "
-                        type="text"
-                        name="landlordAddress"
-                        error={errors.landlordAddress}
-                        errorMessage="Landlord address mandatory"
-                        register={register}
-                        registerObject={{ required: true }}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-
-                    </FormRow>
-                    <FormRow>
-
-                      <FormInput
-                        w="70%"
-                        label="ZipCode"
-                        type="text"
-                        name="landlordZipCode"
-                        mgR="20px"
-                        error={errors.landlordZipCode}
-                        errorMessage="Landlord zipCode is mandatory"
-                        register={register}
-                        registerObject={{ required: true }}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-
-                      <FormSelect
-                        w="50%"
-                        label="Country"
-                        name="landlordCountry"
-                        type="text"
-                        error={errors.landlordCountry}
-                        errorMessage="Please select a country"
-                        register={register}
-                        registerObject={{ required: true }}
-                        options={countries}
-                        reportValue={(val) => setSelectedCountry(val)}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-                      <FormInput
-                        w="70%"
-                        label="City"
-                        type="text"
-                        name="landlordCity"
-                        mgR="20px"
-                        error={errors.landlordCity}
-                        errorMessage="Landlord city is mandatory"
-                        register={register}
-                        registerObject={{ required: true }}
-                        modifiedValue={() => setShowButtons(true)}
-                      />
-                    </FormRow>
-
-                  </AccordionDetails>
-
-                </Accordion>
                 <Accordion className={classes.accordion} expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -627,228 +639,217 @@ const Settings = () => {
                   </AccordionSummary>
                   <AccordionDetails className={classes.details}>
 
-                    <Div className="settings-content rules">
-                      <Div className="jamRules-form-section">
-                        <Div className="form-col">
-                          <table id="jamRules-table">
-                            <tr>
-                              <th>
-                                <p>House rules</p>
-                              </th>
-                              <th className="rules-value">
-                                <Div className="header-values-wrapper">
-                                  <Div className="value-box">
-                                    <p>YES</p>
+                    <Table id="jamRules-table" w="100%" mg="20px 0">
+                      <thead>
+                        <tr>
+                          <td style={{ fontSize: '14px' }}>
+                            {' '}
+                          </td>
+                          <td style={{ textAlign: 'right', paddingRight: '30px' }}>
+                            <span style={{ marginRight: '40px' }}>Yes</span>
+                            <span>No</span>
+                          </td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <label>Are pets allowed in the flat ?</label>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            <Controller
+                              name="pets"
+                              control={control}
+                              defaultValue={defaultValues.pets}
+                              modifiedValue={() => setShowButtons(true)}
+                              as={(
+                                <RadioGroup aria-label="pets">
+                                  <Div className="radios-wrapper" just="flex-end">
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="yes"
+                                        control={<GreenRadio />}
+                                      />
+                                    </Div>
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="no"
+                                        control={<RedRadio />}
+                                      />
+                                    </Div>
                                   </Div>
-                                  <Div className="value-box">
-                                    <p>NO</p>
-                                  </Div>
-                                </Div>
-                              </th>
-                            </tr>
-                            <tr>
-                              <td id="rules-text">
-                                <label>Are pets allowed in the flat ?</label>
-                              </td>
-                              <td id="rules-value">
-                                <section>
-                                  <Controller
-                                    name="pets"
-                                    control={control}
-                                    defaultValue={defaultValues.pets}
-                                    modifiedValue={() => setShowButtons(true)}
-                                    as={(
-                                      <RadioGroup aria-label="pets">
-                                        <Div className="radios-wrapper">
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="yes"
-                                              control={<GreenRadio />}
-                                            />
-                                          </Div>
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="no"
-                                              control={<RedRadio />}
-                                            />
-                                          </Div>
-                                        </Div>
-                                      </RadioGroup>
+                                </RadioGroup>
                                                 )}
-                                  />
-                                </section>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td id="rules-text">
-                                <label>Can tenants smoke in the apartment ?</label>
-                              </td>
-                              <td id="rules-value">
-                                <section>
-                                  <Controller
-                                    name="smoking"
-                                    control={control}
-                                    defaultValue={defaultValues.smoking}
-                                    modifiedValue={() => setShowButtons(true)}
-                                    as={(
-                                      <RadioGroup aria-label="smoking">
-                                        <Div className="radios-wrapper">
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="yes"
-                                              control={<GreenRadio />}
-                                            />
-                                          </Div>
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="no"
-                                              control={<RedRadio />}
-                                            />
-                                          </Div>
-                                        </Div>
-                                      </RadioGroup>
-                                    )}
-                                  />
-                                </section>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td id="rules-text">
-                                <label>Can tenants smoke in balconies or terraces ?</label>
-                              </td>
-                              <td id="rules-value">
-                                <section>
-                                  <Controller
-                                    name="smokingBalcony"
-                                    control={control}
-                                    defaultValue={defaultValues.smokingBalcony}
-                                    modifiedValue={() => setShowButtons(true)}
-                                    as={(
-                                      <RadioGroup aria-label="smokingBalcony">
-                                        <Div className="radios-wrapper">
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="yes"
-                                              control={<GreenRadio />}
-                                            />
-                                          </Div>
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="no"
-                                              control={<RedRadio />}
-                                            />
-                                          </Div>
-                                        </Div>
-                                      </RadioGroup>
-                                    )}
-                                  />
-                                </section>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td id="rules-text">
-                                <label>Can tenants invite firends to the apartment ? </label>
-                              </td>
-                              <td id="rules-value">
-                                <section>
-                                  <Controller
-                                    name="inviteFriends"
-                                    control={control}
-                                    defaultValue={defaultValues.inviteFriends}
-                                    modifiedValue={() => setShowButtons(true)}
-                                    as={(
-                                      <RadioGroup aria-label="inviteFriends">
-                                        <Div className="radios-wrapper">
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="yes"
-                                              control={<GreenRadio />}
-                                            />
-                                          </Div>
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="no"
-                                              control={<RedRadio />}
-                                            />
-                                          </Div>
-                                        </Div>
-                                      </RadioGroup>
-                                    )}
-                                  />
-                                </section>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td id="rules-text">
-                                <label>Can tenants have guest to overnight in the apartment ?</label>
-                              </td>
-                              <td id="rules-value">
-                                <section>
-                                  <Controller
-                                    name="overnight"
-                                    control={control}
-                                    defaultValue={defaultValues.overnight}
-                                    modifiedValue={() => setShowButtons(true)}
-                                    as={(
-                                      <RadioGroup aria-label="overnight">
-                                        <Div className="radios-wrapper">
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="yes"
-                                              control={<GreenRadio />}
-                                            />
-                                          </Div>
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="no"
-                                              control={<RedRadio />}
-                                            />
-                                          </Div>
-                                        </Div>
-                                      </RadioGroup>
-                                    )}
-                                  />
-                                </section>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td id="rules-text">
-                                <label>Can tenants organize or participate in parties in the apartment ? </label>
-                              </td>
-                              <td id="rules-value">
-                                <section>
-                                  <Controller
-                                    name="parties"
-                                    control={control}
-                                    defaultValue={defaultValues.parties}
-                                    modifiedValue={() => setShowButtons(true)}
-                                    as={(
-                                      <RadioGroup aria-label="parties">
-                                        <Div className="radios-wrapper">
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="yes"
-                                              control={<GreenRadio />}
-                                            />
-                                          </Div>
-                                          <Div className="radio-box">
-                                            <FormControlLabel
-                                              value="no"
-                                              control={<RedRadio />}
-                                            />
-                                          </Div>
-                                        </Div>
-                                      </RadioGroup>
-                                    )}
-                                  />
-                                </section>
-                              </td>
-                            </tr>
-                          </table>
+                            />
 
-                        </Div>
-                      </Div>
-                    </Div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Can tenants smoke in the apartment ?</label>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            <Controller
+                              name="smoking"
+                              control={control}
+                              defaultValue={defaultValues.smoking}
+                              modifiedValue={() => setShowButtons(true)}
+                              as={(
+                                <RadioGroup aria-label="smoking">
+                                  <Div className="radios-wrapper" just="flex-end">
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="yes"
+                                        control={<GreenRadio />}
+                                      />
+                                    </Div>
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="no"
+                                        control={<RedRadio />}
+                                      />
+                                    </Div>
+                                  </Div>
+                                </RadioGroup>
+                                    )}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Can tenants smoke in balconies or terraces ?</label>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+
+                            <Controller
+                              name="smokingBalcony"
+                              control={control}
+                              defaultValue={defaultValues.smokingBalcony}
+                              modifiedValue={() => setShowButtons(true)}
+                              as={(
+                                <RadioGroup aria-label="smokingBalcony">
+                                  <Div className="radios-wrapper" just="flex-end">
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="yes"
+                                        control={<GreenRadio />}
+                                      />
+                                    </Div>
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="no"
+                                        control={<RedRadio />}
+                                      />
+                                    </Div>
+                                  </Div>
+                                </RadioGroup>
+                                    )}
+                            />
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Can tenants invite firends to the apartment ? </label>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+
+                            <Controller
+                              name="inviteFriends"
+                              control={control}
+                              defaultValue={defaultValues.inviteFriends}
+                              modifiedValue={() => setShowButtons(true)}
+                              as={(
+                                <RadioGroup aria-label="inviteFriends">
+                                  <Div className="radios-wrapper" just="flex-end">
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="yes"
+                                        control={<GreenRadio />}
+                                      />
+                                    </Div>
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="no"
+                                        control={<RedRadio />}
+                                      />
+                                    </Div>
+                                  </Div>
+                                </RadioGroup>
+                                    )}
+                            />
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Can tenants have guest to overnight in the apartment ?</label>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+
+                            <Controller
+                              name="overnight"
+                              control={control}
+                              defaultValue={defaultValues.overnight}
+                              modifiedValue={() => setShowButtons(true)}
+                              as={(
+                                <RadioGroup aria-label="overnight">
+                                  <Div className="radios-wrapper" just="flex-end">
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="yes"
+                                        control={<GreenRadio />}
+                                      />
+                                    </Div>
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="no"
+                                        control={<RedRadio />}
+                                      />
+                                    </Div>
+                                  </Div>
+                                </RadioGroup>
+                                    )}
+                            />
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label>Can tenants organize or participate in parties in the apartment ? </label>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+
+                            <Controller
+                              name="parties"
+                              control={control}
+                              defaultValue={defaultValues.parties}
+                              modifiedValue={() => setShowButtons(true)}
+                              as={(
+                                <RadioGroup aria-label="parties">
+                                  <Div className="radios-wrapper" just="flex-end">
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="yes"
+                                        control={<GreenRadio />}
+                                      />
+                                    </Div>
+                                    <Div className="radio-box">
+                                      <FormControlLabel
+                                        value="no"
+                                        control={<RedRadio />}
+                                      />
+                                    </Div>
+                                  </Div>
+                                </RadioGroup>
+                                    )}
+                            />
+
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+
                   </AccordionDetails>
                 </Accordion>
               </Div>
