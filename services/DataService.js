@@ -346,11 +346,44 @@ const updateRoomInfo = (jamId, roomId, data, cb) => new Promise((resolve, reject
     });
 });
 
+const editJamInfo = (jamId, data, cb) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .set({
+      jamName: data.jamName,
+      jamDesc: data.jamDesc,
+    })
+    .then(() => {
+      console.log('Jam details successfully updated!');
+      cb();
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating jam Detailst: ', error);
+      cb();
+    });
+};
+
+const editJamDetails = (jamId, data) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .update(data)
+    .then(() => {
+      console.log('Jam details successfully updated!');
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating jam Detailst: ', error);
+    });
+};
+
 const DataService = {
   addJammerToJam,
   addJamToUser,
   checkIfEmialExists,
   createJam,
+  editJamInfo,
+  editJamDetails,
   getBoardInfo,
   getJamInfoById,
   getJammers,

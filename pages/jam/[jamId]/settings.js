@@ -24,7 +24,7 @@ import FormSelect from '../../../components/FormSelect';
 import FormTextArea from '../../../components/FormTextArea';
 
 import { setJamInfo } from '../../../redux/actions';
-import { setActiveSection } from '../../../redux/actions/jamActions';
+import { setActiveSection, setJamDesc, setJamName } from '../../../redux/actions/jamActions';
 import Layout from '../../../domains/Layout';
 import {
   Div, Button, Title, FormRow, InputSubmit, Table,
@@ -114,8 +114,8 @@ const Settings = () => {
   }, [jamId]);
 
   const {
-    checkInProcess,
-    checkOutProcess,
+    checkInProcedure,
+    checkOutProcedure,
     checkInFrom,
     checkInTo,
     checkOutBefore,
@@ -131,31 +131,35 @@ const Settings = () => {
     jamName,
     jamDesc,
     jamCode,
-    landlordFirstName: landlordInfo.firstName,
-    landlordLastName: landlordInfo.lastName,
-    landlordDocType: landlordInfo.docType,
-    landlordDocNr: landlordInfo.docNr,
-    landlordAddress: landlordInfo.address,
-    landlordCity: landlordInfo.city,
-    landlordZipCode: landlordInfo.zipCode,
-    landlordCountry: landlordInfo.country,
-    landlordtitle: landlordInfo.title,
-    checkInProcess,
-    checkOutProcess,
-    checkInFrom,
-    checkInTo,
-    checkOutBefore,
-    contractMode,
-    pets,
-    smoking,
-    smokingBalcony,
-    overnight,
-    parties,
-    address: jamDetails.address,
-    city: jamDetails.city,
-    country: jamDetails.country,
-    zipCode: jamDetails.zipCode,
-    inviteFriends: jamDetails.jamRules.inviteFriends,
+    // APARTMENT INFO
+    apartmentAddress: apartmentInfo.apartmentAddress,
+    apartmentCity: apartmentInfo.apartmentCity,
+    apartmentCountry: apartmentInfo.apartmentCountry,
+    apartmentZipCode: apartmentInfo.apartmentZipCode,
+    contractMode: apartmentInfo.contractMode,
+    // LANDLORD INFO
+    landlordFirstName: landlordInfo.landlordFirstName,
+    landlordLastName: landlordInfo.landlordLastName,
+    landlordDocType: landlordInfo.landlordDocType,
+    landlordDocNr: landlordInfo.landlordDocNr,
+    landlordAddress: landlordInfo.landlordAddress,
+    landlordCity: landlordInfo.landlordCity,
+    landlordZipCode: landlordInfo.landlordZipCode,
+    landlordCountry: landlordInfo.landlordCountry,
+    landlordtitle: landlordInfo.landlordTitle,
+    // JAM RULES
+    checkInProcedure: jamRules.checkInProcedure,
+    checkOutProcedure: jamRules.checkOutProcedure,
+    checkInFrom: jamRules.checkInFrom,
+    checkInTo: jamRules.checkInTo,
+    checkOutBefore: jamRules.checkOutBefore,
+    pets: jamRules.pets,
+    smoking: jamRules.smoking,
+    smokingBalcony: jamRules.smokingBalcony,
+    overnight: jamRules.overnight,
+    parties: jamRules.parties,
+    inviteFriends: jamRules.inviteFriendsinviteFriends,
+
   };
 
   const {
@@ -164,90 +168,114 @@ const Settings = () => {
 
   const onSubmit = (data) => {
     console.log('data', data);
-    // const {
-    //   address,
-    //   city,
-    //   zipCode,
-    //   country,
-    //   // checkInFrom,
-    //   // checkInProcess,
-    //   // checkInTo,
-    //   // checkOutBefore,
-    //   // checkOutProcess,
-    //   // contractMode,
-    //   landlordTitle,
-    //   landlordFirstName,
-    //   landlordLastName,
-    //   landlordDocType,
-    //   landlordDocNr,
-    //   landlordAddress,
-    //   landlordCity,
-    //   landlordZipCode,
-    //   landlordCountry,
-    //   jamDesc,
-    //   jamName,
-    //   overnight,
-    //   parties,
-    //   pets,
-    //   smoking,
-    //   smokingBalcony,
-    //   inviteFriends,
-    // } = data;
+    const {
+      jamName,
+      jamDesc,
+      apartmentAddress,
+      apartmentCity,
+      apartmentZipCode,
+      apartmentCountry,
+      checkInFrom,
+      checkInProcedure,
+      checkInTo,
+      // checkOutBefore,
+      checkOutProcedure,
+      contractMode,
+      landlordTitle,
+      landlordFirstName,
+      landlordLastName,
+      landlordDocType,
+      landlordDocNr,
+      landlordAddress,
+      landlordCity,
+      landlordZipCode,
+      landlordCountry,
+      overnight,
+      parties,
+      pets,
+      smoking,
+      smokingBalcony,
+      inviteFriends,
+    } = data;
 
-    // data.jamCode = jamCode;
+    data.jamCode = jamCode;
 
-    // const editJamMainInfo = jamName !== defaultValues.jamName || jamDesc !== defaultValues.jamDesc || contractMode !== defaultValues.contractMode;
-    // const editLandlordInfo = landlordFirstName !== defaultValues.landlordFirstName || landlordLastName !== defaultValues.landlordLastName || landlordDocType !== defaultValues.landlordDocType || landlordDocNr !== defaultValues.landlordDocNr || landlordAddress !== defaultValues.landlordAddress || landlordCity !== defaultValues.landlordCity || landlordZipCode !== defaultValues.landlordZipCode || landlordCountry !== defaultValues.landlordCountry || landlordTitle !== defaultValues.landlordTitle;
-    // const editJamDetails = address !== defaultValues.address || city !== defaultValues.city || zipCode !== defaultValues.zipCode || country !== defaultValues.country;
+    const editJamInfo = jamName !== defaultValues.jamName
+      || jamDesc !== defaultValues.jamDesc;
 
-    // const editHouseRules = (
-    //   checkInProcess !== defaultValues.checkInProcess || checkOutProcess !== defaultValues.checkOutProcess
-    //     || checkInFrom !== defaultValues.checkInFrom || checkInTo !== defaultValues.checkInTo
-    //     || checkOutBefore !== defaultValues.checkOutBefore || pets !== defaultValues.pets
-    //     || parties !== defaultValues.parties || overnight !== defaultValues.overnight
-    //     || smokingBalcony !== defaultValues.smokingBalcony || smoking !== defaultValues.smoking || inviteFriends !== defaultValues.inviteFriends
-    // );
+    const editLandlordInfo = landlordFirstName !== defaultValues.landlordFirstName
+      || landlordLastName !== defaultValues.landlordLastName
+      || landlordDocType !== defaultValues.landlordDocType
+      || landlordDocNr !== defaultValues.landlordDocNr
+      || landlordAddress !== defaultValues.landlordAddress
+      || landlordCity !== defaultValues.landlordCity
+      || landlordZipCode !== defaultValues.landlordZipCode
+      || landlordCountry !== defaultValues.landlordCountry
+      || landlordTitle !== defaultValues.landlordTitle;
 
-    // if (editLandlordInfo) {
-    //   const info = {
-    //     title: landlordTitle,
-    //     name: landlordFirstName,
-    //     lastName: landlordLastName,
-    //     docType: landlordDocType,
-    //     docNr: landlordDocNr,
-    //     address: landlordAddress,
-    //     city: landlordCity,
-    //     zipCode: landlordZipCode,
-    //     country: landlordCountry,
-    //   };
-    //   DataService.editLandlordInfo(jamId, info);
-    // }
-    // if (editJamMainInfo) {
-    //   const info = { jamName, jamDesc };
-    //   DataService.editJamMainInfo(jamId, info);
-    // }
-    // if (editJamDetails) {
-    //   const info = {
-    //     address, city, zipCode, country, contractMode,
-    //   };
-    //   DataService.editJamDetails(jamId, info);
-    // }
-    // if (editHouseRules) {
-    //   const info = {
-    //     checkInFrom,
-    //     checkInProcess,
-    //     checkInTo,
-    //     checkOutBefore,
-    //     checkOutProcess,
-    //     overnight,
-    //     parties,
-    //     pets,
-    //     smoking,
-    //     smokingBalcony,
-    //     inviteFriends,
-    //   };
-    //   DataService.editJamHouseRules(jamId, info);
-    // }
+    const editApartmentInfo = apartmentAddress !== defaultValues.aparmtentAddress
+      || apartmentCity !== defaultValues.apartmentCity
+      || apartmentZipCode !== defaultValues.aparmtentZipCode
+      || apartmentCountry !== defaultValues.apartmentCountry
+      || contractMode !== defaultValues.contractMode;
+
+    const editJamRules = checkInProcedure !== defaultValues.checkInProcedure
+      || checkOutProcedure !== defaultValues.checkOutProcedure
+      || checkInFrom !== defaultValues.checkInFrom
+      || checkInTo !== defaultValues.checkInTo
+      || checkOutBefore !== defaultValues.checkOutBefore
+      || pets !== defaultValues.pets
+      || parties !== defaultValues.parties
+      || overnight !== defaultValues.overnight
+      || smokingBalcony !== defaultValues.smokingBalcony
+      || smoking !== defaultValues.smoking
+      || inviteFriends !== defaultValues.inviteFriends;
+
+    if (editLandlordInfo || editJamRules || editApartmentInfo) {
+      const newJamDetails = {
+        contractInfo: {
+          apartmentInfo: {
+            apartmentAddress,
+            apartmentCity,
+            apartmentZipCode,
+            apartmentCountry,
+            contractMode,
+          },
+          landlordInfo: {
+            landlordTitle,
+            landlordFirstName,
+            landlordLastName,
+            landlordDocType,
+            landlordDocNr,
+            landlordAddress,
+            landlordCity,
+            landlordZipCode,
+            landlordCountry,
+          },
+        },
+        jamRules: {
+          checkInProcedure,
+          checkOutProcedure,
+          checkInFrom,
+          checkInTo,
+          checkOutBefore,
+          overnight,
+          parties,
+          pets,
+          smoking,
+          smokingBalcony,
+          inviteFriends,
+        },
+      };
+      DataService.editJamDetails(jamId, newJamDetails);
+    }
+    if (editJamInfo) {
+      const info = { jamName, jamDesc };
+      DataService.editJamInfo(jamId, info, () => {
+        setJamName(jamName);
+        setJamDesc(jamDesc);
+      });
+    }
   };
 
   const formStyle = {
@@ -269,7 +297,8 @@ const Settings = () => {
           <Title>
             Manage all the information about&nbsp;
             <span>{jamName}</span>
-&nbsp;here
+            {' '}
+            &nbsp;here
           </Title>
           <div className={classes.root}>
             <form
@@ -347,16 +376,16 @@ const Settings = () => {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                   >
-                    <Typography className={expanded === 'panel2' ? classes.expHeading : classes.heading}>Apartment location</Typography>
+                    <Typography className={expanded === 'panel2' ? classes.expHeading : classes.heading}>Apartment location / Contract mode</Typography>
                   </AccordionSummary>
                   <AccordionDetails className={classes.details}>
                     <FormRow>
                       <FormInput
                         w="100%"
                         label="Address (Street, house nr, floor, door, . . . )"
-                        placeholder={defaultValues.address}
+                        placeholder={defaultValues.apartmentAddress}
                         type="text"
-                        name="address"
+                        name="apartmentAddress"
                         error={errors.address}
                         errorMessage="Jam address is mandatory"
                         register={register}
@@ -369,9 +398,9 @@ const Settings = () => {
                       <FormInput
                         w="30%"
                         label="City"
-                        placeholder={defaultValues.city}
+                        placeholder={defaultValues.apartmentCity}
                         type="text"
-                        name="city"
+                        name="apartmentCity"
                         mgR="20px"
                         error={errors.city}
                         errorMessage="Jam city is mandatory"
@@ -382,9 +411,9 @@ const Settings = () => {
                       <FormInput
                         w="30%"
                         label="ZipCode"
-                        placeholder={defaultValues.zipCode}
+                        placeholder={defaultValues.apartmentZipCode}
                         type="text"
-                        name="zipCode"
+                        name="apartmentZipCode"
                         mgR="20px"
                         error={errors.zipCode}
                         errorMessage="zipCode is mandatory"
@@ -396,9 +425,9 @@ const Settings = () => {
                       <FormSelect
                         w="40%"
                         label="Country"
-                        name="country"
+                        name="apartmentCountry"
                         type="text"
-                        error={errors.country}
+                        error={errors.apartmentCountry}
                         errorMessage="Please select a country"
                         register={register}
                         registerObject={{ required: true }}
@@ -406,7 +435,21 @@ const Settings = () => {
                         reportValue={(val) => setSelectedCountry(val)}
                         modifiedValue={() => setShowButtons(true)}
                       />
-
+                    </FormRow>
+                    <FormRow>
+                      <FormSelect
+                        w="60%"
+                        label="Contract mode"
+                        name="contractMode"
+                        type="text"
+                        error={errors.contractMode}
+                        errorMessage="Please select the contract mode"
+                        register={register}
+                        registerObject={{ required: true }}
+                        reportValue={(val) => setContractMode(val)}
+                        options={contracts}
+                        modifiedValue={() => setShowButtons(true)}
+                      />
                     </FormRow>
                   </AccordionDetails>
                 </Accordion>
@@ -439,7 +482,6 @@ const Settings = () => {
                         options={[{ id: 'mr', name: 'Mr' }, { id: 'mrs', name: 'Mrs' }]}
                         modifiedValue={() => setShowButtons(true)}
                       />
-
                       <FormInput
                         w="40%"
                         mgR="20px"
@@ -452,7 +494,6 @@ const Settings = () => {
                         registerObject={{ required: true }}
                         modifiedValue={() => setShowButtons(true)}
                       />
-
                       <FormInput
                         w="40%"
                         mgR="20px"
@@ -468,14 +509,13 @@ const Settings = () => {
                     </FormRow>
 
                     <FormRow>
-
                       <FormSelect
                         w="30%"
                         mgR="20px"
                         label="Document type"
-                        name="docType"
+                        name="landlordDocType"
                         type="text"
-                        error={errors.docType}
+                        error={errors.landlordDocType}
                         errorMessage="Please select a document type"
                         register={register}
                         registerObject={{ required: true }}
@@ -492,8 +532,8 @@ const Settings = () => {
                         mgR="20px"
                         label="Doc Nr"
                         type="text"
-                        name="docNr"
-                        error={errors.docNr}
+                        name="landlordDocNr"
+                        error={errors.landlordDocNr}
                         errorMessage="A document Nr is mandatory"
                         register={register}
                         registerObject={{ required: true }}
@@ -548,7 +588,6 @@ const Settings = () => {
                         label="City"
                         type="text"
                         name="landlordCity"
-                        mgR="20px"
                         error={errors.landlordCity}
                         errorMessage="Landlord city is mandatory"
                         register={register}
@@ -602,7 +641,7 @@ const Settings = () => {
                     </FormRow>
                     <FormRow>
                       <FormInput
-                        w="20%"
+                        w="33%"
                         label="Check-In from"
                         placeholder={defaultValues.checkInFrom}
                         type="text"
@@ -614,7 +653,7 @@ const Settings = () => {
                       />
 
                       <FormInput
-                        w="20%"
+                        w="33%"
                         label="to"
                         placeholder={defaultValues.checkInTo}
                         type="text"
@@ -624,21 +663,19 @@ const Settings = () => {
                         register={register}
                         modifiedValue={() => setShowButtons(true)}
                       />
-
-                      <FormSelect
-                        w="60%"
-                        label="Contract mode"
-                        name="contractMode"
+                      <FormInput
+                        w="33%"
+                        label="Cehck-Out before"
+                        placeholder={defaultValues.checkOutBefore}
                         type="text"
-                        error={errors.contractMode}
-                        errorMessage="Please select the contract mode"
+                        name="checkOutBefore"
+                        mgR="20px"
+                        error={errors.checkOutBefore}
                         register={register}
-                        registerObject={{ required: true }}
-                        reportValue={(val) => setContractMode(val)}
-                        options={contracts}
                         modifiedValue={() => setShowButtons(true)}
                       />
                     </FormRow>
+
                   </AccordionDetails>
                 </Accordion>
                 <Accordion
@@ -877,6 +914,7 @@ const Settings = () => {
                     back="rgb(85, 187, 151)"
                     type="submit"
                     value="submit"
+                    onClick={(e) => { onSubmit(e); setShowButtons(false); }}
                   />
                   <Div className="roomInfo-buttonArea" w="160px" mgL="20px">
                     <Button

@@ -28,6 +28,16 @@ function setJamReducer(state = defaultState, action) {
         ...state,
         ...action.payload,
       };
+    case 'JAM_NAME':
+      return {
+        ...state,
+        jamName: action.payload,
+      };
+    case 'JAM_DESC':
+      return {
+        ...state,
+        jamDesc: action.payload,
+      };
     case 'ACTIVE_SECTION':
       return {
         ...state,

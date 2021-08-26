@@ -4,6 +4,19 @@ function setJamInfo(jamInfo) {
     payload: jamInfo,
   };
 }
+function setJamName(jamName) {
+  return {
+    type: 'JAM_NAME',
+    payload: jamName,
+  };
+}
+
+function setJamDesc(jamDesc) {
+  return {
+    type: 'JAM_DESC',
+    payload: jamDesc,
+  };
+}
 
 function setTenantsList(jammers) {
   return {
@@ -33,4 +46,4 @@ function setRoomsInfo(rooms) {
 //   };
 // }
 
-export { setJamInfo, setActiveSection, setTenantsList, setRoomsInfo };
+export { setJamInfo, setActiveSection, setTenantsList, setRoomsInfo, setJamName, setJamDesc };
