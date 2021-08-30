@@ -45,7 +45,6 @@ const MyComponent = ({ Component, pageProps }) => {
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user && !userId) {
       const userInfo = await DataService.getUserInfo(user.uid);
-      // REVISAR
       const userLenguage = dictionary[lenguage];
       dispatch(setDictionary(userLenguage));
 

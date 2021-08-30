@@ -110,13 +110,15 @@ const addJammerToJam = (jamId, userId) => new Promise((resolve, reject) => {
     });
 });
 const createJam = (data, userId) => new Promise((resolve, reject) => {
+  console.log('data: ', data);
   firebase.firestore()
     .collection('jams')
     .add(data)
     .then((doc) => {
       const jamId = doc.id;
       if (data.jamType === 'rooms-rental') {
-        const rooms = Number(data.nrOfRooms);
+        const rooms = Number(data.jamDetails.contractInfo.apartmentInfo.nrOfRooms);
+        console.log('rooms: ', rooms);
         for (let i = 0; i < rooms; i++) {
           const roomNr = i + 1;
           const roomInfo = {
@@ -128,6 +130,8 @@ const createJam = (data, userId) => new Promise((resolve, reject) => {
             roomNr,
             sqm: '',
             expenses: '',
+            heater: '',
+            airConditioner: '',
           };
           addNewRoom(jamId, roomInfo);
         }
@@ -364,7 +368,7 @@ const editJamInfo = (jamId, data, cb) => {
     });
 };
 
-const editJamDetails = (jamId, data) => {
+const editJamSpecs = (jamId, data) => {
   firebase.firestore().collection('jams')
     .doc(jamId)
     .update(data)
@@ -383,7 +387,7 @@ const DataService = {
   checkIfEmialExists,
   createJam,
   editJamInfo,
-  editJamDetails,
+  editJamSpecs,
   getBoardInfo,
   getJamInfoById,
   getJammers,

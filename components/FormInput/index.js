@@ -9,7 +9,7 @@ const FormInput = ({
   const reportChange = () => {
     modifiedValue(true);
   };
-  
+
   return (
     <Div
       col

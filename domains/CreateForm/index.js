@@ -28,7 +28,7 @@ const CreateForm = ({ showModal }) => {
 
   const createNewJam = (data) => {
     const {
-      jamName, jamDesc, jamType, nrOfRooms, address, floor, door, zipCode, country, city
+      jamName, jamDesc, jamType, nrOfRooms, apartmentAddress, apartmentZipCode, apartmentCountry, apartmentCity
     } = data;
 
     const jamCode = Calculations.generateJamCode();
@@ -36,19 +36,18 @@ const CreateForm = ({ showModal }) => {
     const updatedAt = '';
     let jamRules = {};
     let contractInfo = {};
-    let jamDetails = {};
+    let jamSpecs = {};
 
     if (jamType === 'rooms-rental') {
       jamRules = Calculations.getJamRules(jamType);
       const landlordInfo = Calculations.getLandlordInfo();
-      const apartmentInfo = Calculations.getApartmentInfo();
-
       contractInfo = {
         landlordInfo,
-        apartmentInfo,
+        apartmentInfo: {
+          nrOfRooms, apartmentAddress, apartmentZipCode, apartmentCountry, apartmentCity,
+        },
       };
-
-      jamDetails = { jamRules, contractInfo };
+      jamSpecs = { jamRules, contractInfo };
     }
 
     const newJamInfo = {
@@ -58,17 +57,10 @@ const CreateForm = ({ showModal }) => {
       createdAt,
       jamCode,
       jamDesc,
-      jamDetails,
+      jamSpecs,
       jamName,
-      address,
-      floor,
-      door,
-      zipCode,
-      country,
-      city,
       jamType,
       lastActivity: createdAt,
-      nrOfRooms,
       privacy: 'private',
       updatedAt,
     };
@@ -90,6 +82,10 @@ const CreateForm = ({ showModal }) => {
   const typeOfJams = Calculations.getSelectOptions('jamTypes');
   const countries = Calculations.getSelectOptions('countries');
 
+  const valueChanged = () => {
+    console.log('value changed');
+  }
+
   return (
     <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(createNewJam)}>
       <Div w="100%" col just="center" align="flex-start">
@@ -104,6 +100,7 @@ const CreateForm = ({ showModal }) => {
           errorMessage="Jam Name is mandatory"
           register={register}
           registerObject={{ required: true }}
+          modifiedValue={() => { valueChanged(true); }}
         />
 
         <FormInput
@@ -115,6 +112,7 @@ const CreateForm = ({ showModal }) => {
           errorMessage="A brief description is mandatory"
           register={register}
           registerObject={{ required: true }}
+          modifiedValue={() => { valueChanged(true); }}
         />
 
         <FormSelect
@@ -129,6 +127,8 @@ const CreateForm = ({ showModal }) => {
           onChange={(e) => setJamType(e.target.value)}
           reportValue={(val) => setJamType(val)}
           options={typeOfJams}
+          modifiedValue={() => { valueChanged(true); }}
+
         />
 
         {typeOfJam === 'rooms-rental'
@@ -145,20 +145,22 @@ const CreateForm = ({ showModal }) => {
                   registerObject={{ required: true }}
                   options={nrOfRooms}
                   reportValue={(val) => setRoomsNr(val)}
+                  modifiedValue={() => { valueChanged(true); }}
                 />
                 <SubTitle>Jam Address</SubTitle>
                 <FormInput
                   w="70%"
-                  label="Address (street and house Nr)"
+                  label="Address (street, house Nr, floor, door . . . )"
                   type="text"
-                  name="address"
+                  name="apartmentAddress"
                   mgR="20px"
-                  error={errors.address}
+                  error={errors.apartmentAddress}
                   errorMessage="Jam address is mandatory"
                   register={register}
                   registerObject={{ required: true }}
+                  modifiedValue={() => { valueChanged(true); }}
                 />
-                <FormInput
+                {/* <FormInput
                   w="70%"
                   label="Floor"
                   type="text"
@@ -168,6 +170,7 @@ const CreateForm = ({ showModal }) => {
                   errorMessage="Jam floor is mandatory"
                   register={register}
                   registerObject={{ required: true }}
+                  modifiedValue={() => { valueChanged(true); }}
                 />
                 <FormInput
                   w="70%"
@@ -179,41 +182,45 @@ const CreateForm = ({ showModal }) => {
                   errorMessage="Jam door is mandatory"
                   register={register}
                   registerObject={{ required: true }}
+                  modifiedValue={() => { valueChanged(true); }}
+                /> */}
+                <FormInput
+                  w="30%"
+                  label="City"
+                  type="text"
+                  name="apartmentCity"
+                  mgR="20px"
+                  error={errors.apartmentCity}
+                  errorMessage="Jam city is mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                  modifiedValue={() => { valueChanged(true); }}
                 />
                 <FormInput
-                  w="70%"
+                  w="30%"
                   label="ZipCode"
                   type="text"
-                  name="zipCode"
+                  name="apartmentZipCode"
                   mgR="20px"
-                  error={errors.zipCode}
+                  error={errors.apartmentZipCode}
                   errorMessage="Jam zipCode is mandatory"
                   register={register}
                   registerObject={{ required: true }}
+                  modifiedValue={() => { valueChanged(true); }}
                 />
 
                 <FormSelect
-                  w="50%"
+                  w="40%"
                   label="Country"
-                  name="country"
+                  name="apartmentCountry"
                   type="text"
-                  error={errors.country}
+                  error={errors.apartmentCountry}
                   errorMessage="Please select a country"
                   register={register}
                   registerObject={{ required: true }}
                   options={countries}
                   reportValue={(val) => setSelectedCountry(val)}
-                />
-                <FormInput
-                  w="70%"
-                  label="City"
-                  type="text"
-                  name="city"
-                  mgR="20px"
-                  error={errors.city}
-                  errorMessage="Jam city is mandatory"
-                  register={register}
-                  registerObject={{ required: true }}
+                  modifiedValue={() => { valueChanged(true); }}
                 />
               </Div>
             )}

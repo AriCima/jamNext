@@ -25,6 +25,11 @@ function setUserReducer(state = defaultState, action) {
         ...state,
         userJams: action.payload,
       };
+    case 'USER_LENGUAJE':
+      return {
+        ...state,
+        lenguage: action.payload,
+      };
     default:
       return state;
   }

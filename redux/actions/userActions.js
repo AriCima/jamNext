@@ -18,6 +18,13 @@ function setUserJams(jamsList) {
   };
 }
 
+function setUserLenguage(userLenguage) {
+  return {
+    type: 'USER_LENGUAJE',
+    payload: userLenguage,
+  };
+}
+
 export {
-  setUserInfo, setUserJams, resetUserInfo,
+  setUserInfo, setUserJams, resetUserInfo, setUserLenguage
 };

@@ -66,7 +66,8 @@ const RoomInfo = () => {
       <Div w="100%" col pad="20px">
         <Div w="100%" just="flex-start">
           <Title>
-            Room Nr:
+            Room Nr: &nbsp;
+            {' '}
             {roomNr}
           </Title>
         </Div>

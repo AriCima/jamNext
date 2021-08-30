@@ -46,6 +46,8 @@ const EditRoomForm = ({
     balcony: roomInfo.balcony,
     exterior: roomInfo.exterior,
     privBath: roomInfo.privBath,
+    heater: roomInfo.heater,
+    airConditioner: roomInfo.airConditioner,
     deposit: roomInfo.deposit,
     rent: roomInfo.rent,
     expenses: roomInfo.expenses,
@@ -260,6 +262,70 @@ const EditRoomForm = ({
                                       )}
               />
 
+            </td>
+          </tr>
+          <tr>
+            <td id="rules-text">
+              Has the room a heater ?
+            </td>
+            <td id="rules-value">
+              <Controller
+                name="Heater"
+                control={control}
+                defaultValue={defaultValues.heater}
+                as={(
+                  <RadioGroup aria-label="heater">
+                    <Div className="radios-wrapper" just="flex-end">
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="Yes"
+                          control={<GreenRadio />}
+                          disabled
+                        />
+                      </Div>
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="No"
+                          control={<RedRadio />}
+                          disabled
+                        />
+                      </Div>
+                    </Div>
+                  </RadioGroup>
+                  )}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td id="rules-text">
+              Has the room air conditioner ?
+            </td>
+            <td id="rules-value">
+              <Controller
+                name="Air conditioner"
+                control={control}
+                defaultValue={defaultValues.airConditioner}
+                as={(
+                  <RadioGroup aria-label="airConditioner">
+                    <Div className="radios-wrapper" just="flex-end">
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="Yes"
+                          control={<GreenRadio />}
+                          disabled
+                        />
+                      </Div>
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="No"
+                          control={<RedRadio />}
+                          disabled
+                        />
+                      </Div>
+                    </Div>
+                  </RadioGroup>
+                  )}
+              />
             </td>
           </tr>
         </tbody>

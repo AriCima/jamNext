@@ -4,5 +4,9 @@ export default {
   Tenants: 'Tenants',
   FlatMates: 'Flat mates',
   Settings: 'Settings',
-  Overview: 'OVerview',
+  Overview: 'Overview',
+  placeholder: {
+    inputAddress: 'type the address',
+    inputZipCode: 'type the zipCode',
+  },
 };

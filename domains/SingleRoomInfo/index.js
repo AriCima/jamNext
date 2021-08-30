@@ -37,7 +37,7 @@ const RedRadio = withStyles({
 const SingleRoomInfo = ({ roomInfo, edit }) => {
   console.log('roomInfo: ', roomInfo);
   const {
-    sqm, exterior, balcony, privBath, deposit, rent, expenses,
+    sqm, exterior, balcony, privBath, heater, airConditioner, deposit, rent, expenses,
   } = roomInfo;
 
   const {
@@ -248,6 +248,74 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
                           control={<RedRadio />}
                           disabled
                           checked={privBath === 'No'}
+                        />
+                      </Div>
+                    </Div>
+                  </RadioGroup>
+                  )}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td id="rules-text">
+              Has the room a heater ?
+            </td>
+            <td id="rules-value">
+              <Controller
+                name="Heater"
+                control={control}
+                defaultValue={heater}
+                as={(
+                  <RadioGroup aria-label="heater">
+                    <Div className="radios-wrapper" just="flex-end">
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="Yes"
+                          control={<GreenRadio />}
+                          checked={heater === 'Yes'}
+                          disabled
+                        />
+                      </Div>
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="No"
+                          control={<RedRadio />}
+                          checked={heater === 'No'}
+                          disabled
+                        />
+                      </Div>
+                    </Div>
+                  </RadioGroup>
+                  )}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td id="rules-text">
+              Has the room air conditioner ?
+            </td>
+            <td id="rules-value">
+              <Controller
+                name="Air conditioner"
+                control={control}
+                defaultValue={airConditioner}
+                as={(
+                  <RadioGroup aria-label="airConditioner">
+                    <Div className="radios-wrapper" just="flex-end">
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="Yes"
+                          control={<GreenRadio />}
+                          checked={airConditioner === 'Yes'}
+                          disabled
+                        />
+                      </Div>
+                      <Div className="radio-box">
+                        <FormControlLabel
+                          value="No"
+                          control={<RedRadio />}
+                          checked={airConditioner === 'No'}
+                          disabled
                         />
                       </Div>
                     </Div>
