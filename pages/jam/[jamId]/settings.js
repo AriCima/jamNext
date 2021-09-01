@@ -94,7 +94,7 @@ const Settings = () => {
   const [cMode, setContractMode] = useState('');
   const [depositPolicy, setDepositPolicy] = useState('');
   const [landlordTitle, setTitle] = useState('');
-
+  
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -103,11 +103,12 @@ const Settings = () => {
     jamDetails, jamName, jamDesc, jamCode,
   } = useSelector((state) => state.jamReducer);
   const dispatch = useDispatch();
-  
-  console.log('jamDetails: ', jamDetails);
+
   const getJamInfo = async () => {
     const res = await DataService.getJamInfoById(jamId);
     dispatch(setJamInfo(res));
+    const cM = jamDetails.contractInfo.contractMode;
+    setContractMode(cM);
   };
 
   useEffect(() => {
@@ -161,7 +162,7 @@ const Settings = () => {
               className="settings-form"
               onSubmit={handleSubmit(onSubmit)}
             >
-              {/* JAM INFO */}
+              {/* JAM INFO  1 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel1'}
@@ -220,11 +221,10 @@ const Settings = () => {
                   </FormRow>
                 </AccordionDetails>
               </Accordion>
-
               <Div mgT="20px" mgB="20px">
                 <SubTitle>{dict.settingsForm.contractSection}</SubTitle>
               </Div>
-              {/* APARTMENT INFORMATION */}
+              {/* APARTMENT INFORMATION 2 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel2'}
@@ -296,7 +296,7 @@ const Settings = () => {
                   </FormRow>
                 </AccordionDetails>
               </Accordion>
-              {/* LANDLORD INFO */}
+              {/* LANDLORD INFO 3 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel3'}
@@ -433,13 +433,12 @@ const Settings = () => {
                       register={register}
                       registerObject={{ required: true }}
                       options={countries}
-                      reportValue={(val) => setSelectedCountry(val)}
                       modifiedValue={() => setShowButtons(true)}
                     />
                   </FormRow>
                 </AccordionDetails>
               </Accordion>
-              {/* CONTRACT MODE */}
+              {/* CONTRACT MODE 4 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel4'}
@@ -453,9 +452,9 @@ const Settings = () => {
                   <Typography className={expanded === 'panel4' ? classes.expHeading : classes.heading}>{dict.settingsForm.contMode}</Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
-                  <FormRow>
+                  <Div w="100%" col>
                     <FormSelect // contractMode
-                      w="20%"
+                      w="100%"
                       label={dict.settingsForm.contMode}
                       name="jamDetails.contractInfo.contractMode"
                       type="text"
@@ -463,28 +462,30 @@ const Settings = () => {
                       errorMessage="Please select the contract mode"
                       register={register}
                       registerObject={{ required: true }}
-                      reportValue={(val) => setContractMode(val)}
+                      // reportValue={(val) => setContractMode(val)}
                       options={contracts}
-                      modifiedValue={() => setShowButtons(true)}
+                      modifiedValue={(x) => { setShowButtons(true); setContractMode(x); }}
                     />
-                    <Div h="100%" mgL="20px" mgT="20px" align="center" just="flex-start">
-                      <Txt fSize="14px">{dict.contractType[cMode]}</Txt>
-                    </Div>
-                  </FormRow>
+                    { cMode !== '' && (
+                      <Div pad="20px" back="#CCC5B9" borderR="15px" w="100%" mgT="20px" align="center" just="flex-start">
+                        <Txt fSize="14px">{dict.contractType[cMode]}</Txt>
+                      </Div>
+                    )}
+                  </Div>
                 </AccordionDetails>
               </Accordion>
-              {/* EXPENSES & DEPOSIT POLICY */}
+              {/* EXPENSES & DEPOSIT POLICY 5 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel5'}
                 onChange={handleChange('panel5')}
               >
                 <AccordionSummary
-                  expandIcon={<ExpandMoreIcon className={expanded === 'panel45' && classes.expIcon} />}
+                  expandIcon={<ExpandMoreIcon className={expanded === 'panel5' && classes.expIcon} />}
                   aria-controls="panel5a-content"
                   id="panel5a-header"
                 >
-                  <Typography className={expanded === 'panel4' ? classes.expHeading : classes.heading}>{dict.settingsForm.expAndDep}</Typography>
+                  <Typography className={expanded === 'panel5' ? classes.expHeading : classes.heading}>{dict.settingsForm.expAndDep}</Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
                   <FormRow>
@@ -522,7 +523,7 @@ const Settings = () => {
                         </Div>
                       </>
                     )}
-                    <FormSelect // contractMode
+                    <FormSelect // deposit refund
                       w="20%"
                       mgL="30px"
                       label={dict.settingsForm.depRef}
@@ -532,15 +533,14 @@ const Settings = () => {
                       errorMessage="Please select the contract mode"
                       register={register}
                       registerObject={{ required: true }}
-                      reportValue={(val) => setDepositPolicy(val)}
+                      // reportValue={(val) => setDepositPolicy(val)}
                       options={deposit}
                       modifiedValue={() => setShowButtons(true)}
                     />
                   </FormRow>
                 </AccordionDetails>
               </Accordion>
-
-              {/* CHECK-IN & CHECK-OUT */}
+              {/* CHECK-IN & CHECK-OUT 6 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel6'}
@@ -619,7 +619,7 @@ const Settings = () => {
 
                 </AccordionDetails>
               </Accordion>
-              {/* HOUSE RULES */}
+              {/* HOUSE RULES 7 */}
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel7'}

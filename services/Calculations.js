@@ -413,9 +413,9 @@ const getSelectOptions = (listType) => {
     case 'deposits':
       list = [
         { id: 'select', name: 'select . . .' },
-        { id: 'ten', name: 'within 10 days after check-out' },
-        { id: 'thirty', name: 'within 30 days after check-out' },
-        { id: 'afterExp', name: 'once all expenses bills were received' },
+        { id: '10 Days', name: 'within 10 days after check-out' },
+        { id: '30 days', name: 'within 30 days after check-out' },
+        { id: 'after exp', name: 'once all expenses bills were received' },
       ];
       break;
     case 'expenses':

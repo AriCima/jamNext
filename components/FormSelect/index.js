@@ -6,14 +6,14 @@ import {
 } from '../../styledComps';
 
 const FormSelect = ({
-  reportValue, options, w, mgL, mgR, label, name, error, errorMessage, register, registerObject, type = 'text',
+ options, w, mgL, mgR, label, name, error, errorMessage, register, registerObject, type = 'text', modifiedValue
 }) => {
   const optionsList = options.map((el) => (
     <option key={el.id} value={el.id}>{el.name}</option>
   ));
 
   const handleChange = (e) => {
-    reportValue(e.target.value);
+    modifiedValue(e.target.value);
   };
 
   return (
