@@ -498,9 +498,9 @@ const Settings = () => {
                       errorMessage="Please make your selection"
                       register={register}
                       registerObject={{ required: true }}
-                      reportValue={(val) => setExpensesIncluded(val)}
+                      // reportValue={(val) => setExpensesIncluded(val)}
                       options={[{ id: 'select', name: 'select . . .' }, { id: 'yes', name: 'yes' }, { id: 'no', name: 'no' }]}
-                      modifiedValue={() => setShowButtons(true)}
+                      modifiedValue={(val) => { setShowButtons(true); setExpensesIncluded(val); }}
                     />
                     {expIncluded === 'no' && (
                       <>
@@ -514,9 +514,9 @@ const Settings = () => {
                           errorMessage="Please make your selection"
                           register={register}
                           registerObject={{ required: true }}
-                          reportValue={(val) => setExpPolicy(val)}
+                          // reportValue={(val) => setExpPolicy(val)}
                           options={expenses}
-                          modifiedValue={() => setShowButtons(true)}
+                          modifiedValue={(val) => { setShowButtons(true); setExpPolicy(val) }}
                         />
                         <Div>
                           <Txt />
@@ -535,7 +535,7 @@ const Settings = () => {
                       registerObject={{ required: true }}
                       // reportValue={(val) => setDepositPolicy(val)}
                       options={deposit}
-                      modifiedValue={() => setShowButtons(true)}
+                      modifiedValue={(val) => { setShowButtons(true); setDepositPolicy(val); }}
                     />
                   </FormRow>
                 </AccordionDetails>
