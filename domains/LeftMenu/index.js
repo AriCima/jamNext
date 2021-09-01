@@ -11,7 +11,6 @@ const LeftMenu = ({ openModal, showCreate }) => {
   const showProfileMenu = () => {
     setShowProfile(!showProfile);
   };
-console.log(showProfile);
   return (
     <Div shad="8px 0 21px -13px #DFDFDF" className="LeftMenu" col flexG="0.2" minW="20%">
       <LeftNavBar openModal={openModal} showCreate={showCreate} showProfileMenu={showProfileMenu} />

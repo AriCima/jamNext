@@ -148,7 +148,7 @@ const CreateForm = ({ showModal }) => {
                   modifiedValue={() => { valueChanged(true); }}
                 />
                 <SubTitle>Jam Address</SubTitle>
-                <FormInput
+                <FormInput // jamAddress
                   w="70%"
                   label="Address (street, house Nr, floor, door . . . )"
                   type="text"

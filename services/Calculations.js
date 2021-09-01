@@ -3,7 +3,6 @@ import isEmpty from 'lodash/isEmpty';
 
 const generateJamCode = () => {
   // type: 4aG-89n --> 14.776.336 combinations
-
   const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   const codeArray = [];
 
@@ -406,9 +405,24 @@ const getSelectOptions = (listType) => {
       list = [
         { id: 'select', name: 'Select . . .' },
         { id: 'monthly', name: 'Monthly' },
-        { id: 'fortnightly', name: 'fortnightly' },
+        { id: 'fortnightly', name: 'Fortnightly' },
         { id: 'daily', name: 'Daily' },
 
+      ];
+      break;
+    case 'deposits':
+      list = [
+        { id: 'select', name: 'select . . .' },
+        { id: 'ten', name: 'within 10 days after check-out' },
+        { id: 'thirty', name: 'within 30 days after check-out' },
+        { id: 'afterExp', name: 'once all expenses bills were received' },
+      ];
+      break;
+    case 'expenses':
+      list = [
+        { id: 'select', name: 'select . . .' },
+        { id: 'fixed', name: 'a fixed amount' },
+        { id: 'variable', name: 'a variable amount' },
       ];
       break;
     default:
