@@ -7,7 +7,7 @@ const FormSection = styled.div`
     align-items: center;
     margin: ${({ mg }) => mg || '0'};
     padding: ${({ pad }) => pad || '20px 10px'};
-    width: 95%;
+    width: 100%;
 `;
 
 export default FormSection;

@@ -2,7 +2,13 @@ const defaultState = {
   createdAt: '',
   jamCode: '',
   jamDesc: '',
-  jamDetails: {},
+  jamDetails: {
+    jamRules: {},
+    contractInfo: {
+      landlordInfo: {},
+      apartmentInfo: {},
+    },
+  },
   jamId: '',
   jamName: '',
   activeSection: 'overview',
@@ -21,6 +27,16 @@ function setJamReducer(state = defaultState, action) {
       return {
         ...state,
         ...action.payload,
+      };
+    case 'JAM_NAME':
+      return {
+        ...state,
+        jamName: action.payload,
+      };
+    case 'JAM_DESC':
+      return {
+        ...state,
+        jamDesc: action.payload,
       };
     case 'ACTIVE_SECTION':
       return {

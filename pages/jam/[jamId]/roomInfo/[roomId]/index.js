@@ -47,6 +47,10 @@ const RoomInfo = () => {
   }, [jamId, roomId]);
 
   useEffect(() => {
+    roomId && jamId && getRoomInfo(jamId, roomId);
+  }, [editInfo]);
+
+  useEffect(() => {
     jamId && getJamInfo(jamId);
     roomId && jamId && getRoomInfo(jamId, roomId);
     dispatch(setActiveSection('rooms'));
@@ -62,7 +66,8 @@ const RoomInfo = () => {
       <Div w="100%" col pad="20px">
         <Div w="100%" just="flex-start">
           <Title>
-            Room Nr:
+            Room Nr: &nbsp;
+            {' '}
             {roomNr}
           </Title>
         </Div>

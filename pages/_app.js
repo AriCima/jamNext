@@ -4,9 +4,11 @@ import '../styles/globals.css';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { setUserInfo, setUserJams } from '../redux/actions/userActions';
+import { setDictionary } from '../redux/actions/dictionaryActions';
 import store from '../redux/index';
 import firebase from '../firebase.config';
 import DataService from '../services/DataService';
+import dictionary from '../locale';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -17,8 +19,19 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const theme = {
-  colors: {
-    primary: '#0070f3',
+  colorsLuft: {
+    primary: '#FCA311',
+    second: '#14213D',
+    gray: '#ACACAC',
+    lightGray: '#E5E5E5',
+  },
+  colorsHol: {
+    primary: '#EB5E28',
+    second: '#403D39',
+    gray: '#ACACAC',
+    lightGray: '#CCC5B9',
+    cream: '#FFFCF2',
+    black: '#252422',
   },
 };
 
@@ -27,11 +40,14 @@ const MyComponent = ({ Component, pageProps }) => {
   const [adminJams, setAdminJams] = useState([]);
   const dispatch = useDispatch();
 
-  const { userId } = useSelector((state) => state.userReducer);
+  const { userId, lenguage } = useSelector((state) => state.userReducer);
 
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user && !userId) {
       const userInfo = await DataService.getUserInfo(user.uid);
+      const userLenguage = dictionary[lenguage];
+      dispatch(setDictionary(userLenguage));
+
       dispatch(setUserInfo({ userId: user.uid, ...userInfo }));
     }
   });
@@ -41,7 +57,7 @@ const MyComponent = ({ Component, pageProps }) => {
       const unsubscribe = DataService.getUserJams(
         userId,
         (jams) => setAdminJams(jams),
-        (jams) => setUserJam(jams)
+        (jams) => setUserJam(jams),
       );
       return unsubscribe;
     }

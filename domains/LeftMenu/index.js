@@ -1,23 +1,26 @@
-import React, { useState } from "react";
-import { Div } from "../../styledComps";
+import React, { useState } from 'react';
+import { Div } from '../../styledComps';
 
-import LeftNavBar from '../../domains/LeftNavBar';
-import ProfileMenu from '../../domains/ProfileMenu';
-import JamsList from "../../domains/JamsList";
+import LeftNavBar from '../LeftNavBar';
+import ProfileMenu from '../ProfileMenu';
+import JamsList from '../JamsList';
 
-const LeftMenu = ({openModal, showCreate}) => {
-    const [showProfile, setShowProfile] = useState(false);
+const LeftMenu = ({ openModal, showCreate }) => {
+  const [showProfile, setShowProfile] = useState(false);
 
-    const showProfileMenu = () => {
-        setShowProfile(!showProfile);
-    };
-    return (
-        <Div className="LeftMenu" col flexG="0.2">
-            <LeftNavBar openModal={openModal} showCreate={showCreate}/>
-            {showProfile && <ProfileMenu showProfileMenu={showProfileMenu}/>}
-            <JamsList/>
-        </Div>
-    )
-}
+  const showProfileMenu = () => {
+    setShowProfile(!showProfile);
+  };
+console.log(showProfile);
+  return (
+    <Div shad="8px 0 21px -13px #DFDFDF" className="LeftMenu" col flexG="0.2" minW="20%">
+      <LeftNavBar openModal={openModal} showCreate={showCreate} showProfileMenu={showProfileMenu} />
+      {showProfile
+        ? <ProfileMenu showProfileMenu={showProfileMenu} />
+        : <JamsList />
+      }
+    </Div>
+  );
+};
 
 export default LeftMenu;

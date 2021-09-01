@@ -1,3 +1,4 @@
+import { countBy } from 'lodash';
 import firebase from '../firebase.config';
 import Board from '../pages/jam/[jamId]/board';
 
@@ -109,13 +110,15 @@ const addJammerToJam = (jamId, userId) => new Promise((resolve, reject) => {
     });
 });
 const createJam = (data, userId) => new Promise((resolve, reject) => {
+  console.log('data: ', data);
   firebase.firestore()
     .collection('jams')
     .add(data)
     .then((doc) => {
       const jamId = doc.id;
       if (data.jamType === 'rooms-rental') {
-        const rooms = Number(data.nrOfRooms);
+        const rooms = Number(data.jamDetails.contractInfo.apartmentInfo.nrOfRooms);
+        console.log('rooms: ', rooms);
         for (let i = 0; i < rooms; i++) {
           const roomNr = i + 1;
           const roomInfo = {
@@ -127,6 +130,8 @@ const createJam = (data, userId) => new Promise((resolve, reject) => {
             roomNr,
             sqm: '',
             expenses: '',
+            heater: '',
+            airConditioner: '',
           };
           addNewRoom(jamId, roomInfo);
         }
@@ -328,7 +333,7 @@ const getSingleRoomInfo = (jamId, roomId) => new Promise((resolve, reject) => {
     });
 });
 
-const updateRoomInfo = (jamId, roomId, data) => new Promise((resolve, reject) => {
+const updateRoomInfo = (jamId, roomId, data, cb) => new Promise((resolve, reject) => {
   firebase.firestore().collection('jams')
     .doc(jamId)
     .collection('rooms')
@@ -336,18 +341,53 @@ const updateRoomInfo = (jamId, roomId, data) => new Promise((resolve, reject) =>
     .update(data)
     .then(() => {
       console.log('Document successfully updated!');
+      cb();
     })
     .catch((error) => {
       // The document probably doesn't exist.
       console.error('Error updating document: ', error);
+      cb();
     });
 });
+
+const editJamInfo = (jamId, data, cb) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .set({
+      jamName: data.jamName,
+      jamDesc: data.jamDesc,
+    })
+    .then(() => {
+      console.log('Jam details successfully updated!');
+      cb();
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating jam Detailst: ', error);
+      cb();
+    });
+};
+
+const editJamSpecs = (jamId, data) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .update(data)
+    .then(() => {
+      console.log('Jam details successfully updated!');
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating jam Detailst: ', error);
+    });
+};
 
 const DataService = {
   addJammerToJam,
   addJamToUser,
   checkIfEmialExists,
   createJam,
+  editJamInfo,
+  editJamSpecs,
   getBoardInfo,
   getJamInfoById,
   getJammers,

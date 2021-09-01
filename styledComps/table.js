@@ -10,9 +10,8 @@ const Table = styled.table`
 
 
   thead > tr {
-    background-color: rgb(85, 187, 151);
     td{
-      color: white;
+      color: #403D39;
       font-weight: 700;
     }
   }
@@ -26,13 +25,17 @@ const Table = styled.table`
   }
 
 
+  // tbody tr {
+  //   :nth-of-type(odd) {
+  //     background-color: rgba(240, 239, 235, 0.6);
+  //   }
+  //   :hover {
+  //     background-color: rgba(240, 239, 235, 1);
+  //   }
+  // }
+
   tbody tr {
-    :nth-of-type(odd) {
-      background-color: rgba(240, 239, 235, 0.6);
-    }
-    :hover {
-      background-color: rgba(240, 239, 235, 1);
-    }
+    border-bottom: 1px solid #CCC5B9
   }
 
   caption {
