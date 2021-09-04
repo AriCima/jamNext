@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { DataGrid } from '@material-ui/data-grid';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
@@ -19,12 +20,17 @@ import {
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
+import dictionary from '../../../locale';
+import { set } from 'lodash';
 
 const Rooms = () => {
   const { roomsInfo } = useSelector((state) => state.jamReducer);
   const dispatch = useDispatch();
   const router = useRouter();
   const { jamId } = router.query;
+  const { lenguage } = useSelector((state) => state.userReducer);
+  const dict = dictionary[lenguage];
+  const [rows, setRows] = useState([]);
 
   const getJamInfo = async () => {
     const res = await DataService.getJamInfoById(jamId);
@@ -60,6 +66,33 @@ const Rooms = () => {
 
       //   const futureChecks = Calculations.getFutureChecks(tenantsList);
       //   setActivity(futureChecks);
+      
+      let row = []
+      for (let i = 0; i < rooms.length; i++) {
+        console.log('rooms: ', rooms);
+        const current = rooms[i].currentTenant.length !== 0;
+        console.log('current: ', current);
+        const next =  rooms[i].futureTenants.length !== 0;
+        console.log('next: ', next);
+    
+        if (current) {
+          const {firstName, lastName, checkIn, checkOut, rent, deposit} = rooms[i].currentTenant
+          const info = { id: i+1, roomNr: i+1, name: `${firstName} ${lastName}`, checkIn, checkOut, rent, depost};
+          return row.push(info);
+        };
+        if (next) {
+          const tenant = rooms[i].futureTenants[0];
+          const info = { id: i+1, roomNr: i+1, name: `Vacant until ${tenant.checkIn}`, checkIn: '', checkOut: '', rent: '', depost: '' };
+          console.log('current: ', typeof current);
+          row.push(info);
+        } else {
+          const info = { id: i+1, roomNr: i+1, name: `Vacant`, checkIn: '', checkOut: '', rent: '', depost: '' };
+          row.push(info);
+        }
+        
+      }
+
+      setRows(row)
 
       // Info en Redux
       dispatch(setTenantsList(TENANTS));
@@ -232,10 +265,55 @@ const Rooms = () => {
     color: 'gray',
   };
 
+  const columns = [
+    {
+      field: 'roomNr',
+      headerName: dict.common.roomNr,
+      width: 70,
+      sortable: true,
+    },
+    {
+      field: 'name', headerName: dict.common.name, width: 130, sortable: true,
+    },
+    {
+      field: 'checkIn', headerName: 'Check-In', width: 130, sortable: true,
+    },
+    {
+      field: 'checkOut', headerName: 'Check-Out', width: 130, sortable: true,
+    },
+    {
+      field: 'rent', headerName: dict.common.rent, width: 130, sortable: false,
+    },
+    {
+      field: 'deposit', headerName: dict.common.deposit, width: 130, sortable: false,
+    },
+
+    // {
+    //   field: 'age',
+    //   headerName: 'Age',
+    //   type: 'number',
+    //   width: 90,
+    // },
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Full name',
+    //   description: 'This column has a value getter and is not sortable.',
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params) =>
+    //     `${params.getValue(params.id, 'firstName') || ''} ${
+    //       params.getValue(params.id, 'lastName') || ''
+    //     }`,
+    // },
+  ];
+
   return (
     <Layout>
       <NavBarJam />
-      <Div col w="100%" just="flex-start" align="flex-start">
+      <div style={{ height: 400, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSize={5} customSearch/>
+    </div>
+      {/* <Div col w="100%" just="flex-start" align="flex-start">
         <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle>
         <Div w="100%" just="center" align="center">
           <Table>
@@ -256,7 +334,7 @@ const Rooms = () => {
           </Table>
 
         </Div>
-      </Div>
+      </Div> */}
     </Layout>
   );
 };

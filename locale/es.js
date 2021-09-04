@@ -24,6 +24,12 @@ export default {
     title: 'Título',
     yes: 'Si',
     zip: 'Código postal',
+    roomNr: 'Hab Nº',
+    rent: 'Alquiler',
+    deposit: 'Fianza',
+    expenses: 'Gastos',
+    vacant: 'Habitación libre',
+    vacantUnt: 'Libre hasta',
   },
   placeholder: {
     inputAddress: 'ingresa una dirección',

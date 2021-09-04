@@ -24,6 +24,12 @@ export default {
     title: 'Title',
     yes: 'Yes',
     zip: 'Zip Code',
+    roomNr: 'Room Nr',
+    rent: 'Rent',
+    deposit: 'Deposit',
+    expenses: 'Expenses',
+    vacant: 'Vacant',
+    vacantUnt: 'Vacant until',
   },
   placeholder: {
     inputAddress: 'type the address',
