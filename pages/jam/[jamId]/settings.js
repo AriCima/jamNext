@@ -94,7 +94,7 @@ const Settings = () => {
   const [cMode, setContractMode] = useState('');
   const [depositPolicy, setDepositPolicy] = useState('');
   const [landlordTitle, setTitle] = useState('');
-  
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -163,6 +163,7 @@ const Settings = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               {/* JAM INFO  1 */}
+              <SubTitle>Jam Info</SubTitle>
               <Accordion
                 className={classes.accordion}
                 expanded={expanded === 'panel1'}
@@ -174,7 +175,11 @@ const Settings = () => {
                   id="panel1a-header"
                 >
                   <Typography className={expanded === 'panel1' ? classes.expHeading : classes.heading}>
-                    {dict.common.jamSection}
+                    {dict.common.jamName}
+                    ,&nbsp;
+                    {dict.common.desc}
+                    {' '}
+                    . . .
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
@@ -516,7 +521,7 @@ const Settings = () => {
                           registerObject={{ required: true }}
                           // reportValue={(val) => setExpPolicy(val)}
                           options={expenses}
-                          modifiedValue={(val) => { setShowButtons(true); setExpPolicy(val) }}
+                          modifiedValue={(val) => { setShowButtons(true); setExpPolicy(val); }}
                         />
                         <Div>
                           <Txt />
