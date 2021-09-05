@@ -5,11 +5,13 @@ const Table = styled.table`
   margin: ${({ mg }) => mg || '0'};
   width: ${({ w }) => w || ''};
   border: none;
-  border-collapse: collapse;
+  borderCollapse: 'separate',
+  borderSpacing: '0 15px',
   caption-side: bottom;
 
 
   thead > tr {
+    border: none;
     td{
       color: #403D39;
       font-weight: 700;
@@ -18,6 +20,7 @@ const Table = styled.table`
 
   tr {
     height: 40px;
+    border: 1px solid #FCA311;
     td{
       font-size: 14px;
       padding: 5px 10px;
@@ -35,7 +38,9 @@ const Table = styled.table`
   // }
 
   tbody tr {
-    border-bottom: 1px solid #CCC5B9
+    border: 1px solid #FCA311;
+    border-collapse:separate;
+    border-spacing: 0 15px;
   }
 
   caption {

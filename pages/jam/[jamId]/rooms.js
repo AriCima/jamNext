@@ -30,7 +30,6 @@ const Rooms = () => {
   const { jamId } = router.query;
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
-  const [rows, setRows] = useState([]);
 
   const getJamInfo = async () => {
     const res = await DataService.getJamInfoById(jamId);
@@ -66,33 +65,6 @@ const Rooms = () => {
 
       //   const futureChecks = Calculations.getFutureChecks(tenantsList);
       //   setActivity(futureChecks);
-      
-      let row = []
-      for (let i = 0; i < rooms.length; i++) {
-        console.log('rooms: ', rooms);
-        const current = rooms[i].currentTenant.length !== 0;
-        console.log('current: ', current);
-        const next =  rooms[i].futureTenants.length !== 0;
-        console.log('next: ', next);
-    
-        if (current) {
-          const {firstName, lastName, checkIn, checkOut, rent, deposit} = rooms[i].currentTenant
-          const info = { id: i+1, roomNr: i+1, name: `${firstName} ${lastName}`, checkIn, checkOut, rent, depost};
-          return row.push(info);
-        };
-        if (next) {
-          const tenant = rooms[i].futureTenants[0];
-          const info = { id: i+1, roomNr: i+1, name: `Vacant until ${tenant.checkIn}`, checkIn: '', checkOut: '', rent: '', depost: '' };
-          console.log('current: ', typeof current);
-          row.push(info);
-        } else {
-          const info = { id: i+1, roomNr: i+1, name: `Vacant`, checkIn: '', checkOut: '', rent: '', depost: '' };
-          row.push(info);
-        }
-        
-      }
-
-      setRows(row)
 
       // Info en Redux
       dispatch(setTenantsList(TENANTS));
@@ -154,6 +126,26 @@ const Rooms = () => {
   //     });
   //   };
 
+  const startTd = {
+    textAlign: 'flex-start',
+  };
+
+  const roomNrTd = {
+    textAlign: 'flex-start',
+    marginLeft: '20px',
+  };
+
+  const vacant = {
+    textAlign: 'center',
+    color: 'red',
+    fontSize: '12px',
+  };
+
+  const flexTd = {
+    display: 'flex',
+    justifyContent: 'flex-start',
+  };
+
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
     const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
     let checkIn; let checkOut; let firstName; let lastName; let rent; let deposit;
@@ -181,25 +173,19 @@ const Rooms = () => {
       textAlign: 'center',
     };
 
-    const vacant = {
-      textAlign: 'center',
-      color: 'red',
-      fontSize: '12px',
+    const bodyTr = {
+      border: '1px solid #FCA311',
     };
 
-    const flexTd = {
-      display: 'flex',
-      justifyContent: 'flex-start',
-    };
     return (
       <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
-        <tr>
+        <tr style={bodyTr}>
           { isVacant ? (
             existNextTenant
               ? (
                 <>
-                  <td style={centerTd}>
-                    {room.roomNr}
+                  <td style={roomNrTd}>
+                    <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
                   <td colSpan="5" style={centerTd}>
                     Vacant until
@@ -209,8 +195,8 @@ const Rooms = () => {
                 </>
               ) : (
                 <>
-                  <td style={centerTd}>
-                    {room.roomNr}
+                  <td style={roomNrTd}>
+                    <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
                   <td colSpan="6" style={vacant}>
                     Currently Vacant
@@ -220,8 +206,8 @@ const Rooms = () => {
 
           ) : (
             <>
-              <td style={centerTd}>
-                {room.roomNr}
+              <td style={roomNrTd}>
+                <Txt mgL="20px">{room.roomNr}</Txt>
               </td>
               <td style={flexTd}>
                 {firstName}
@@ -265,62 +251,17 @@ const Rooms = () => {
     color: 'gray',
   };
 
-  const columns = [
-    {
-      field: 'roomNr',
-      headerName: dict.common.roomNr,
-      width: 70,
-      sortable: true,
-    },
-    {
-      field: 'name', headerName: dict.common.name, width: 130, sortable: true,
-    },
-    {
-      field: 'checkIn', headerName: 'Check-In', width: 130, sortable: true,
-    },
-    {
-      field: 'checkOut', headerName: 'Check-Out', width: 130, sortable: true,
-    },
-    {
-      field: 'rent', headerName: dict.common.rent, width: 130, sortable: false,
-    },
-    {
-      field: 'deposit', headerName: dict.common.deposit, width: 130, sortable: false,
-    },
-
-    // {
-    //   field: 'age',
-    //   headerName: 'Age',
-    //   type: 'number',
-    //   width: 90,
-    // },
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params) =>
-    //     `${params.getValue(params.id, 'firstName') || ''} ${
-    //       params.getValue(params.id, 'lastName') || ''
-    //     }`,
-    // },
-  ];
-
   return (
     <Layout>
       <NavBarJam />
-      <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} customSearch/>
-    </div>
-      {/* <Div col w="100%" just="flex-start" align="flex-start">
+      <Div col w="100%" just="flex-start" align="flex-start">
         <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle>
         <Div w="100%" just="center" align="center">
-          <Table>
+          <Table w="90%">
             <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
-                <td>Room Nr</td>
+                <td style={startTd}>Room Nr</td>
                 <td>Tenant</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>
@@ -334,7 +275,7 @@ const Rooms = () => {
           </Table>
 
         </Div>
-      </Div> */}
+      </Div>
     </Layout>
   );
 };
