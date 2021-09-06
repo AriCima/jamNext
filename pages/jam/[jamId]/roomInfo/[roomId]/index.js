@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { isEmpty } from 'lodash';
 import { setJamInfo, setActiveSection } from '../../../../../redux/actions';
@@ -9,6 +9,7 @@ import { SINGLE_ROOM_TENANTS } from '../../../../../config';
 import {
   Div, Title, Txt, SubTitle,
 } from '../../../../../styledComps';
+import BackButton from '../../../../../components/BackButton';
 import Layout from '../../../../../domains/Layout';
 import NavBarJam from '../../../../../domains/NavBarJam';
 import DataService from '../../../../../services/DataService';
@@ -16,8 +17,11 @@ import Calculations from '../../../../../services/Calculations';
 import TenantSummary from '../../../../../domains/TenantSummary';
 import EditRoomForm from '../../../../../domains/EditRoomForm';
 import SingleRoomInfo from '../../../../../domains/SingleRoomInfo';
+import dictionary from '../../../../../locale';
 
 const RoomInfo = () => {
+  const { lenguage } = useSelector((state) => state.userReducer);
+  const dict = dictionary[lenguage];
   const [info, setInfo] = useState({});
   const [current, setCurrent] = useState({});
   const [next, setNextTenant] = useState({});
@@ -63,10 +67,14 @@ const RoomInfo = () => {
   return (
     <Layout>
       <NavBarJam />
-      <Div w="100%" col pad="20px">
+      <Div className="roomId" w="100%" col pad="20px">
+        <Div className="BackButton">
+          <BackButton section="rooms" />
+        </Div>
         <Div w="100%" just="flex-start">
           <Title>
-            Room Nr: &nbsp;
+            {dict.common.roomNr}
+            : &nbsp;
             {' '}
             {roomNr}
           </Title>
@@ -77,7 +85,7 @@ const RoomInfo = () => {
 
         {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
         {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
-        {isVacant && !thereIsNext && <Txt>Room is Vacant</Txt>}
+        {isVacant && !thereIsNext && <Txt>{dict.common.roomIsVac}</Txt>}
 
         {editInfo
           ? <EditRoomForm jamId={jamId} roomId={roomId} roomInfo={info} edit={setEditInfo} />

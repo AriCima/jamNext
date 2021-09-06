@@ -82,16 +82,16 @@ const getJamAdminSections = (type) => {
   let sections = [];
   switch (type) {
     case 'accommodation':
-      sections = ['Board', 'Jammers', 'MyJam', 'Settings'];
+      sections = ['board', 'jammers', 'myJam', 'settings'];
       break;
     case 'standard':
-      sections = ['Board', 'Jammers'];
+      sections = ['board', 'jammers'];
       break;
     case 'rooms-rental':
-      sections = ['Overview', 'Board', 'Tenants', 'Rooms', 'Settings'];
+      sections = ['overview', 'board', 'tenants', 'rooms', 'settings'];
       break;
     case 'chat':
-      sections = ['Chat'];
+      sections = ['chat'];
       break;
     default:
           // console.log('no reconoce tipo')
@@ -103,16 +103,16 @@ const getJamGuestSections = (type) => {
   let sections = [];
   switch (type) {
     case 'accommodation':
-      sections = ['Board', 'Jammers', 'MyJam', 'Settings'];
+      sections = ['board', 'jammers', 'myJam', 'settings'];
       break;
     case 'standard':
-      sections = ['Board', 'Jammers'];
+      sections = ['board', 'jammers'];
       break;
     case 'rooms-rental':
-      sections = ['Overview', 'Board', 'Flatmates'];
+      sections = ['overview', 'board', 'flatmates'];
       break;
     case 'chat':
-      sections = ['Chat'];
+      sections = ['chat'];
       break;
     default:
       // console.log('no reconoce tipo')

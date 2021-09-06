@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
@@ -14,8 +15,8 @@ import {
 } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
-
 import DataService from '../../services/DataService';
+import dictionary from '../../locale';
 
 const GreenRadio = withStyles({
   root: {
@@ -40,17 +41,20 @@ const RedRadio = withStyles({
 const EditRoomForm = ({
   jamId, roomId, roomInfo, edit,
 }) => {
+  const { lenguage } = useSelector((state) => state.userReducer);
+  const dict = dictionary[lenguage];
+
   const defaultValues = {
+    airConditioner: roomInfo.airConditioner,
+    balcony: roomInfo.balcony,
+    deposit: roomInfo.deposit,
+    expenses: roomInfo.expenses,
+    exterior: roomInfo.exterior,
+    heater: roomInfo.heater,
+    privBath: roomInfo.privBath,
+    rent: roomInfo.rent,
     roomNr: roomInfo.roomNr,
     sqm: roomInfo.sqm,
-    balcony: roomInfo.balcony,
-    exterior: roomInfo.exterior,
-    privBath: roomInfo.privBath,
-    heater: roomInfo.heater,
-    airConditioner: roomInfo.airConditioner,
-    deposit: roomInfo.deposit,
-    rent: roomInfo.rent,
-    expenses: roomInfo.expenses,
   };
 
   const {
@@ -76,7 +80,7 @@ const EditRoomForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <Div w="100%" h="40px" just="space-between" align="flex-start" mgT="30px">
-        <Txt mgB="10px" fSize="14px" color="gray" bold>Edit Room Info</Txt>
+        <Txt mgB="10px" fSize="14px" color="gray" bold>{dict.common.editRoom}</Txt>
       </Div>
 
       <Div className="roomInfo-section">
@@ -93,6 +97,7 @@ const EditRoomForm = ({
           register={register}
           registerObject={{ required: true }}
           disabled={disabled}
+          modifiedValue={() => { console.log('value') }}
         />
 
         <FormInput
@@ -107,6 +112,7 @@ const EditRoomForm = ({
           register={register}
           registerObject={{ required: true }}
           disabled={disabled}
+          modifiedValue={() => { console.log('value') }}
         />
 
         <FormInput
@@ -121,6 +127,7 @@ const EditRoomForm = ({
           register={register}
           registerObject={{ required: false }}
           disabled={disabled}
+          modifiedValue={() => { console.log('value') }}
         />
 
         <FormInput
@@ -135,6 +142,7 @@ const EditRoomForm = ({
           register={register}
           registerObject={{ required: true }}
           disabled={disabled}
+          modifiedValue={() => { console.log('value') }}
         />
 
       </Div>
@@ -143,10 +151,10 @@ const EditRoomForm = ({
         <thead>
           <tr>
             <td style={{ fontSize: '14px' }}>
-              Room features
+              {dict.roomFeat.feat}
             </td>
             <td style={{ textAlign: 'right', paddingRight: '30px' }}>
-              <span style={{ marginRight: '40px' }}>Yes</span>
+              <span style={{ marginRight: '40px' }}>{dict.common.yes}</span>
               <span>No</span>
             </td>
           </tr>
@@ -154,16 +162,14 @@ const EditRoomForm = ({
         <tbody>
           <tr>
             <td>
-              Is the room
-              <span> exterior</span>
-              {' '}
-              ?
+              {dict.roomFeat.ext}
             </td>
             <td id="rules-value">
               <Controller
                 name="exterior"
                 control={control}
                 defaultValue={defaultValues.exterior}
+                modifiedValue={() => { console.log('value') }}
                 as={(
                   <RadioGroup aria-label="exterior">
                     <Div className="radios-wrapper" just="flex-end">
@@ -190,16 +196,14 @@ const EditRoomForm = ({
           </tr>
           <tr>
             <td>
-              Has the room
-              <span> balcony</span>
-              {' '}
-              ?
+              {dict.roomFeat.balcony}
             </td>
             <td id="rules-value">
               <Controller
                 name="balcony"
                 control={control}
                 defaultValue={defaultValues.balcony}
+                modifiedValue={() => { console.log('value') }}
                 as={(
                   <RadioGroup aria-label="balcony">
                     <Div className="radios-wrapper" just="flex-end">
@@ -227,12 +231,7 @@ const EditRoomForm = ({
 
           <tr>
             <td>
-              <label>
-                Has the room a
-                <span>private bathroom</span>
-                {' '}
-                ?
-              </label>
+              {dict.roomFeat.privBath}
             </td>
             <td id="rules-value">
               <Controller
@@ -240,6 +239,7 @@ const EditRoomForm = ({
                 control={control}
                 defaultValue={defaultValues.privBath}
                 disabled={disabled}
+                modifiedValue={() => { console.log('value') }}
                 as={(
                   <RadioGroup aria-label="privBath">
                     <Div className="radios-wrapper" just="flex-end">
@@ -266,13 +266,14 @@ const EditRoomForm = ({
           </tr>
           <tr>
             <td id="rules-text">
-              Has the room a heater ?
+              {dict.roomFeat.heater}
             </td>
             <td id="rules-value">
               <Controller
-                name="Heater"
+                name="heater"
                 control={control}
                 defaultValue={defaultValues.heater}
+                modifiedValue={() => { console.log('value') }}
                 as={(
                   <RadioGroup aria-label="heater">
                     <Div className="radios-wrapper" just="flex-end">
@@ -280,14 +281,14 @@ const EditRoomForm = ({
                         <FormControlLabel
                           value="Yes"
                           control={<GreenRadio />}
-                          disabled
+                          disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
                           value="No"
                           control={<RedRadio />}
-                          disabled
+                          disabled={disabled}
                         />
                       </Div>
                     </Div>
@@ -298,13 +299,14 @@ const EditRoomForm = ({
           </tr>
           <tr>
             <td id="rules-text">
-              Has the room air conditioner ?
+              {dict.roomFeat.aaCC}
             </td>
             <td id="rules-value">
               <Controller
-                name="Air conditioner"
+                name="airConditioner"
                 control={control}
                 defaultValue={defaultValues.airConditioner}
+                modifiedValue={() => { console.log('value') }}
                 as={(
                   <RadioGroup aria-label="airConditioner">
                     <Div className="radios-wrapper" just="flex-end">
@@ -312,14 +314,14 @@ const EditRoomForm = ({
                         <FormControlLabel
                           value="Yes"
                           control={<GreenRadio />}
-                          disabled
+                          disabled={disabled}
                         />
                       </Div>
                       <Div className="radio-box">
                         <FormControlLabel
                           value="No"
                           control={<RedRadio />}
-                          disabled
+                          disabled={disabled}
                         />
                       </Div>
                     </Div>

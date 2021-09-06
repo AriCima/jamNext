@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
 import {
@@ -7,12 +8,9 @@ import {
   FormControlLabel,
   Radio,
 } from '@material-ui/core';
-
 import FormInput from '../../components/FormInput';
-
-import {
-  Div, Txt, Button, Table,
-} from '../../styledComps';
+import { Div, Txt, Button, Table } from '../../styledComps';
+import dictionary from '../../locale';
 
 const GreenRadio = withStyles({
   root: {
@@ -35,7 +33,9 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const SingleRoomInfo = ({ roomInfo, edit }) => {
-  console.log('roomInfo: ', roomInfo);
+  const { lenguage } = useSelector((state) => state.userReducer);
+  const dict = dictionary[lenguage];
+
   const {
     sqm, exterior, balcony, privBath, heater, airConditioner, deposit, rent, expenses,
   } = roomInfo;
@@ -49,11 +49,10 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
     edit(true);
   };
 
-
   return (
     <>
       <Div className="title-div" w="100%" h="40px" just="space-between" align="flex-start" mgT="30px">
-        <Txt mgB="10px" fSize="14px" color="gray" bold>Room Info</Txt>
+        <Txt mgB="10px" fSize="14px" color="gray" bold>{dict.roomFeat.info}</Txt>
         <Div className="roomInfo-buttonArea">
           <Button
             w="100px"
@@ -65,7 +64,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
             w="auto"
             onClick={(e) => { enableEditForm(e); }}
           >
-            Edit Info
+            {dict.common.editRoom}
           </Button>
 
         </Div>
@@ -74,7 +73,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
       <Div className="roomInfo-section">
         <FormInput
           w="70%"
-          label="Size (sqm)"
+          label={dict.roomFeat.sqm}
           placeholder={sqm}
           type="text"
           name="sqm"
@@ -88,7 +87,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
 
         <FormInput
           w="70%"
-          label="Rent €/Mo"
+          label={dict.common.rent}
           placeholder={rent}
           type="text"
           name="rent"
@@ -102,7 +101,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
 
         <FormInput
           w="70%"
-          label="Expenses €/Mo"
+          label={dict.common.expenses}
           placeholder={expenses}
           type="text"
           name="expenses"
@@ -116,7 +115,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
 
         <FormInput
           w="70%"
-          label="Deposit €"
+          label={dict.common.deposit}
           placeholder={deposit}
           type="text"
           name="deposit"
@@ -134,10 +133,10 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         <thead>
           <tr>
             <td>
-              Room features
+              {dict.roomFeat.feat}
             </td>
             <td style={{ textAlign: 'right', paddingRight: '30px' }}>
-              <span style={{ marginRight: '40px' }}>Yes</span>
+              <span style={{ marginRight: '40px' }}>{dict.common.yes}</span>
               <span>No</span>
             </td>
           </tr>
@@ -145,10 +144,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         <tbody>
           <tr>
             <td id="rules-text">
-              Is the room
-              <span> exterior</span>
-              {' '}
-              ?
+              {dict.roomFeat.ext}
             </td>
             <td id="rules-value">
               <Controller
@@ -182,10 +178,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           </tr>
           <tr>
             <td id="rules-text">
-              Has the room
-              <span> balcony</span>
-              {' '}
-              ?
+              {dict.roomFeat.balcony}
             </td>
             <td id="rules-value">
               <Controller
@@ -219,12 +212,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
 
           <tr>
             <td id="rules-text">
-              <label>
-                Has the room a
-                <span>private bathroom</span>
-                {' '}
-                ?
-              </label>
+              {dict.roomFeat.privBath}
             </td>
             <td id="rules-value">
               <Controller
@@ -258,7 +246,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           </tr>
           <tr>
             <td id="rules-text">
-              Has the room a heater ?
+              {dict.roomFeat.heater}
             </td>
             <td id="rules-value">
               <Controller
@@ -292,7 +280,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
           </tr>
           <tr>
             <td id="rules-text">
-              Has the room air conditioner ?
+              {dict.roomFeat.aaCC}
             </td>
             <td id="rules-value">
               <Controller

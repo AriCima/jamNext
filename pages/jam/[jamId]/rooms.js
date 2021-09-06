@@ -1,12 +1,8 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { DataGrid } from '@material-ui/data-grid';
 import { useSelector, useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns/';
 import isEmpty from 'lodash/isEmpty';
 import { TENANTS } from '../../../config';
 
@@ -14,14 +10,11 @@ import { setJamInfo, setTenantsList, setRoomsInfo } from '../../../redux/actions
 import { setActiveSection } from '../../../redux/actions/jamActions';
 
 import Layout from '../../../domains/Layout';
-import {
-  Div, Txt, SubTitle, Table, StartChat,
-} from '../../../styledComps';
+import { Div, Txt, Table } from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
 import dictionary from '../../../locale';
-import { set } from 'lodash';
 
 const Rooms = () => {
   const { roomsInfo } = useSelector((state) => state.jamReducer);
