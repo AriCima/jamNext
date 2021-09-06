@@ -35,8 +35,6 @@ const Table = styled.table`
   // }
 
   tbody tr {
-    // border: 1px solid #FCA311;
-    // outline: thin solid #FCA311;
     :hover{
       background-color: rgba(240, 239, 235, 1);
     }

@@ -44,6 +44,7 @@ const Rooms = () => {
       // const tenantsList = Calculations.removeAmdinFromJammers(jammers);
       // const tenantsByRooms = Calculations.getTenantsByRooms(tenantsList, nrOfRooms);
       const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
+      console.log('tenantsByRooms: ', tenantsByRooms);
       const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
 
       const sortedRooms = Calculations.sortByField({ elements: rooms, asc: true, field: 'roomNr' });
@@ -145,9 +146,8 @@ const Rooms = () => {
   };
 
   const middleTd = {
-    display: 'flex',
     justifyContent: 'flex-start',
-    textAlign: 'center',
+    textAlign: 'left',
     borderBottom: '1px solid #FCA311',
     borderTop: '1px solid #FCA311',
   };
@@ -207,7 +207,7 @@ const Rooms = () => {
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
                   <td colSpan="4" style={centerTd}>
-                    Vacant until
+                    {dict.common.vacantUnt}
                     {' '}
                     {nextTenant.checkIn}
                   </td>
@@ -219,7 +219,7 @@ const Rooms = () => {
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
                   <td colSpan="4" style={centerTd}>
-                    Currently Vacant
+                    {dict.common.vacant}
                   </td>
                   <td style={lastTd} />
                 </>
@@ -234,7 +234,7 @@ const Rooms = () => {
                 {firstName}
                 {' '}
                 {lastName}
-
+{/* 
                 <Div
                   just="center"
                   align="center"
@@ -244,15 +244,15 @@ const Rooms = () => {
                   <FontAwesomeIcon
                     icon={faComments}
                   />
-                </Div>
+                </Div> */}
               </td>
-              <td style={startTd}>
+              <td style={middleTd}>
                 {checkIn}
               </td>
-              <td style={startTd}>
+              <td style={middleTd}>
                 {checkOut}
               </td>
-              <td style={startTd}>
+              <td style={middleTd}>
                 {rent}
               </td>
               <td style={lastTd}>
@@ -276,18 +276,18 @@ const Rooms = () => {
     <Layout>
       <NavBarJam />
       <Div col w="100%" just="flex-start" align="flex-start">
-        <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle>
-        <Div w="100%" just="center" align="center">
+        {/* <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle> */}
+        <Div mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
             <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
-                <td style={leftTd}>Room Nr</td>
-                <td>Tenant</td>
+                <td style={leftTd}>{dict.common.roomNr}</td>
+                <td>{dict.common.tenant}</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>
-                <td>Rent</td>
-                <td>Deposit</td>
+                <td>{dict.common.rent}</td>
+                <td>{dict.common.deposit}</td>
               </tr>
             </thead>
             <tbody>
