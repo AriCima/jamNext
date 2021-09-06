@@ -5,28 +5,25 @@ const Table = styled.table`
   margin: ${({ mg }) => mg || '0'};
   width: ${({ w }) => w || ''};
   border: none;
-  borderCollapse: 'separate',
-  borderSpacing: '0 15px',
+  border-spacing:0 15px;
   caption-side: bottom;
 
 
-  thead > tr {
-    border: none;
-    td{
-      color: #403D39;
-      font-weight: 700;
-    }
-  }
-
   tr {
     height: 40px;
-    border: 1px solid #FCA311;
     td{
       font-size: 14px;
       padding: 5px 10px;
     }
   }
 
+  thead tr {
+    // border: none;
+    td{
+      color: #403D39;
+      font-weight: 700;
+    }
+  }
 
   // tbody tr {
   //   :nth-of-type(odd) {
@@ -38,9 +35,11 @@ const Table = styled.table`
   // }
 
   tbody tr {
-    border: 1px solid #FCA311;
-    border-collapse:separate;
-    border-spacing: 0 15px;
+    // border: 1px solid #FCA311;
+    // outline: thin solid #FCA311;
+    :hover{
+      background-color: rgba(240, 239, 235, 1);
+    }
   }
 
   caption {

@@ -127,12 +127,43 @@ const Rooms = () => {
   //   };
 
   const startTd = {
+    marginLeft: '20px',
+    textAlign: 'left',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+    borderLeft: '1px solid #FCA311',
+    borderTopLeftRadius: '10px',
+    borderBottomLeftRadius: '10px',
+  };
+  const lastTd = {
     textAlign: 'flex-start',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+    borderRight: '1px solid #FCA311',
+    borderTopRightRadius: '10px',
+    borderBottomRightRadius: '10px',
   };
 
-  const roomNrTd = {
-    textAlign: 'flex-start',
-    marginLeft: '20px',
+  const middleTd = {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    textAlign: 'center',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+  };
+  const centerTd = {
+    textAlign: 'center',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+  };
+
+  const leftTd = {
+    textAlign: 'left',
+  };
+
+
+  const bodyTr = {
+    border: '1px solid #FCA311',
   };
 
   const vacant = {
@@ -141,10 +172,6 @@ const Rooms = () => {
     fontSize: '12px',
   };
 
-  const flexTd = {
-    display: 'flex',
-    justifyContent: 'flex-start',
-  };
 
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
     const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
@@ -169,14 +196,6 @@ const Rooms = () => {
       nextTenant = future[0];
     }
 
-    const centerTd = {
-      textAlign: 'center',
-    };
-
-    const bodyTr = {
-      border: '1px solid #FCA311',
-    };
-
     return (
       <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
         <tr style={bodyTr}>
@@ -184,32 +203,34 @@ const Rooms = () => {
             existNextTenant
               ? (
                 <>
-                  <td style={roomNrTd}>
+                  <td style={startTd}>
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="5" style={centerTd}>
+                  <td colSpan="4" style={centerTd}>
                     Vacant until
                     {' '}
                     {nextTenant.checkIn}
                   </td>
+                  <td style={lastTd} />
                 </>
               ) : (
                 <>
-                  <td style={roomNrTd}>
+                  <td style={startTd}>
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="6" style={vacant}>
+                  <td colSpan="4" style={centerTd}>
                     Currently Vacant
                   </td>
+                  <td style={lastTd} />
                 </>
               )
 
           ) : (
             <>
-              <td style={roomNrTd}>
+              <td style={startTd}>
                 <Txt mgL="20px">{room.roomNr}</Txt>
               </td>
-              <td style={flexTd}>
+              <td style={middleTd}>
                 {firstName}
                 {' '}
                 {lastName}
@@ -225,16 +246,16 @@ const Rooms = () => {
                   />
                 </Div>
               </td>
-              <td>
+              <td style={startTd}>
                 {checkIn}
               </td>
-              <td>
+              <td style={startTd}>
                 {checkOut}
               </td>
-              <td>
+              <td style={startTd}>
                 {rent}
               </td>
-              <td>
+              <td style={lastTd}>
                 {deposit}
               </td>
             </>
@@ -261,7 +282,7 @@ const Rooms = () => {
             <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
-                <td style={startTd}>Room Nr</td>
+                <td style={leftTd}>Room Nr</td>
                 <td>Tenant</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>
