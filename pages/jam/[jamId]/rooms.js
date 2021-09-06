@@ -127,51 +127,9 @@ const Rooms = () => {
   //     });
   //   };
 
-  const startTd = {
-    marginLeft: '20px',
-    textAlign: 'left',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-    borderLeft: '1px solid #FCA311',
-    borderTopLeftRadius: '10px',
-    borderBottomLeftRadius: '10px',
-  };
-  const lastTd = {
-    textAlign: 'flex-start',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-    borderRight: '1px solid #FCA311',
-    borderTopRightRadius: '10px',
-    borderBottomRightRadius: '10px',
-  };
-
-  const middleTd = {
-    justifyContent: 'flex-start',
-    textAlign: 'left',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-  };
-  const centerTd = {
-    textAlign: 'center',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-  };
-
   const leftTd = {
     textAlign: 'left',
   };
-
-
-  const bodyTr = {
-    border: '1px solid #FCA311',
-  };
-
-  const vacant = {
-    textAlign: 'center',
-    color: 'red',
-    fontSize: '12px',
-  };
-
 
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
     const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
@@ -198,39 +156,39 @@ const Rooms = () => {
 
     return (
       <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
-        <tr style={bodyTr}>
+        <tr>
           { isVacant ? (
             existNextTenant
               ? (
                 <>
-                  <td style={startTd}>
+                  <td className="startTd">
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="4" style={centerTd}>
+                  <td colSpan="4" className="middleTd">
                     {dict.common.vacantUnt}
                     {' '}
                     {nextTenant.checkIn}
                   </td>
-                  <td style={lastTd} />
+                  <td className="lastTd" />
                 </>
               ) : (
                 <>
-                  <td style={startTd}>
+                  <td className="startTd">
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="4" style={centerTd}>
+                  <td colSpan="4" className="middleTd vacant">
                     {dict.common.vacant}
                   </td>
-                  <td style={lastTd} />
+                  <td className="lastTd" />
                 </>
               )
 
           ) : (
             <>
-              <td style={startTd}>
+              <td className="startTd">
                 <Txt mgL="20px">{room.roomNr}</Txt>
               </td>
-              <td style={middleTd}>
+              <td className="middleTd">
                 {firstName}
                 {' '}
                 {lastName}
@@ -246,16 +204,16 @@ const Rooms = () => {
                   />
                 </Div> */}
               </td>
-              <td style={middleTd}>
+              <td className="middleTd">
                 {checkIn}
               </td>
-              <td style={middleTd}>
+              <td className="middleTd">
                 {checkOut}
               </td>
-              <td style={middleTd}>
+              <td className="middleTd">
                 {rent}
               </td>
-              <td style={lastTd}>
+              <td className="lastTd">
                 {deposit}
               </td>
             </>
@@ -279,7 +237,6 @@ const Rooms = () => {
         {/* <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle> */}
         <Div mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
-            <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
                 <td style={leftTd}>{dict.common.roomNr}</td>
