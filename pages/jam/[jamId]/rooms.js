@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { DataGrid } from '@material-ui/data-grid';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
@@ -19,12 +20,16 @@ import {
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
+import dictionary from '../../../locale';
+import { set } from 'lodash';
 
 const Rooms = () => {
   const { roomsInfo } = useSelector((state) => state.jamReducer);
   const dispatch = useDispatch();
   const router = useRouter();
   const { jamId } = router.query;
+  const { lenguage } = useSelector((state) => state.userReducer);
+  const dict = dictionary[lenguage];
 
   const getJamInfo = async () => {
     const res = await DataService.getJamInfoById(jamId);
@@ -121,6 +126,53 @@ const Rooms = () => {
   //     });
   //   };
 
+  const startTd = {
+    marginLeft: '20px',
+    textAlign: 'left',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+    borderLeft: '1px solid #FCA311',
+    borderTopLeftRadius: '10px',
+    borderBottomLeftRadius: '10px',
+  };
+  const lastTd = {
+    textAlign: 'flex-start',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+    borderRight: '1px solid #FCA311',
+    borderTopRightRadius: '10px',
+    borderBottomRightRadius: '10px',
+  };
+
+  const middleTd = {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    textAlign: 'center',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+  };
+  const centerTd = {
+    textAlign: 'center',
+    borderBottom: '1px solid #FCA311',
+    borderTop: '1px solid #FCA311',
+  };
+
+  const leftTd = {
+    textAlign: 'left',
+  };
+
+
+  const bodyTr = {
+    border: '1px solid #FCA311',
+  };
+
+  const vacant = {
+    textAlign: 'center',
+    color: 'red',
+    fontSize: '12px',
+  };
+
+
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
     const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
     let checkIn; let checkOut; let firstName; let lastName; let rent; let deposit;
@@ -144,53 +196,41 @@ const Rooms = () => {
       nextTenant = future[0];
     }
 
-    const centerTd = {
-      textAlign: 'center',
-    };
-
-    const vacant = {
-      textAlign: 'center',
-      color: 'red',
-      fontSize: '12px',
-    };
-
-    const flexTd = {
-      display: 'flex',
-      justifyContent: 'flex-start',
-    };
     return (
       <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
-        <tr>
+        <tr style={bodyTr}>
           { isVacant ? (
             existNextTenant
               ? (
                 <>
-                  <td style={centerTd}>
-                    {room.roomNr}
+                  <td style={startTd}>
+                    <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="5" style={centerTd}>
+                  <td colSpan="4" style={centerTd}>
                     Vacant until
                     {' '}
                     {nextTenant.checkIn}
                   </td>
+                  <td style={lastTd} />
                 </>
               ) : (
                 <>
-                  <td style={centerTd}>
-                    {room.roomNr}
+                  <td style={startTd}>
+                    <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="6" style={vacant}>
+                  <td colSpan="4" style={centerTd}>
                     Currently Vacant
                   </td>
+                  <td style={lastTd} />
                 </>
               )
 
           ) : (
             <>
-              <td style={centerTd}>
-                {room.roomNr}
+              <td style={startTd}>
+                <Txt mgL="20px">{room.roomNr}</Txt>
               </td>
-              <td style={flexTd}>
+              <td style={middleTd}>
                 {firstName}
                 {' '}
                 {lastName}
@@ -206,16 +246,16 @@ const Rooms = () => {
                   />
                 </Div>
               </td>
-              <td>
+              <td style={startTd}>
                 {checkIn}
               </td>
-              <td>
+              <td style={startTd}>
                 {checkOut}
               </td>
-              <td>
+              <td style={startTd}>
                 {rent}
               </td>
-              <td>
+              <td style={lastTd}>
                 {deposit}
               </td>
             </>
@@ -238,11 +278,11 @@ const Rooms = () => {
       <Div col w="100%" just="flex-start" align="flex-start">
         <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle>
         <Div w="100%" just="center" align="center">
-          <Table>
+          <Table w="90%">
             <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
-                <td>Room Nr</td>
+                <td style={leftTd}>Room Nr</td>
                 <td>Tenant</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>

@@ -5,16 +5,9 @@ const Table = styled.table`
   margin: ${({ mg }) => mg || '0'};
   width: ${({ w }) => w || ''};
   border: none;
-  border-collapse: collapse;
+  border-spacing:0 15px;
   caption-side: bottom;
 
-
-  thead > tr {
-    td{
-      color: #403D39;
-      font-weight: 700;
-    }
-  }
 
   tr {
     height: 40px;
@@ -24,6 +17,13 @@ const Table = styled.table`
     }
   }
 
+  thead tr {
+    // border: none;
+    td{
+      color: #403D39;
+      font-weight: 700;
+    }
+  }
 
   // tbody tr {
   //   :nth-of-type(odd) {
@@ -35,7 +35,11 @@ const Table = styled.table`
   // }
 
   tbody tr {
-    border-bottom: 1px solid #CCC5B9
+    // border: 1px solid #FCA311;
+    // outline: thin solid #FCA311;
+    :hover{
+      background-color: rgba(240, 239, 235, 1);
+    }
   }
 
   caption {
