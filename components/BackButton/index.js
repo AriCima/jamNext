@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Link from 'next/link';
 
 import dictionary from '../../locale';
-import { BackAnchor } from '../../styledComps';
+import { AnchorText } from '../../styledComps';
 
 const BackButton = ({ section }) => {
   const { lenguage } = useSelector((state) => state.userReducer);
@@ -11,13 +11,12 @@ const BackButton = ({ section }) => {
   const dict = dictionary[lenguage];
 
   const lowSection = section.toLowerCase();
-  console.log('link', `/jam/${jamId}/${lowSection}`);
   return (
     <Link href={`/jam/${jamId}/${lowSection}`} passHref>
-      <BackAnchor>
+      <AnchorText mg="10px 0" color="#CCC5B9">
         &lt;&lt;&nbsp;
         {dict[section]}
-      </BackAnchor>
+      </AnchorText>
     </Link>
   );
 };

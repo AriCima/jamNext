@@ -315,7 +315,7 @@ const getJamRooms = (jamId) => new Promise((resolve, reject) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log('Error al cargar las Rooms: ', errorCode, errorMessage);
+      console.log('Error al cargar los Rooms: ', errorCode, errorMessage);
     });
 });
 

@@ -79,14 +79,10 @@ const RoomInfo = () => {
             {' '}
             {roomNr}
           </Title>
-        {/* <Div w="600px"just="flex-start" align="center" mgR="20px">
-          <SubTitle>Status</SubTitle>
-        </Div> */}
-        {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
-        {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
-        {isVacant && !thereIsNext && <Txt>{dict.common.roomIsVac}</Txt>}
+          {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
+          {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
+          {isVacant && !thereIsNext && <Txt>{dict.common.roomIsVac}</Txt>}
         </Div>
-
 
         <Div mgT="20px" w="100%" just="center">
           <BookingsGraphic tenants={SINGLE_ROOM_TENANTS} />

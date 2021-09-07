@@ -1,20 +1,19 @@
 import styled from 'styled-components';
 
-const BackAnchor = styled.a`
+const AnchorText = styled.a`
     role: button;
-    height: 60px;
-    padding: 5px 10px;
-    margin: 0;
-    color: #CCC5B9;
+    margin: ${({ mg }) => mg || '0'};
+    color: ${({ color }) => color || 'black'};
     background-color: none;
     display: flex;
     justify-content: center;
     align-items: center;
     &:hover{
         color:#FCA311;
+        text-decoration: underline;
         cursor: pointer;
     }
-    transition: 0.3s;
+    transition: 0.2s;
 }`;
 
-export default BackAnchor;
+export default AnchorText;
