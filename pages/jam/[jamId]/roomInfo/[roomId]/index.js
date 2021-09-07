@@ -72,21 +72,21 @@ const RoomInfo = () => {
         <Div className="BackButton">
           <BackButton section="rooms" />
         </Div>
-        <Div w="100%" just="flex-start">
+        <Div className="title" w="100%" mgB="30px" just="space-between">
           <Title>
             {dict.common.roomNr}
             &nbsp;
             {' '}
             {roomNr}
           </Title>
-        </Div>
-        <Div w="100%" just="flex-start" align="center" mgR="20px">
+        {/* <Div w="600px"just="flex-start" align="center" mgR="20px">
           <SubTitle>Status</SubTitle>
-        </Div>
-
+        </Div> */}
         {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
         {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
         {isVacant && !thereIsNext && <Txt>{dict.common.roomIsVac}</Txt>}
+        </Div>
+
 
         <Div mgT="20px" w="100%" just="center">
           <BookingsGraphic tenants={SINGLE_ROOM_TENANTS} />

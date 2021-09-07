@@ -6,10 +6,10 @@ const StartChat = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 40px;
+    height: auto;
     margin: ${({ mg }) => mg || '0'};
     padding: 0 15px;
-    width: ${({ w }) => w || ''};
+    width: 60px;
     color: rgb(85, 187, 151);
     &:hover{
       cursor: pointer;

@@ -4,7 +4,6 @@ import { format } from 'date-fns/';
 import { Div, Txt } from '../../styledComps';
 
 const BookingsGraphic = ({ tenants }) => {
-
   const generateGraphicsMonths = () => {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -124,7 +123,7 @@ const BookingsGraphic = ({ tenants }) => {
           backColor = 'white';
           break;
         case 'booked':
-          backColor = '#FCA311';
+          backColor = '#EB5E28';
           break;
         case 'today':
           backColor = 'rgb(255,255,0)';
@@ -148,7 +147,7 @@ const BookingsGraphic = ({ tenants }) => {
             key={i}
             style={{ width: days.width }}
             h="100%"
-            back="backColor"
+            back={backColor}
           />
 
         </Div>

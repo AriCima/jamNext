@@ -19,31 +19,22 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
 
   return (
 
-    <HovRow className="cTenant-header" w="100%" just="center" align="center">
-
+    <Div className="cTenant-header" col border="#FCA311" w="400px" pad="15px" borderR="5px" just="center" align="center">
       <Link href="/jam/[jamId]/jammerInfo/[jammerId]" as={`/jam/${jamId}/jammerInfo/${userId}`} passHref>
         <>
-          <Div className="TenantSummaryInfo" pad="20px" h="40px" just="flex-start" align="center" borderR="5px" mgL="5px">
-          <Txt>{tenantTitle}</Txt>
-            <Txt mgL="20px">
-              {firstName}
-              {' '}
-              {lastName}
-            </Txt>
-            <Txt mgL="20px" color="gray">
-              check-in:
-            </Txt>
-            <Txt mgL="10px">{checkIn}</Txt>
-            {tenantType === 'current' && (
-            <>
-              <Txt mgL="20px" color="gray">
-                check-out:
+          <Div className="TenantSummaryInfo" w="100%" pad="5px 0" just="space-between" align="flex-start">
+
+            <Div just="flex-start" w="auto">
+              <Txt color="#403D39">{tenantTitle}</Txt>
+              <Txt mgL="20px">
+                {firstName}
+                {' '}
+                {lastName}
               </Txt>
-              <Txt mgL="10px">{checkOut}</Txt>
-            </>
-            )}
-          </Div>
+            </Div>
+
             <StartChatButton
+              w="auto"
               adminId={adminId}
               adminName={adminFirstName}
               adminLastName={adminLastName}
@@ -51,13 +42,31 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
               jamDesc={jamName}
               originJamId={jamId}
             />
+          </Div>
 
+          <Div className="TenantSummaryInfo" w="100%" pad="5px 0" just="space-between" align="flex-start">
+            <Div>
+              <Txt color="gray">
+                check-in:
+              </Txt>
+              <Txt mgL="10px">{checkIn}</Txt>
+            </Div>
+
+            {tenantType === 'current' && (
+            <Div>
+              <Txt color="gray">
+                check-out:
+              </Txt>
+              <Txt mgL="10px">{checkOut}</Txt>
+            </Div>
+            )}
+          </Div>
         </>
       </Link>
 
       {/* <JammerContractInfo contractInfo={TenantSummary} showRoomNr={false} /> */}
 
-    </HovRow>
+    </Div>
 
   );
 };
