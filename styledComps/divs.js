@@ -34,7 +34,8 @@ const Div = styled.div`
     text-overflow: ${({ txtOver }) => txtOver || 'clip'};
     overflow: ${({ overFl }) => overFl || 'auto'};
     ${({ transf }) => (transf ? `transform: ${transf};` : '')}
-    ${({ main }) => main && `
+    z-index:${({ zIndex }) => zIndex || ''};
+        ${({ main }) => main && `
         margin: 0;
         display: flex;
         flex-direction: column;
