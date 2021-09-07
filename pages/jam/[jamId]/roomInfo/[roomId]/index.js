@@ -9,6 +9,7 @@ import { SINGLE_ROOM_TENANTS } from '../../../../../config';
 import {
   Div, Title, Txt, SubTitle,
 } from '../../../../../styledComps';
+import BookingsGraphic from '../../../../../components/BookingsGraphic';
 import BackButton from '../../../../../components/BackButton';
 import Layout from '../../../../../domains/Layout';
 import NavBarJam from '../../../../../domains/NavBarJam';
@@ -67,14 +68,14 @@ const RoomInfo = () => {
   return (
     <Layout>
       <NavBarJam />
-      <Div className="roomId" w="100%" col pad="20px">
+      <Div className="roomId" h="100%" w="100%" col pad="5px 20px">
         <Div className="BackButton">
           <BackButton section="rooms" />
         </Div>
         <Div w="100%" just="flex-start">
           <Title>
             {dict.common.roomNr}
-            : &nbsp;
+            &nbsp;
             {' '}
             {roomNr}
           </Title>
@@ -86,6 +87,10 @@ const RoomInfo = () => {
         {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
         {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
         {isVacant && !thereIsNext && <Txt>{dict.common.roomIsVac}</Txt>}
+
+        <Div mgT="20px" w="100%" just="center">
+          <BookingsGraphic tenants={SINGLE_ROOM_TENANTS} />
+        </Div>
 
         {editInfo
           ? <EditRoomForm jamId={jamId} roomId={roomId} roomInfo={info} edit={setEditInfo} />

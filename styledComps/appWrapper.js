@@ -8,7 +8,7 @@ const AppWrapper = styled.div`
   width: 100%
   align-items: flex-start;
   justify-content: flex-start;
-  height: 100vh;
+  // height: 100vh;
 `;
 
 export default AppWrapper;

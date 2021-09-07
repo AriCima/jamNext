@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector } from 'react-redux';
+import upperFirst from 'lodash/upperFirst';
 import { Div, JamNavBarItem } from '../../styledComps';
 import Calculations from '../../services/Calculations';
 import useUserPermisions from '../../hooks/useUserPermisions';
@@ -23,10 +23,15 @@ const NavBarJam = () => {
   }, [jamType, role]);
 
   const renderJamSections = () => jamSections.map((section) => {
-    const sec = section.toLowerCase();
+    const sec = upperFirst(section);
     return (
-      <Link href={`/jam/${jamId}/${sec}`} key={section + jamId} passHref>
-        <JamNavBarItem active={sec === activeSection} back="red">{section}</JamNavBarItem>
+      <Link href={`/jam/${jamId}/${section}`} key={section + jamId} passHref>
+        <JamNavBarItem
+          active={section === activeSection}
+          back="red"
+        >
+          {sec}
+        </JamNavBarItem>
       </Link>
     );
   });
