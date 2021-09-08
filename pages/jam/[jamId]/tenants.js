@@ -1,26 +1,39 @@
-import React, { useEffect } from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { TENANTS } from '../../../config';
+import { useForm } from 'react-hook-form';
 
 import { setJamInfo, setTenantsList, setRoomsInfo } from '../../../redux/actions';
 import { setActiveSection } from '../../../redux/actions/jamActions';
 
 import Layout from '../../../domains/Layout';
 import { Div, Txt, Table } from '../../../styledComps';
+import FormSelect from '../../../components/FormSelect';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
 import dictionary from '../../../locale';
 
+const formStyle = {
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'flex-start',
+  marginLeft: '20px',
+};
+
 const Tenants = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { register, errors, handleSubmit } = useForm();
   const { roomsInfo, tenantsList } = useSelector((state) => state.jamReducer);
   const { jamId } = router.query;
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
+
+  const [tenantsType, setTenantsType] = useState(`${dict.common.allTenants}`);
 
   const getJamInfo = async () => {
     const res = await DataService.getJamInfoById(jamId);
@@ -28,37 +41,12 @@ const Tenants = () => {
   };
 
   const getTenants = async () => {
-    const rooms = roomsInfo.length;
-    const nrOfRooms = rooms.length.toString();
-    const res = await DataService.getJammers(jamId);
+    // const res = await DataService.getJammers(jamId);
     // const tenantsList = Calculations.removeAmdinFromJammers(jammers);
     // const tenantsByRooms = Calculations.getTenantsByRooms(tenantsList, nrOfRooms);
-    const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
-    const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
-
-    const sortedRooms = Calculations.sortByField({ elements: rooms, asc: true, field: 'roomNr' });
-
-    if (rooms.length > 0) {
-      for (let i = 0; i < rooms.length; i++) {
-        const oT = organizedTenantsByRoom[i];
-        sortedRooms[i].currentTenant = oT.currentTenant;
-        sortedRooms[i].formerTenants = oT.formerTenants;
-        sortedRooms[i].futureTenants = oT.futureTenants;
-      }
-    }
-
-    //   const currentOccupancy = Calculations.getCurrentOccupancy(tenantsList, nrOfRooms);
-    //   setOccupancy(currentOccupancy);
-
-    //   const currentIncomes = Calculations.getCurrentIncomes(tenantsList);
-    //   setIncomes(currentIncomes);
-
-    //   const futureChecks = Calculations.getFutureChecks(tenantsList);
-    //   setActivity(futureChecks);
-
+    // const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
     // Info en Redux
     dispatch(setTenantsList(TENANTS));
-    dispatch(setTenantsList(res));
   };
 
   useEffect(() => {
@@ -67,78 +55,48 @@ const Tenants = () => {
     dispatch(setActiveSection('tenants'));
   }, [jamId]);
 
-  const renderTenantsInfo = () => tenantsList.map((tenant, j) => {
-    const current = !isEmpty(tenant.currentTenant[0]) ? tenant.currentTenant : [];
-    let checkIn; let checkOut; let firstName; let lastName; let rent; let deposit;
+  const selectTenantType = (data) => {
+    setTenantsType(data);
+  };
 
-    if (current.length > 0) {
-      checkIn = current[0].checkIn;
-      checkOut = current[0].checkOut;
-      firstName = current[0].firstName;
-      lastName = current[0].lastName;
-      rent = current[0].rent;
-      deposit = current[0].deposit;
+  const renderTenantsInfo = () => {
+    const tenantsByDates = Calculations.getOrganizedTenantsByDates(TENANTS);
+    console.log('tenantsByDates: ', tenantsByDates);
+    let tenantsToShow = Calculations.sortByField({elements: TENANTS, asc: true, field: 'firstName'});
+    
+    switch(tenantsType) {
+      case 'current':
+        const current = tenantsByDates.currentTenants;
+        tenantsToShow = Calculations.sortByField({elements: current, asc: true, field: 'roomNr'});
+        break;
+      case 'future':
+        const future = tenantsByDates.futureTenants;
+        tenantsToShow = Calculations.sortByField({elements: future, asc: true, field: 'roomNr'});
+        break;
+      case 'former':
+        const former = tenantsByDates.formerTenants;
+        tenantsToShow = Calculations.sortByField({elements: former, asc: true, field: 'firstName'});
+        break;
+      default:
+        break;
     }
-    const future = tenant.futureTenants ? tenant.futureTenants : [];
-    const isVacant = !tenant.currentTenant || isEmpty(tenant.currentTenant);
-    const { roomId } = tenant;
-
-    const existNextTenant = future.length !== 0;
-    let nextTenant = [];
-
-    if (existNextTenant) {
-      nextTenant = future[0];
-    }
-
+    
     return (
-      <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
-        <tr>
-          { isVacant ? (
-            existNextTenant
-              ? (
-                <>
-                  <td className="startTd">
-                    <Txt mgL="20px">{room.roomNr}</Txt>
-                  </td>
-                  <td colSpan="4" className="middleTd">
-                    {dict.common.vacantUnt}
-                    {' '}
-                    {nextTenant.checkIn}
-                  </td>
-                  <td className="lastTd" />
-                </>
-              ) : (
-                <>
-                  <td className="startTd">
-                    <Txt mgL="20px">{room.roomNr}</Txt>
-                  </td>
-                  <td colSpan="4" className="middleTd vacant">
-                    {dict.common.vacant}
-                  </td>
-                  <td className="lastTd" />
-                </>
-              )
+      tenantsToShow.map((tenant) => {
+        const {
+          firstName, lastName, checkIn, checkOut, roomNr, rent, deposit
+        } = tenant;
 
-          ) : (
-            <>
+        return (
+          <Link key={tenant.userId} href="/jam/[jamId]/tenantInfo/[userId]" as={`/jam/${jamId}/tenantInfo/${tenant.userId}`} passHref>
+            <tr>
               <td className="startTd">
-                <Txt mgL="20px">{room.roomNr}</Txt>
-              </td>
-              <td className="middleTd">
                 {firstName}
                 {' '}
                 {lastName}
-{/* 
-                <Div
-                  just="center"
-                  align="center"
-                  mgL="15px"
-                //   onClick={StartChat()}
-                >
-                  <FontAwesomeIcon
-                    icon={faComments}
-                  />
-                </Div> */}
+              </td>
+              <td className="middleTd">
+                <Txt mgL="20px">{roomNr}</Txt>
               </td>
               <td className="middleTd">
                 {checkIn}
@@ -152,12 +110,13 @@ const Tenants = () => {
               <td className="lastTd">
                 {deposit}
               </td>
-            </>
-          )}
-        </tr>
-      </Link>
+            </tr>
+          </Link>
+        );
+      })
     );
-  });
+  };
+
   const leftTd = {
     textAlign: 'left',
   };
@@ -168,7 +127,30 @@ const Tenants = () => {
     <Layout>
       <NavBarJam />
       <Div col w="100%" just="flex-start" align="flex-start">
-        {/* <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle> */}
+        <form style={formStyle} autoComplete="off">
+          <FormSelect
+            w="40%"
+            mgT="20px"
+            pad="5px"
+            col={false}
+            label={dict.common.show}
+            labelW="90px"
+            labelMgR="10px"
+            name="tenantType"
+            type="text"
+            error={errors.jamType}
+            errorMessage="Please select a jam type"
+            register={register}
+            registerObject={{ required: true }}
+            options={[
+              {id: 'all', name: `${dict.common.allTenants}`},
+              {id: 'current', name: `${dict.common.currentTenants}`},
+              {id: 'future', name: `${dict.common.futureTenants}`},
+              {id: 'former', name: `${dict.common.formerTenants}`},
+          ]}
+            modifiedValue={(val) => { selectTenantType(val) }}
+          />
+        </form>
         <Div mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
             <thead>

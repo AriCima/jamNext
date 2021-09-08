@@ -276,7 +276,7 @@ const Settings = () => {
                       label={dict.common.zip}
                       placeholder={defaultValues.apartmentZipCode}
                       type="text"
-                      name="jamDetails.contractInfo.apartmentInfo..apartmentZipCode"
+                      name="jamDetails.contractInfo.apartmentInfo.apartmentZipCode"
                       mgR="20px"
                       error={errors.zipCode}
                       errorMessage="zipCode is mandatory"
@@ -287,7 +287,7 @@ const Settings = () => {
 
                     <FormSelect // apartmentCountry
                       w="40%"
-                      label={dict.common.zip}
+                      label={dict.common.country}
                       name="jamDetails.contractInfo.apartmentInfo.apartmentCountry"
                       type="text"
                       error={errors.apartmentCountry}

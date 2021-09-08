@@ -84,7 +84,7 @@ const CreateForm = ({ showModal }) => {
 
   const valueChanged = () => {
     console.log('value changed');
-  }
+  };
 
   return (
     <form style={formStyle} autoComplete="off" onSubmit={handleSubmit(createNewJam)}>
@@ -100,7 +100,7 @@ const CreateForm = ({ showModal }) => {
           errorMessage="Jam Name is mandatory"
           register={register}
           registerObject={{ required: true }}
-          modifiedValue={() => { valueChanged(true); }}
+          modifiedValue={() => { valueChanged(); }}
         />
 
         <FormInput
@@ -128,7 +128,6 @@ const CreateForm = ({ showModal }) => {
           reportValue={(val) => setJamType(val)}
           options={typeOfJams}
           modifiedValue={() => { valueChanged(true); }}
-
         />
 
         {typeOfJam === 'rooms-rental'

@@ -5,8 +5,8 @@ const Select = styled.select`
     background-color: ${({back}) => back || 'rgba(240, 239, 235, 0.6)'};
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.16);
-    padding: 15px;
-    margin-bottom: 10px;
+    padding: ${({pad}) => pad || '15px'};
+    margin-bottom: ${({mgB}) => mgB || '10px'};
     width: ${({w}) => w || '100%'};
     option {
         color: black;

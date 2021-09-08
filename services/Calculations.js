@@ -540,6 +540,7 @@ const getTenantsByRooms = (tenants, nrOfRooms) => { // separa los tenants por ha
   // FORNAT --> tenantsByRooms = {1:[{..}, {..}], 2:[{..} . . . {..}],  . . }
   return tenantsByRooms;
 };
+
 const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inquilinos de cada room
   const result = [];
   const today = new Date();
@@ -575,6 +576,33 @@ const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inq
   // FORNAT --> tenantsByRooms = {1:[{..}, {..}], 2:[{..} . . . {..}],  . . }
   return result;
 };
+
+const getOrganizedTenantsByDates = (tenants) => { // Organiza los inquilinos de cada room
+  let currentTenants = [];
+  let formerTenants = [];
+  let futureTenants = [];
+
+  const today = new Date();
+  for (let i = 0; i < tenants.length; i++) {
+    const tenant = tenants[i];
+    const cOut = new Date(tenant.checkOut);
+    const cIn = new Date(tenant.checkIn);
+
+    if (cIn < today && cOut > today) {
+      currentTenants.push(tenant);
+    } else if (cIn < today && cOut < today) {
+      formerTenants.push(tenant);
+    } else if (cIn > today) {
+      futureTenants.push(tenant);
+    }
+  }
+  // FORNAT --> tenantByDate = {current:[{..}, {..}], former:[{..}, {..}], future:[{..}, {..}]  . . }
+  const result = {
+    currentTenants, formerTenants, futureTenants
+  };
+  return result;
+};
+
 const getSingleRoomOrganizedTenants = (jammers) => { // Organiza los inquilinos de cada room
   const today = new Date();
 
@@ -643,6 +671,7 @@ const Calculations = {
   getMessageDate,
   getLandlordInfo,
   getOrganizedTenants,
+  getOrganizedTenantsByDates,
   getSelectOptions,
   getSingleRoomOrganizedTenants,
   getTenantPayments,
