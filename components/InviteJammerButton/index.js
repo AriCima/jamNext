@@ -1,30 +1,26 @@
-import React from "react";
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { useSelector } from 'react-redux';
+import { Div, Txt } from '../../styledComps';
 
-const InviteJammerButton = ({ }) => {
-
-  const { jamId, jamType, activeSection } = useSelector((state) => state.jamReducer);
-
-  const sendInvitation = () => {
-
-  }
+const InviteJammerButton = ({ openModal }) => {
+  const openInvitationForm = () => {
+    openModal(true);
+  };
 
   return (
 
-    <div className="invite-button"
-        onClick={e => sendInvitation(e)}
+    <Div
+      className="invite-button"
+      onClick={(e) => openInvitationForm(e)}
     >
       <FontAwesomeIcon
         icon={faPaperPlane}
       />
-      <p>Invite a tenant</p>
+      <Txt fSize="14px">Invite a tenant</Txt>
 
-    </div>
-  )
-  
-}
-
+    </Div>
+  );
+};
 
 export default InviteJammerButton;
