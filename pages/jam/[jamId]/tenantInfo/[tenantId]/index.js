@@ -70,7 +70,7 @@ const TenantInfo = () => {
         <Div className="BackButton">
           <BackButton section="tenants" />
         </Div>
-        <Div className="title" w="100%" mgB="30px" just="space-between">
+        <Div className="title" w="100%" mgT="20px" mgB="30px" just="space-between">
           <Title>
             {tenant.firstName}&nbsp;{tenant.lastName}
           </Title>

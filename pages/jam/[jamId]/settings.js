@@ -68,11 +68,11 @@ const useStyles = makeStyles((theme) => ({
     color: '#252422',
   },
   expHeading: {
-    color: '#FCA311',
+    color: '#EF7512',
     fontWeight: '600',
   },
   expIcon: {
-    color: '#FCA311',
+    color: '#EF7512',
   },
   details: {
     flexDirection: 'column',
@@ -151,11 +151,12 @@ const Settings = () => {
   const expenses = Calculations.getSelectOptions('expenses');
   return (
     <Layout>
-      <div>
+      <>
         <NavBarJam />
-        <>
+        <Div mgL="20px" mgT="20px">
           <Title>{dict.settingsForm.title}</Title>
-          <div className={classes.root}>
+        </Div>
+        <div className={classes.root}>
             <form
               style={formStyle}
               autoComplete="off"
@@ -881,8 +882,8 @@ const Settings = () => {
 
             </form>
           </div>
-        </>
-      </div>
+      </>
+
     </Layout>
   );
 };

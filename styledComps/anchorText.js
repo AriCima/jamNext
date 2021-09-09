@@ -9,8 +9,9 @@ const AnchorText = styled.a`
     justify-content: center;
     align-items: center;
     &:hover{
-        color:#FCA311;
-        text-decoration: underline;
+        color: ${({ hovCol }) => (hovCol || '#FCA311')};
+        font-weight: 550;
+        text-decoration: ${({ txtDeco }) => (txtDeco || '')};
         cursor: pointer;
     }
     transition: 0.2s;
