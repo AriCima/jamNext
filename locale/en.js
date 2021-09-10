@@ -8,6 +8,7 @@ export default {
   common: {
     address: 'Street, house nro, floor, door . . . ',
     allTenants: 'All Tenants',
+    aTenant: ' a tenant',
     city: 'City',
     country: 'Country',
     currentTenant: 'Current tenant',

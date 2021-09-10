@@ -12,6 +12,7 @@ import { setActiveSection } from '../../../redux/actions/jamActions';
 import Layout from '../../../domains/Layout';
 import { Div, Txt, Table } from '../../../styledComps';
 import FormSelect from '../../../components/FormSelect';
+import InviteJammerButton from '../../../components/InviteJammerButton'
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
@@ -20,8 +21,9 @@ import dictionary from '../../../locale';
 const formStyle = {
   display: 'flex',
   width: '100%',
+  marginLeft:"20px",
   justifyContent: 'flex-start',
-  marginLeft: '20px',
+  alignItems: 'flex-start',
 };
 
 const Tenants = () => {
@@ -127,10 +129,10 @@ const Tenants = () => {
     <Layout>
       <NavBarJam />
       <Div col w="100%" just="flex-start" align="flex-start">
+        <Div w="100%" mgT="20px"align="center" just="space-between">
         <form style={formStyle} autoComplete="off">
           <FormSelect
             w="40%"
-            mgT="20px"
             pad="5px"
             col={false}
             label={dict.common.show}
@@ -151,6 +153,8 @@ const Tenants = () => {
             modifiedValue={(val) => { selectTenantType(val) }}
           />
         </form>
+          <InviteJammerButton text={dict.common.aTenant} />
+        </Div>
         <Div mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
             <thead>
