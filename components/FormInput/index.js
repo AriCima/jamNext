@@ -7,7 +7,7 @@ const FormInput = ({
   w, mgL, mgR, label, name, error, errorMessage, register, placeholder = '', registerObject, type = 'text', disabled, modifiedValue,
 }) => {
   const reportChange = () => {
-    modifiedValue(true);
+    modifiedValue && modifiedValue(true);
   };
 
   return (

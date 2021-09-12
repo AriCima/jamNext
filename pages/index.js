@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
-import Head from 'next/head'
+import Head from 'next/head';
 import NavBarApp from '../domains/NavBarApp';
 
 import { SubTitle, Txt, Div, Title, Footer, AppContainer } from '../styledComps';
@@ -25,7 +25,7 @@ const Home = () => {
       </Head>
 
       <Div main w="100%" mg="40px 0 0 0" just="flex-start" align="center">
-        <NavBarApp w="100%"/>
+        <NavBarApp w="100%" />
         <Div w="100%" col align="center">
           <Title>Welocme to jammint</Title>
           <SubTitle>Jam with your flatmates </SubTitle>

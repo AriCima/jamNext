@@ -1,5 +1,5 @@
 import React from 'react';
-import {useForm} from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 
@@ -7,37 +7,39 @@ import DataService from '../../services/DataService';
 import AuthService from '../../services/AuthService';
 import { setUserInfo } from '../../redux/actions/userActions.js';
 
-import { Div, InputSubmit, SubTitle, Txt, Button } from '../../styledComps';
+import { Div, InputSubmit } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 
-const RegisterForm = ({updateView, setUserInfo}) => {
+const RegisterForm = ({ updateView, setUserInfo }) => {
+  const {
+    register, errors, getValues, handleSubmit,
+  } = useForm();
+  const router = useRouter();
 
-  const { register, errors, getValues, handleSubmit } = useForm();
-  const router = useRouter()
-
-  const onRegister = (data) => {  
-    const {firstName, lastName, email, password } = data;  
+  const onRegister = (data) => {
+    const {
+      firstName, lastName, email, password,
+    } = data;
 
     DataService.checkIfEmialExists(email)
-    .then(exists => {
-      if (exists === true) {
-        alert('el email ya existe')
-        return;
-      } else {
-        AuthService.register(firstName, lastName, email, password)
-        .then(userInfo => {
-          setUserInfo(userInfo);
-          localStorage.setItem('userInfo', userInfo);
-          router.push('/jams')
-        })
-      }
-    })
+      .then((exists) => {
+        if (exists === true) {
+          alert('el email ya existe');
+        } else {
+          AuthService.register(firstName, lastName, email, password)
+            .then((userInfo) => {
+              setUserInfo(userInfo);
+              localStorage.setItem('userInfo', userInfo);
+              updateView && router.push('/jam');
+            });
+        }
+      });
   };
 
   const formStyle = {
     display: 'flex',
     width: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   };
 
   return (
@@ -48,21 +50,21 @@ const RegisterForm = ({updateView, setUserInfo}) => {
             w="100%"
             label="First Name"
             name="firstName"
-            type='text'
+            type="text"
             error={errors.firstName}
             errorMessage="Debe ingresar un nombre"
             register={register}
-            registerObject={{ required: true}}
+            registerObject={{ required: true }}
           />
           <FormInput
             w="100%"
             label="Last name"
             name="lastName"
-            type='text'
+            type="text"
             error={errors.lastName}
             errorMessage="Debe ingresar un apellido"
             register={register}
-            registerObject={{ required: true}}
+            registerObject={{ required: true }}
           />
           <FormInput
             w="100%"
@@ -72,29 +74,29 @@ const RegisterForm = ({updateView, setUserInfo}) => {
             error={errors.email}
             errorMessage="Email no válido"
             register={register}
-            registerObject={{ 
-                required: true,
-                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            registerObject={{
+              required: true,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             }}
           />
           <FormInput
             w="100%"
             label="Password"
             name="password"
-            type='password'
+            type="password"
             error={errors.password}
             errorMessage="Non valid password"
             register={register}
             registerObject={{
-                required: true,
-                pattern: '',
+              required: true,
+              pattern: '',
             }}
           />
           <FormInput
             w="100%"
             label="Confirm password"
             name="confirmPassword"
-            type='password'
+            type="password"
             error={errors.confirmPassword}
             errorMessage="Non valid password"
             register={register}
@@ -103,16 +105,17 @@ const RegisterForm = ({updateView, setUserInfo}) => {
               pattern: '',
             }}
             validate={{
-              matchesPreviousPassword: value => {
-              const { password } = getValues();
-              return password === value || "Passwords should match!";
-            }}}
+              matchesPreviousPassword: (value) => {
+                const { password } = getValues();
+                return password === value || 'Passwords should match!';
+              },
+            }}
           />
         </Div>
 
         <InputSubmit
           w="100%"
-          back='rgb(85, 187, 151)'
+          back="rgb(85, 187, 151)"
           type="submit"
           value="Submit"
         />
@@ -121,6 +124,4 @@ const RegisterForm = ({updateView, setUserInfo}) => {
   );
 };
 
-
-
-export default connect (null, {setUserInfo})(RegisterForm);
+export default connect(null, { setUserInfo })(RegisterForm);
