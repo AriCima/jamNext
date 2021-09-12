@@ -1,6 +1,7 @@
 import AppContainer from './appContainer';
 import AppWrapper from './appWrapper';
 import Aside from './aside';
+import AnchorText from './anchorText';
 import Button from './button';
 import CloseButton from './closeButton';
 import Div from './divs';
@@ -36,6 +37,7 @@ export {
   AppContainer,
   AppWrapper,
   Aside,
+  AnchorText,
   Button,
   CloseButton,
   Div,

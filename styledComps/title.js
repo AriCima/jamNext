@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 const Title = styled.p`
     font-size: 20px;
-    color: gray;
+    color: #264653;
     font-weight: 500;
-    margin: 20px 0 20px 20px;
+    margin: 0;
     span{
         color: #FCA311;
     }

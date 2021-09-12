@@ -10,6 +10,9 @@ const Txt = styled.p`
     margin-bottom: ${({ mgB }) => mgB || ''};
     padding: ${({ pad }) => pad || '0'};
     color: ${({ color }) => color || 'black'};
+    &:hover{
+        color: ${({ colorHov }) => colorHov || ''};
+    }
 `;
 
 export default Txt;

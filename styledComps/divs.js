@@ -4,12 +4,14 @@ const Div = styled.div`
     align-items: ${({ align }) => align || 'stretch'};
     background-color: ${({ back }) => back || 'transparent'};
     border: ${({ border }) => (border ? `1px solid ${border}` : 'none')};
+    borderBot: ${({ borderBot }) => (borderBot ? `1px solid ${borderBot}` : 'none')};
     border-radius: ${({ borderR }) => (borderR || '')};
     bottom: ${({ bot }) => bot || 'auto'};
     box-shadow: ${({ shad }) => shad || 'none'};
     color: ${({ color }) => color || 'black'};
     display: flex;
     flex-direction: ${({ col }) => (col ? 'column' : 'row')};
+    flex-wrap: ${({ flexW }) => (flexW || 'noWrap')};
     ${({ h }) => (h ? `height: ${h};` : '')}
     justify-content: ${({ just }) => just || 'stretch'};
     ${({ left }) => (left ? `left: ${left};` : '')}
@@ -30,9 +32,15 @@ const Div = styled.div`
     min-width: ${({ minW }) => minW || ''};
     width: ${({ w }) => w || ''};
     text-overflow: ${({ txtOver }) => txtOver || 'clip'};
-    overflow: auto;
+    overflow: ${({ overFl }) => overFl || 'auto'};
     ${({ transf }) => (transf ? `transform: ${transf};` : '')}
-    ${({ main }) => main && `
+    z-index:${({ zIndex }) => zIndex || ''};
+    &:hover{
+        background-color: ${({ backHov }) => backHov || ''};
+        color: ${({ colorHov }) => colorHov || ''};
+        border: ${({ borderHov }) => borderHov || 'black'};
+    }
+        ${({ main }) => main && `
         margin: 0;
         display: flex;
         flex-direction: column;

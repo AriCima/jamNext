@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { setJamInfo, setActiveSection } from '../../../../../redux/actions';
 
-import { SINGLE_ROOM_TENANTS } from '../../../../../config';
+import { TENANTS } from '../../../../../config';
 import {
   Div, Title, Txt, SubTitle,
 } from '../../../../../styledComps';
@@ -17,10 +17,11 @@ import DataService from '../../../../../services/DataService';
 import Calculations from '../../../../../services/Calculations';
 import TenantSummary from '../../../../../domains/TenantSummary';
 import EditRoomForm from '../../../../../domains/EditRoomForm';
-import SingleRoomInfo from '../../../../../domains/SingleRoomInfo';
+import SingleTenantInfo from '../../../../../domains/SingleTenantInfo';
 import dictionary from '../../../../../locale';
 
-const RoomInfo = () => {
+const TenantInfo = () => {
+  const tenant = TENANTS[0];
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
   const [info, setInfo] = useState({});
@@ -37,28 +38,25 @@ const RoomInfo = () => {
     dispatch(setJamInfo(res));
   };
 
-  const getRoomInfo = async () => {
-    const roomInfo = await DataService.getSingleRoomInfo(jamId, roomId);
-    const organizedTenant = Calculations.getSingleRoomOrganizedTenants(SINGLE_ROOM_TENANTS);
-    setCurrent(organizedTenant.currentTenant);
-    setNextTenant(organizedTenant.nextTenant);
-    setInfo(roomInfo);
+  const getTenantInfo = async () => {
+    const tenantInfo = await DataService.getSingleRoomInfo(jamId, roomId);
+    setInfo(tenantInfo);
   };
 
   useEffect(() => {
     jamId && getJamInfo(jamId);
-    roomId && jamId && getRoomInfo(jamId, roomId);
-    dispatch(setActiveSection('rooms'));
+    roomId && jamId && getSingleTenantInfo(jamId, tenantId);
+    dispatch(setActiveSection('tenants'));
   }, [jamId, roomId]);
 
   useEffect(() => {
-    roomId && jamId && getRoomInfo(jamId, roomId);
+    roomId && jamId && getTenantInfo(jamId, tenantId);
   }, [editInfo]);
 
   useEffect(() => {
     jamId && getJamInfo(jamId);
-    roomId && jamId && getRoomInfo(jamId, roomId);
-    dispatch(setActiveSection('rooms'));
+    roomId && jamId && getTenantInfoo(jamId, tenantId);
+    dispatch(setActiveSection('tenants'));
   }, []);
 
   const { roomNr } = info;
@@ -70,27 +68,16 @@ const RoomInfo = () => {
       <NavBarJam />
       <Div className="roomId" h="100%" w="100%" col pad="5px 20px">
         <Div className="BackButton">
-          <BackButton section="rooms" />
+          <BackButton section="tenants" />
         </Div>
-        <Div className="title" w="100%" mgB="30px" just="space-between">
+        <Div className="title" w="100%" mgT="20px" mgB="30px" just="space-between">
           <Title>
-            {dict.common.roomNr}
-            &nbsp;
-            {' '}
-            {roomNr}
+            {tenant.firstName}&nbsp;{tenant.lastName}
           </Title>
-          {!isVacant && <TenantSummary tenantType="current" jamId={jamId} tenant={current} />}
-          {isVacant && thereIsNext && <TenantSummary tenantType="next" jamId={jamId} tenant={next} />}
-          {isVacant && !thereIsNext && <Txt>{dict.common.roomIsVac}</Txt>}
         </Div>
-
-        <Div mgT="20px" w="100%" just="center">
-          <BookingsGraphic tenants={SINGLE_ROOM_TENANTS} />
-        </Div>
-
         {editInfo
           ? <EditRoomForm jamId={jamId} roomId={roomId} roomInfo={info} edit={setEditInfo} />
-          : <SingleRoomInfo jamId={jamId} roomId={roomId} roomInfo={info} edit={setEditInfo} />}
+          : <SingleTenantInfo jamId={jamId} tenant={tenant} edit={setEditInfo} />}
 
       </Div>
     </Layout>
@@ -98,4 +85,4 @@ const RoomInfo = () => {
   );
 };
 
-export default RoomInfo;
+export default TenantInfo;

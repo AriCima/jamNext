@@ -68,11 +68,11 @@ const useStyles = makeStyles((theme) => ({
     color: '#252422',
   },
   expHeading: {
-    color: '#FCA311',
+    color: '#EF7512',
     fontWeight: '600',
   },
   expIcon: {
-    color: '#FCA311',
+    color: '#EF7512',
   },
   details: {
     flexDirection: 'column',
@@ -151,11 +151,12 @@ const Settings = () => {
   const expenses = Calculations.getSelectOptions('expenses');
   return (
     <Layout>
-      <div>
+      <>
         <NavBarJam />
-        <>
+        <Div mgL="20px" mgT="20px">
           <Title>{dict.settingsForm.title}</Title>
-          <div className={classes.root}>
+        </Div>
+        <Div colorHov="black" className={classes.root}>
             <form
               style={formStyle}
               autoComplete="off"
@@ -276,7 +277,7 @@ const Settings = () => {
                       label={dict.common.zip}
                       placeholder={defaultValues.apartmentZipCode}
                       type="text"
-                      name="jamDetails.contractInfo.apartmentInfo..apartmentZipCode"
+                      name="jamDetails.contractInfo.apartmentInfo.apartmentZipCode"
                       mgR="20px"
                       error={errors.zipCode}
                       errorMessage="zipCode is mandatory"
@@ -287,7 +288,7 @@ const Settings = () => {
 
                     <FormSelect // apartmentCountry
                       w="40%"
-                      label={dict.common.zip}
+                      label={dict.common.country}
                       name="jamDetails.contractInfo.apartmentInfo.apartmentCountry"
                       type="text"
                       error={errors.apartmentCountry}
@@ -880,9 +881,9 @@ const Settings = () => {
               )}
 
             </form>
-          </div>
-        </>
-      </div>
+          </Div>
+      </>
+
     </Layout>
   );
 };

@@ -76,7 +76,7 @@ const AdminOverview = () => {
       //   setActivity(futureChecks);
 
       // Info en Redux
-      dispatch(setTenantsList(tenantsList));
+      dispatch(setTenantsList(TENANTS));
       dispatch(setRoomsInfo(sortedRooms));
     }
   };

@@ -5,18 +5,21 @@ const Button = styled.button`
     height: ${({h}) => h || 'auto'};
     width: ${({w}) => w || 'auto'};
     padding: ${({pad}) => pad || '15px'};
-    margin: ${({mg}) => mg || '0'}
+    margin: ${({mg}) => mg || '0'};
+    margin-right: ${({mgR}) => mgR || '0'};
+    margin-left: ${({mgL}) => mgL || '0'};
     color: ${({color}) => color || 'black'};
     background-color: ${({back}) => back || 'transparent'};
-    display: 'flex';
+    display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     border: ${({ border }) => `1px solid ${border}` || 'none'};
     border-radius: 5px;
     &:hover{
-        background-color: ${({ backHov }) => backHov || 'rgb(85, 187, 151)'};
+        background-color: ${({ backHov }) => backHov || 'white'};
         color: ${({ colorHov }) => colorHov || 'white'};
+        border: ${({ borderHov }) => borderHov || 'black'};
     }
 }`;
 

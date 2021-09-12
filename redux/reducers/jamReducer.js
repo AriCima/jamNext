@@ -12,7 +12,7 @@ const defaultState = {
   jamId: '',
   jamName: '',
   activeSection: 'overview',
-  tenantsList: {},
+  tenantsList: [],
   roomsInfo: [],
   adminId: '',
   adminFirstName: '',

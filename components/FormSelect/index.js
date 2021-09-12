@@ -6,7 +6,7 @@ import {
 } from '../../styledComps';
 
 const FormSelect = ({
- options, w, mgL, mgR, label, name, error, errorMessage, register, registerObject, type = 'text', modifiedValue
+ options, labelW, labelMgR, col, w, mgT, mgB, mgL, mgR, label, name, error, errorMessage, register, registerObject, type = 'text', pad, modifiedValue
 }) => {
   const optionsList = options.map((el) => (
     <option key={el.id} value={el.id}>{el.name}</option>
@@ -18,16 +18,19 @@ const FormSelect = ({
 
   return (
     <Div
-      col
+      col={col}
       w={w}
+      mgT={mgT}
       mgL={mgL}
       mgR={mgR}
+      mgB={mgB}
       just="center"
       align="center"
     >
       <Div
         col
-        w="100%"
+        w={labelW}
+        mgR={labelMgR}
         just="center"
         align="flex-start"
       >
@@ -36,8 +39,10 @@ const FormSelect = ({
       </Div>
       <Select
         w="100%"
+        pad={pad}
         type={type}
         name={name}
+        mgB="0"
         ref={register(registerObject)}
         onChange={(e) => handleChange(e)}
       >

@@ -294,6 +294,20 @@ const getJammers = (jamId) => new Promise((resolve, reject) => {
     });
 });
 
+const getSingleTenantInfo = (jamId, tenantId) => new Promise((resolve, reject) => {
+  firebase.firestore().collection('jams')
+    .doc(jamId)
+    .collection('jammers')
+    .doc(tenantId)
+    .get()
+    .then((res) => {
+      resolve(res.data());
+    })
+    .catch((error) => {
+      console.log('error: ', error);
+    });
+});
+
 // < - - - - - ROOMS - - - - - > //
 
 const getJamRooms = (jamId) => new Promise((resolve, reject) => {
@@ -315,7 +329,7 @@ const getJamRooms = (jamId) => new Promise((resolve, reject) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log('Error al cargar las Rooms: ', errorCode, errorMessage);
+      console.log('Error al cargar los Rooms: ', errorCode, errorMessage);
     });
 });
 
@@ -394,6 +408,7 @@ const DataService = {
   getJamRooms,
   getSettingsInfo,
   getSingleRoomInfo,
+  getSingleTenantInfo,
   getUserInfo,
   getUserJams,
   saveBoardMessage,

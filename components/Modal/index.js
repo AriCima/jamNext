@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { Div, CloseButton } from '../../styledComps';
 
-
 const ModalWrapper = styled.div`
     position: absolute;
     display: flex;
@@ -29,34 +28,33 @@ const ModalBody = styled.div`
     z-index: 2;
 `;
 
+const Modal = ({ children, showModal, closeModal }) => {
+  const ref = useRef(null);
 
-const Modal = ({children, showModal, closeModal}) => {
-    const ref = useRef(null);
+  const clickOnModalWrapper = (event) => {
+    if (!ref.current || ref.current.contains(event.target)) {
+      return;
+    }
+    closeModal();
+  };
 
-    const clickOnModalWrapper = (event) => {
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-      closeModal();
-    };
+  if (!showModal) return null;
 
-    if(!showModal) return null;
+  return (
 
-    return (
-        
-        <ModalWrapper
-            onClick={clickOnModalWrapper}
-        >
-            <ModalBody
-                ref={ref}
-            >
-                <Div w="100%" just="flex-end" mgR="20px">
-                    <CloseButton pad="5px" onClick={closeModal}>+</CloseButton>
-                </Div>
-              {children}
-            </ModalBody>
-        </ModalWrapper>
-    );
+    <ModalWrapper
+      onClick={clickOnModalWrapper}
+    >
+      <ModalBody
+        ref={ref}
+      >
+        <Div w="100%" just="flex-end" mgR="20px">
+          <CloseButton pad="5px" onClick={closeModal}>+</CloseButton>
+        </Div>
+        {children}
+      </ModalBody>
+    </ModalWrapper>
+  );
 };
 
 export default Modal;

@@ -1,12 +1,8 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { DataGrid } from '@material-ui/data-grid';
 import { useSelector, useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns/';
 import isEmpty from 'lodash/isEmpty';
 import { TENANTS } from '../../../config';
 
@@ -14,14 +10,11 @@ import { setJamInfo, setTenantsList, setRoomsInfo } from '../../../redux/actions
 import { setActiveSection } from '../../../redux/actions/jamActions';
 
 import Layout from '../../../domains/Layout';
-import {
-  Div, Txt, SubTitle, Table, StartChat,
-} from '../../../styledComps';
+import { Div, Txt, Table } from '../../../styledComps';
 import NavBarJam from '../../../domains/NavBarJam';
 import DataService from '../../../services/DataService';
 import Calculations from '../../../services/Calculations';
 import dictionary from '../../../locale';
-import { set } from 'lodash';
 
 const Rooms = () => {
   const { roomsInfo } = useSelector((state) => state.jamReducer);
@@ -44,6 +37,7 @@ const Rooms = () => {
       // const tenantsList = Calculations.removeAmdinFromJammers(jammers);
       // const tenantsByRooms = Calculations.getTenantsByRooms(tenantsList, nrOfRooms);
       const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
+      console.log('tenantsByRooms: ', tenantsByRooms);
       const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
 
       const sortedRooms = Calculations.sortByField({ elements: rooms, asc: true, field: 'roomNr' });
@@ -126,52 +120,9 @@ const Rooms = () => {
   //     });
   //   };
 
-  const startTd = {
-    marginLeft: '20px',
-    textAlign: 'left',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-    borderLeft: '1px solid #FCA311',
-    borderTopLeftRadius: '10px',
-    borderBottomLeftRadius: '10px',
-  };
-  const lastTd = {
-    textAlign: 'flex-start',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-    borderRight: '1px solid #FCA311',
-    borderTopRightRadius: '10px',
-    borderBottomRightRadius: '10px',
-  };
-
-  const middleTd = {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    textAlign: 'center',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-  };
-  const centerTd = {
-    textAlign: 'center',
-    borderBottom: '1px solid #FCA311',
-    borderTop: '1px solid #FCA311',
-  };
-
   const leftTd = {
     textAlign: 'left',
   };
-
-
-  const bodyTr = {
-    border: '1px solid #FCA311',
-  };
-
-  const vacant = {
-    textAlign: 'center',
-    color: 'red',
-    fontSize: '12px',
-  };
-
 
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
     const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
@@ -198,43 +149,43 @@ const Rooms = () => {
 
     return (
       <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
-        <tr style={bodyTr}>
+        <tr>
           { isVacant ? (
             existNextTenant
               ? (
                 <>
-                  <td style={startTd}>
+                  <td className="startTd">
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="4" style={centerTd}>
-                    Vacant until
+                  <td colSpan="4" className="middleTd">
+                    {dict.common.vacantUnt}
                     {' '}
                     {nextTenant.checkIn}
                   </td>
-                  <td style={lastTd} />
+                  <td className="lastTd" />
                 </>
               ) : (
                 <>
-                  <td style={startTd}>
+                  <td className="startTd">
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="4" style={centerTd}>
-                    Currently Vacant
+                  <td colSpan="4" className="middleTd vacant">
+                    {dict.common.vacant}
                   </td>
-                  <td style={lastTd} />
+                  <td className="lastTd" />
                 </>
               )
 
           ) : (
             <>
-              <td style={startTd}>
+              <td className="startTd">
                 <Txt mgL="20px">{room.roomNr}</Txt>
               </td>
-              <td style={middleTd}>
+              <td className="middleTd">
                 {firstName}
                 {' '}
                 {lastName}
-
+{/* 
                 <Div
                   just="center"
                   align="center"
@@ -244,18 +195,18 @@ const Rooms = () => {
                   <FontAwesomeIcon
                     icon={faComments}
                   />
-                </Div>
+                </Div> */}
               </td>
-              <td style={startTd}>
+              <td className="middleTd">
                 {checkIn}
               </td>
-              <td style={startTd}>
+              <td className="middleTd">
                 {checkOut}
               </td>
-              <td style={startTd}>
+              <td className="middleTd">
                 {rent}
               </td>
-              <td style={lastTd}>
+              <td className="lastTd">
                 {deposit}
               </td>
             </>
@@ -275,19 +226,18 @@ const Rooms = () => {
   return (
     <Layout>
       <NavBarJam />
-      <Div col w="100%" just="flex-start" align="flex-start">
-        <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle>
-        <Div w="100%" just="center" align="center">
+      <Div colorHov="black" col w="100%" just="flex-start" align="flex-start">
+        {/* <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle> */}
+        <Div colorHov="black" mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
-            <caption style={captionStyle}>For more information click on a room</caption>
             <thead>
               <tr>
-                <td style={leftTd}>Room Nr</td>
-                <td>Tenant</td>
+                <td style={leftTd}>{dict.common.roomNr}</td>
+                <td>{dict.common.tenant}</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>
-                <td>Rent</td>
-                <td>Deposit</td>
+                <td>{dict.common.rent}</td>
+                <td>{dict.common.deposit}</td>
               </tr>
             </thead>
             <tbody>
