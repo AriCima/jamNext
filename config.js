@@ -209,5 +209,25 @@ module.exports = {
         tel: '+54 222 123 456',
       },
     ],
-    
+  COLORS: {
+    GRAY: '#CCC5B9',
+    GREENS: {
+      FONTS: {
+        TEXTS: '#264653',
+        TITLES: '#184E77',
+        NAV: '#264653',
+        NAVHOV: '#52B69A',
+      },
+      BORDERS: {
+        BLUE: '#168AAD',
+        BORDHOV: '#52B69A',
+        CANCEL: '#CCC5B9',
+      },
+      BUTTONS: {
+        BACK: '#76C893',
+        BACKHOV: '#52B69A',
+        CANCELHOV: '#B7AD9C',
+      },
+    },
+  },
 };

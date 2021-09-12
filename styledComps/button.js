@@ -10,15 +10,16 @@ const Button = styled.button`
     margin-left: ${({mgL}) => mgL || '0'};
     color: ${({color}) => color || 'black'};
     background-color: ${({back}) => back || 'transparent'};
-    display: 'flex';
+    display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     border: ${({ border }) => `1px solid ${border}` || 'none'};
     border-radius: 5px;
     &:hover{
-        background-color: ${({ backHov }) => backHov || 'rgb(85, 187, 151)'};
+        background-color: ${({ backHov }) => backHov || 'white'};
         color: ${({ colorHov }) => colorHov || 'white'};
+        border: ${({ borderHov }) => borderHov || 'black'};
     }
 }`;
 

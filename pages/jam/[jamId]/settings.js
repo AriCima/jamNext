@@ -156,7 +156,7 @@ const Settings = () => {
         <Div mgL="20px" mgT="20px">
           <Title>{dict.settingsForm.title}</Title>
         </Div>
-        <div className={classes.root}>
+        <Div colorHov="black" className={classes.root}>
             <form
               style={formStyle}
               autoComplete="off"
@@ -881,7 +881,7 @@ const Settings = () => {
               )}
 
             </form>
-          </div>
+          </Div>
       </>
 
     </Layout>

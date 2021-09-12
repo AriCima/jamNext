@@ -155,7 +155,7 @@ const Tenants = () => {
         </form>
           <InviteJammerButton text={dict.common.aTenant} />
         </Div>
-        <Div mgT="20px" w="100%" just="center" align="center">
+        <Div colorHov="black" mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
             <thead>
               <tr>

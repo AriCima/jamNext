@@ -35,6 +35,11 @@ const Div = styled.div`
     overflow: ${({ overFl }) => overFl || 'auto'};
     ${({ transf }) => (transf ? `transform: ${transf};` : '')}
     z-index:${({ zIndex }) => zIndex || ''};
+    &:hover{
+        background-color: ${({ backHov }) => backHov || ''};
+        color: ${({ colorHov }) => colorHov || ''};
+        border: ${({ borderHov }) => borderHov || 'black'};
+    }
         ${({ main }) => main && `
         margin: 0;
         display: flex;

@@ -226,9 +226,9 @@ const Rooms = () => {
   return (
     <Layout>
       <NavBarJam />
-      <Div col w="100%" just="flex-start" align="flex-start">
+      <Div colorHov="black" col w="100%" just="flex-start" align="flex-start">
         {/* <SubTitle mg="10px" mgB="30px">Rooms list</SubTitle> */}
-        <Div mgT="20px" w="100%" just="center" align="center">
+        <Div colorHov="black" mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
             <thead>
               <tr>

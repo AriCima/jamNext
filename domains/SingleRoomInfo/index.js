@@ -9,8 +9,12 @@ import {
   Radio,
 } from '@material-ui/core';
 import FormInput from '../../components/FormInput';
-import { Div, Txt, Button, Table } from '../../styledComps';
+import {
+  Div, Txt, Button, Table,
+} from '../../styledComps';
 import dictionary from '../../locale';
+import { COLORS } from '../../config';
+
 
 const GreenRadio = withStyles({
   root: {
@@ -51,17 +55,21 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
 
   return (
     <>
-      <Div className="title-div" w="100%" h="40px" just="space-between" align="flex-start" mgT="30px">
+      <Div colorHov="black" className="title-div" w="100%" h="40px" just="space-between" align="flex-start" mgT="30px">
         <Txt mgB="10px" fSize="14px" color="gray" bold>{dict.roomFeat.info}</Txt>
-        <Div className="roomInfo-buttonArea">
+        <Div colorHov="black" className="roomInfo-buttonArea">
           <Button
-            w="100px"
             h="40px"
             pad="0 15px"
-            border="lightgray"
-            color="white"
-            className="edit-button"
-            w="auto"
+            w="150px"
+            border={COLORS.GREENS.BUTTONS.BACK}
+            back="white"
+            backHov={COLORS.GREENS.BUTTONS.BACKHOV}
+            mgR="20px"
+            just="center"
+            align="center"
+            color={COLORS.GREENS.BUTTONS.BACK}
+            colorHov="white"
             onClick={(e) => { enableEditForm(e); }}
           >
             {dict.common.editRoom}
@@ -70,7 +78,7 @@ const SingleRoomInfo = ({ roomInfo, edit }) => {
         </Div>
       </Div>
 
-      <Div className="roomInfo-section">
+      <Div colorHov="black" className="roomInfo-section">
         <FormInput
           w="70%"
           label={dict.roomFeat.sqm}

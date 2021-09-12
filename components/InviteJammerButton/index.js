@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Div, Txt, Button } from '../../styledComps';
+import { COLORS } from '../../config';
 
 const InviteJammerButton = ({ openModal, text }) => {
   const openInvitationForm = () => {
@@ -18,10 +19,14 @@ const InviteJammerButton = ({ openModal, text }) => {
         h="40px"
         pad="0 15px"
         w="200px"
-        border="#FCA311"
+        border={COLORS.GREENS.BUTTONS.BACK}
+        back="white"
+        backHov={COLORS.GREENS.BUTTONS.BACKHOV}
         mgR="20px"
         just="center"
         align="center"
+        color={COLORS.GREENS.BUTTONS.BACK}
+        colorHov="white"
       // className="edit-button"
         onClick={(e) => { openInvitationForm(e); }}
       >
@@ -29,12 +34,11 @@ const InviteJammerButton = ({ openModal, text }) => {
           style={iconStyle}
           icon={faPaperPlane}
         />
-        {' '}
-      &nbsp;
-        <Txt mg="0" fSize="14px" color="#E76F51">
+        &nbsp;
+        <Div h="100%" align="center" color={COLORS.GREENS.BUTTONS.BACK} colorHov="white">
           Invite
           {text}
-        </Txt>
+        </Div>
       </Button>
 
     </Div>
