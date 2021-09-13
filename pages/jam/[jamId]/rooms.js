@@ -37,7 +37,6 @@ const Rooms = () => {
       // const tenantsList = Calculations.removeAmdinFromJammers(jammers);
       // const tenantsByRooms = Calculations.getTenantsByRooms(tenantsList, nrOfRooms);
       const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
-      console.log('tenantsByRooms: ', tenantsByRooms);
       const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
 
       const sortedRooms = Calculations.sortByField({ elements: rooms, asc: true, field: 'roomNr' });

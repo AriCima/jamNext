@@ -63,7 +63,6 @@ const Tenants = () => {
 
   const renderTenantsInfo = () => {
     const tenantsByDates = Calculations.getOrganizedTenantsByDates(TENANTS);
-    console.log('tenantsByDates: ', tenantsByDates);
     let tenantsToShow = Calculations.sortByField({elements: TENANTS, asc: true, field: 'firstName'});
     
     switch(tenantsType) {

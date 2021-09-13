@@ -13,7 +13,7 @@ const FormSelect = ({
   ));
 
   const handleChange = (e) => {
-    modifiedValue(e.target.value);
+    modifiedValue && modifiedValue(e.target.value);
   };
 
   return (

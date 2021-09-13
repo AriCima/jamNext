@@ -32,6 +32,7 @@ export default {
     name: 'Name',
     nextTenant: 'Next tenant',
     no: 'No',
+    nrOfTenants: 'Nr of tenants',
     rent: 'Rent €/Mo',
     roomIsVac: 'Room is vacant',
     roomNr: 'Room Nr',
@@ -49,9 +50,10 @@ export default {
     inputZipCode: 'type the zipCode',
   },
   contractType: {
+    contractMode: 'Contracty type',
     monthly: 'The full rent for each month will always be paid, regardless of the dates of entry and exit from the accommodation.',
     fortnightly: 'If the stay is less than 2 weeks (either in the month of check-in or in the month of check-out) you would only pay half of the rent for that month.',
-    daily: 'The rent is calculated according to the exact number of days spent in the accommodation.'
+    daily: 'The rent is calculated according to the exact number of days spent in the accommodation.',
   },
   deposit: {
     ten: '10 days',

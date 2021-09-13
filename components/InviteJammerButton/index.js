@@ -5,6 +5,8 @@ import { Div, Button } from '../../styledComps';
 import { COLORS } from '../../config';
 import Modal from '../Modal';
 
+import InviteJammerForm from '../../domains/InviteJammerForm';
+
 const InviteJammerButton = ({ text }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -44,7 +46,7 @@ const InviteJammerButton = ({ text }) => {
         </Button>
       </Div>
       <Modal showModal={showModal} closeModal={() => setShowModal(false)}>
-        INVITATION FORM
+        <InviteJammerForm roomNr="" />
       </Modal>
     </>
   );

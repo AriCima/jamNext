@@ -33,6 +33,7 @@ export default {
     nextTenant: 'Próximo inquilino',
     no: 'No',
     rent: 'Alquiler €/Mes',
+    nrOfTenants: 'Nr de inquilinos que compartirán la habitación',
     roomIsVac: 'La habitación está libre',
     roomNr: 'Hab Nº',
     tenant: 'Inquilino',
@@ -49,6 +50,7 @@ export default {
     inputZipCode: 'ingresa un código postal ',
   },
   contractType: {
+    contractMode: 'Tipo de contrato',
     monthly: 'Siempre se pagará el alquiler completo de cada mes, independientemente de las fechas de ingreso y egreso del alojamiento.',
     fortnightly: 'Si la estancia es inferior a 2 semanas (ya sea en el mes de ingreso como en el de egreso) solo pagaría la mitad del alquiler de ese mes.',
     daily: 'Se paga según el número exacto de días que permanezcan en el alojamiento.'
