@@ -7,7 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import isAfter from 'date-fns/isAfter';
 
 import { isBefore } from 'date-fns';
-import { Div, SubTitle, InputSubmit, FormRow } from '../../styledComps';
+import {
+  Div, Txt, SubTitle, InputSubmit, FormRow,
+} from '../../styledComps';
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
 import dictionary from '../../locale';
@@ -18,12 +20,14 @@ import { setActiveSection, setRoomsInfo } from '../../redux/actions';
 import { TENANTS } from '../../config';
 
 const InviteJammerForm = ({ roomNr }) => {
+  console.log('roomNr: ', roomNr, ' / ', typeof roomNr);
   const dispatch = useDispatch();
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
-  const { jamId, roomsInfo } = useSelector((state) => state.jamReducer);
+  const { jamId, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
 
   const [newRoomNr, setNewRoomNr] = useState(roomNr);
+  const [roomInfo, setRoomInfo] = useState({});
   const [checkIn, setCheckIn] = useState(new Date());
   const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)));
   const [nrOfTenants, setNrOfTenants] = useState(1);
@@ -55,15 +59,32 @@ const InviteJammerForm = ({ roomNr }) => {
     }
   };
 
+  const getRoomInfo = () => {
+    const rInfo = roomsInfo[parseInt(newRoomNr, 10)];
+    setNewRoomInfo(rInfo);
+  };
+
   useEffect(() => {
     jamId && getRooms(jamId);
     dispatch(setActiveSection('tenants'));
   }, []);
 
+  useEffect(() => {
+    roomNr && getRoomInfo();
+  }, [roomNr]);
+
   const {
     register, errors, handleSubmit, control, setValue,
   } = useForm();
 
+  const {
+    rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
+  } = roomInfo;
+  const { contractMode = '' } = jamDetails.contractInfo;
+
+  const defaultValues = {
+    rent, deposit, sqm, expenses, exterior, privBath, contractMode,
+  };
   useEffect(() => {
     if (nrOfTenants === '1') {
       setShowSecond(false);
@@ -78,6 +99,9 @@ const InviteJammerForm = ({ roomNr }) => {
     }
   }, [nrOfTenants]);
 
+  const changeRoomNr = (val) => {
+    setNewRoomNr(val);
+  };
   const onSubmit = (data) => {
     setShowErrorMessage(false);
     const cIn = new Date(checkIn);
@@ -165,14 +189,18 @@ const InviteJammerForm = ({ roomNr }) => {
     }
   };
 
-  const typeOfContracts = Calculations.getTypeOfContracts();
-
   const roomsNrs = [];
   for (let i = 0; i < roomsInfo.length; i++) {
     const number = i + 1;
     const stringRoom = number.toString();
     const opt = { id: stringRoom, name: stringRoom };
     roomsNrs.push(opt);
+  }
+  const contracts = Calculations.getSelectOptions('contracts');
+
+  const inviteStyle = {
+    margin: '15px',
+    overflowY: 'scroll',
   };
 
   return (
@@ -180,30 +208,38 @@ const InviteJammerForm = ({ roomNr }) => {
       autoComplete="off"
       className="hook-form"
       onSubmit={handleSubmit(onSubmit)}
+      style={inviteStyle}
     >
 
       <Div w="100%" col just="center" align="flex-start">
         <SubTitle>Jam info</SubTitle>
         <Div w="100%" col just="center" align="flex-start">
-          <FormRow>
+          <FormRow just="space-between">
             <FormSelect
-              w="30%"
+              w="25%"
               mgR="20px"
+              col
               label={dict.common.roomNr}
+              labelW="100%"
+              name="contractMode"
               name="roomNr"
               type="text"
               error={errors.roomNr}
               errorMessage="Mandatory"
               register={register}
               registerObject={{ required: true }}
-              onChange={(e) => setNewRoomNr(e.target.value)}
+              onChange={(e) => changeRoomNr(e.target.value)}
               options={roomsNrs}
             />
 
             <FormSelect
-              w="70%"
-              label={dict.common.nrOfTenants}
+              w="25%"
+              col
+              mgR="20px"
               type="text"
+              label={dict.common.nrOfTenants}
+              labelW="100%"
+              name="contractMode"
               name="nrOfTenants"
               error={errors.nrOfTenants}
               errorMessage="This is mandatory"
@@ -218,78 +254,102 @@ const InviteJammerForm = ({ roomNr }) => {
                 { id: '5', name: '5' },
               ]}
             />
+            <FormSelect // contractMode
+              w="40%"
+              col
+              label={dict.settingsForm.contMode}
+              labelAlign="flex-start"
+              labelW="100%"
+              name="contractMode"
+              type="text"
+              error={errors.contractMode}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+              options={contracts}
+            />
+            {/* { contractMode !== '' && (
+              <Div pad="20px" back="#CCC5B9" borderR="15px" w="100%" mgT="20px" align="center" just="flex-start">
+                <Txt fSize="14px">{dict.contractType[contractMode]}</Txt>
+              </Div>
+              )} */}
           </FormRow>
-          <FormSelect
-            w="50%"
-            label={dict.settingsForm.contMode}
-            name="contractMode"
-            type="text"
-            error={errors.contractMode}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-             // reportValue={(val) => setContractMode(val)}
-            options={typeOfContracts}
-          />
-
-          <Div className="checkIn">
-            <Div className="block-label ">
-              <label>Check In</label>
-              {errors.checkIn && <Div className="field-error">Required</Div>}
+          <FormRow just="space-between">
+            <Div className="checkIn" mgR="20px">
+              <Div mgR="10px">
+                <label>Check In</label>
+                {errors.checkIn && <Div className="field-error">Required</Div>}
+              </Div>
+              <Controller
+                control={control}
+                dateFormat="dd-MMM-yyyy"
+                name="checkIn"
+                className="input"
+                render={() => (
+                  <ReactDatePicker
+                    selected={checkIn}
+                    onChange={(value) => setCheckIn(value)}
+                  />
+                )}
+              />
             </Div>
-            <Controller
-              control={control}
-              dateFormat="dd-MMM-yyyy"
-              name="checkIn"
-              className="input"
-              render={() => (
-                <ReactDatePicker
-                  selected={checkIn}
-                  onChange={(value) => setCheckIn(value)}
-                />
-              )}
-            />
-          </Div>
-          <Div className="checkOut">
-            <Div className="block-label ">
-              <label>Check Out</label>
-              {errors.checkOut && <Div className="field-error">Required</Div>}
+            <Div className="checkOut">
+              <Div mgR="10px">
+                <label>Check Out</label>
+                {errors.checkOut && <Div className="field-error">Required</Div>}
+              </Div>
+              <Controller
+                control={control}
+                dateFormat="dd-MMM-yyyy"
+                name="checkOut"
+                className="input"
+                render={() => (
+                  <ReactDatePicker
+                    selected={checkOut}
+                    onChange={(value) => setCheckOut(value)}
+                  />
+                )}
+              />
             </Div>
-            <Controller
-              control={control}
-              dateFormat="dd-MMM-yyyy"
-              name="checkOut"
-              className="input"
-              render={() => (
-                <ReactDatePicker
-                  selected={checkOut}
-                  onChange={(value) => setCheckOut(value)}
-                />
-              )}
+          </FormRow>
+          <FormRow>
+            <FormInput
+              w="33%"
+              label={dict.common.rent}
+              placeholder={defaultValues.rent}
+              type="text"
+              name="rent"
+              mgR="20px"
+              error={errors.rent}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
             />
-          </Div>
-          <FormInput
-            w="70%"
-            label={dict.common.rent}
-            type="text"
-            name="rent"
-            mgR="20px"
-            error={errors.rent}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label={dict.common.deposit}
-            type="text"
-            name="deposit"
-            mgR="20px"
-            error={errors.deposit}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
+            <FormInput
+              w="33%"
+              label={dict.common.expenses}
+              placeholder={defaultValues.expenses}
+              type="text"
+              name="expenses"
+              mgR="20px"
+              error={errors.expenses}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+            <FormInput
+              w="33%"
+              label={dict.common.deposit}
+              placeholder={defaultValues.deposit}
+              type="text"
+              name="deposit"
+              mgR="20px"
+              error={errors.deposit}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+          </FormRow>
         </Div>
         <SubTitle>Personal info</SubTitle>
         <Div w="100%" just="center" align="flex-start">

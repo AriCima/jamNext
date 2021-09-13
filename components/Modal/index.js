@@ -26,6 +26,7 @@ const ModalBody = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 2;
+    overflow-y: scroll;
 `;
 
 const Modal = ({ children, showModal, closeModal }) => {

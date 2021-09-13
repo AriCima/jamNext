@@ -465,7 +465,7 @@ const Settings = () => {
                     name="jamDetails.contractInfo.contractMode"
                     type="text"
                     error={errors.contractMode}
-                    errorMessage="Please select the contract mode"
+                    errorMessage="Mandatory"
                     register={register}
                     registerObject={{ required: true }}
                       // reportValue={(val) => setContractMode(val)}

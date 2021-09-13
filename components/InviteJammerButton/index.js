@@ -46,7 +46,7 @@ const InviteJammerButton = ({ text }) => {
         </Button>
       </Div>
       <Modal showModal={showModal} closeModal={() => setShowModal(false)}>
-        <InviteJammerForm roomNr="" />
+        <InviteJammerForm roomNr=""/>
       </Modal>
     </>
   );
