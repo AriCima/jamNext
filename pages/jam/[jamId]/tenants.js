@@ -152,7 +152,7 @@ const Tenants = () => {
             modifiedValue={(val) => { selectTenantType(val) }}
           />
         </form>
-          <InviteJammerButton text={dict.common.aTenant} />
+          <InviteJammerButton roomNr='' text={dict.common.aTenant} />
         </Div>
         <Div colorHov="black" mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">

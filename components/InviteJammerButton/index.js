@@ -7,7 +7,7 @@ import Modal from '../Modal';
 
 import InviteJammerForm from '../../domains/InviteJammerForm';
 
-const InviteJammerButton = ({ text }) => {
+const InviteJammerButton = ({ text, roomNr }) => {
   const [showModal, setShowModal] = useState(false);
 
   const openInvitationForm = () => {
@@ -46,7 +46,7 @@ const InviteJammerButton = ({ text }) => {
         </Button>
       </Div>
       <Modal showModal={showModal} closeModal={() => setShowModal(false)}>
-        <InviteJammerForm roomNr=""/>
+        <InviteJammerForm roomNr={roomNr} />
       </Modal>
     </>
   );

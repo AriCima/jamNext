@@ -26,12 +26,13 @@ const InviteJammerForm = ({ roomNr }) => {
   const dict = dictionary[lenguage];
   const { jamId, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
 
-  const [newRoomNr, setNewRoomNr] = useState(roomNr);
+  const [newRoomNr, setNewRoomNr] = useState('');
   const [roomInfo, setRoomInfo] = useState({});
   const [checkIn, setCheckIn] = useState(new Date());
   const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)));
   const [nrOfTenants, setNrOfTenants] = useState(1);
   const [nrOfTheRoom, setNrOfTheRoom] = useState('');
+  const [moreTenants, setMoreTenants] = useState([]);
   const [second, setShowSecond] = useState(false);
   const [third, setShowThird] = useState(false);
 
@@ -60,19 +61,25 @@ const InviteJammerForm = ({ roomNr }) => {
   };
 
   const getRoomInfo = () => {
-    const rInfo = roomsInfo[parseInt(newRoomNr, 10)];
-    setNewRoomInfo(rInfo);
+    const rInfo = roomsInfo[roomNr - 1];
+    setRoomInfo(rInfo);
   };
 
   useEffect(() => {
-    jamId && getRooms(jamId);
+    console.log('use 1');
+    if (jamId) {
+      getRooms();
+    }
     dispatch(setActiveSection('tenants'));
   }, []);
 
-  useEffect(() => {
-    roomNr && getRoomInfo();
-  }, [roomNr]);
-
+  const changeRoomNr = (val) => {
+    const nr = parseInt(val, 10);
+    const newInfo = roomsInfo[nr - 1];
+    console.log('newInfo: ', newInfo);
+    setNewRoomNr(nr - 1);
+    setRoomInfo(newInfo);
+  };
   const {
     register, errors, handleSubmit, control, setValue,
   } = useForm();
@@ -85,23 +92,20 @@ const InviteJammerForm = ({ roomNr }) => {
   const defaultValues = {
     rent, deposit, sqm, expenses, exterior, privBath, contractMode,
   };
-  useEffect(() => {
-    if (nrOfTenants === '1') {
-      setShowSecond(false);
-      setShowThird(false);
-    }
-    if (nrOfTenants === '2') {
-      setShowSecond(true);
-    }
-    if (nrOfTenants === '3') {
-      setShowSecond(true);
-      setShowThird(true);
-    }
-  }, [nrOfTenants]);
+  // useEffect(() => {
+  //   if (nrOfTenants === '1') {
+  //     setShowSecond(false);
+  //     setShowThird(false);
+  //   }
+  //   if (nrOfTenants === '2') {
+  //     setShowSecond(true);
+  //   }
+  //   if (nrOfTenants === '3') {
+  //     setShowSecond(true);
+  //     setShowThird(true);
+  //   }
+  // }, [nrOfTenants]);
 
-  const changeRoomNr = (val) => {
-    setNewRoomNr(val);
-  };
   const onSubmit = (data) => {
     setShowErrorMessage(false);
     const cIn = new Date(checkIn);
@@ -143,7 +147,6 @@ const InviteJammerForm = ({ roomNr }) => {
     setInvitationInfo(data);
 
     let contractType = 'single';
-    const nrOfTenants = parseInt(data.nrOfTenants);
 
     if (nrOfTenants > 1) contractType = 'multiple';
     data.contractType = contractType;
@@ -196,11 +199,75 @@ const InviteJammerForm = ({ roomNr }) => {
     const opt = { id: stringRoom, name: stringRoom };
     roomsNrs.push(opt);
   }
+
   const contracts = Calculations.getSelectOptions('contracts');
 
   const inviteStyle = {
     margin: '15px',
     overflowY: 'scroll',
+  };
+  const recalculateRent = (val) => {
+    const totalRent = Number(rent) + Number(expenses);
+    const firstMonth = Calculations.getFirstMonth(val, totalRent, checkIn);
+    const lastMonth = Calculations.getLastMonth(val, totalRent, checkOut);
+    console.log('firstMonth: ', firstMonth);
+    console.log('lastMonth: ', lastMonth);
+  };
+
+  useEffect(() => {
+    const multipleTenants = renderMultipleTenants(nrOfTenants);
+    setMoreTenants(multipleTenants);
+  }, [nrOfTenants]);
+
+  const renderMultipleTenants = (nr) => {
+    console.log('nr: ', nr, ' / ', typeof nr);
+    const arr = [];
+    for (let i = 1; i < nr; i++) {
+      const obj = {
+        tNr: i+1, nameName: 'firstName'+(i+1), nameLabel: 'First name tenant' +(i+1), emailName: 'email' + (i + 1), emailLabel: 'Email tenant' +(i+1),
+      };
+      arr.push(obj);
+    }
+    return (
+
+      arr.map((tenant) => (
+        <>
+          <SubTitle>
+            {dict.common.tenant}
+            :
+            {''}
+            {tenant.tNr}
+          </SubTitle>
+          <FormRow>
+            <FormInput
+              w="70%"
+              label={dict.common.firstName}
+              type="text"
+              mgR="20px"
+              pad="8px"
+              name={tenant.nameName}
+              error={errors.nameName}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+            <FormInput
+              w="70%"
+              label={dict.common.email}
+              type="text"
+              pad="8px"
+              name={tenant.emailName}
+              error={errors.emailName}
+              errorMessage="Ma  ndatory"
+              register={register({
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              })}
+              registerObject={{ required: true }}
+            />
+          </FormRow>
+        </>
+      ))
+    );
   };
 
   return (
@@ -212,175 +279,57 @@ const InviteJammerForm = ({ roomNr }) => {
     >
 
       <Div w="100%" col just="center" align="flex-start">
-        <SubTitle>Jam info</SubTitle>
-        <Div w="100%" col just="center" align="flex-start">
-          <FormRow just="space-between">
-            <FormSelect
-              w="25%"
-              mgR="20px"
-              col
-              label={dict.common.roomNr}
-              labelW="100%"
-              name="contractMode"
-              name="roomNr"
-              type="text"
-              error={errors.roomNr}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-              onChange={(e) => changeRoomNr(e.target.value)}
-              options={roomsNrs}
-            />
-
-            <FormSelect
-              w="25%"
-              col
-              mgR="20px"
-              type="text"
-              label={dict.common.nrOfTenants}
-              labelW="100%"
-              name="contractMode"
-              name="nrOfTenants"
-              error={errors.nrOfTenants}
-              errorMessage="This is mandatory"
-              register={register}
-              registerObject={{ required: true }}
-              onChange={(e) => setNrOfTenants(e.target.value)}
-              options={[
-                { id: '1', name: '1' },
-                { id: '2', name: '2' },
-                { id: '3', name: '3' },
-                { id: '4', name: '4' },
-                { id: '5', name: '5' },
-              ]}
-            />
-            <FormSelect // contractMode
-              w="40%"
-              col
-              label={dict.settingsForm.contMode}
-              labelAlign="flex-start"
-              labelW="100%"
-              name="contractMode"
-              type="text"
-              error={errors.contractMode}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-              options={contracts}
-            />
-            {/* { contractMode !== '' && (
-              <Div pad="20px" back="#CCC5B9" borderR="15px" w="100%" mgT="20px" align="center" just="flex-start">
-                <Txt fSize="14px">{dict.contractType[contractMode]}</Txt>
-              </Div>
-              )} */}
-          </FormRow>
-          <FormRow just="space-between">
-            <Div className="checkIn" mgR="20px">
-              <Div mgR="10px">
-                <label>Check In</label>
-                {errors.checkIn && <Div className="field-error">Required</Div>}
-              </Div>
-              <Controller
-                control={control}
-                dateFormat="dd-MMM-yyyy"
-                name="checkIn"
-                className="input"
-                render={() => (
-                  <ReactDatePicker
-                    selected={checkIn}
-                    onChange={(value) => setCheckIn(value)}
-                  />
-                )}
-              />
-            </Div>
-            <Div className="checkOut">
-              <Div mgR="10px">
-                <label>Check Out</label>
-                {errors.checkOut && <Div className="field-error">Required</Div>}
-              </Div>
-              <Controller
-                control={control}
-                dateFormat="dd-MMM-yyyy"
-                name="checkOut"
-                className="input"
-                render={() => (
-                  <ReactDatePicker
-                    selected={checkOut}
-                    onChange={(value) => setCheckOut(value)}
-                  />
-                )}
-              />
-            </Div>
-          </FormRow>
-          <FormRow>
-            <FormInput
-              w="33%"
-              label={dict.common.rent}
-              placeholder={defaultValues.rent}
-              type="text"
-              name="rent"
-              mgR="20px"
-              error={errors.rent}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-            <FormInput
-              w="33%"
-              label={dict.common.expenses}
-              placeholder={defaultValues.expenses}
-              type="text"
-              name="expenses"
-              mgR="20px"
-              error={errors.expenses}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-            <FormInput
-              w="33%"
-              label={dict.common.deposit}
-              placeholder={defaultValues.deposit}
-              type="text"
-              name="deposit"
-              mgR="20px"
-              error={errors.deposit}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-          </FormRow>
-        </Div>
-        <SubTitle>Personal info</SubTitle>
-        <Div w="100%" just="center" align="flex-start">
-          <FormInput
+        <SubTitle>
+          {dict.common.inviteTenantForm}
+          {' '}
+        </SubTitle>
+        {/* nrOfTenants */}
+        <FormRow>
+          <FormSelect // nrOfTenants
+            // w="100%"
+            mgR="20px"
+            pad="8px"
+            type="text"
+            label={dict.common.nrOfTenants}
+            labelW="100%"
+            name="nrOfTenants"
+            error={errors.nrOfTenants}
+            errorMessage="Mandatory"
+            register={register}
+            registerObject={{ required: true }}
+            modifiedValue={(val) => { 
+              setNrOfTenants(Number(val));
+              // renderMultipleTenants(Number(val));
+            }}
+            options={[
+              { id: 1, name: 1 },
+              { id: 2, name: 2 },
+              { id: 3, name: 3 },
+              { id: 4, name: 4 },
+              { id: 5, name: 5 },
+            ]}
+          />
+        </FormRow>
+        <SubTitle>{dict.common.tenantInfo}</SubTitle>
+        <FormRow>
+          <FormInput // firstName
             w="70%"
             label={dict.common.firstName}
             type="text"
             name="firstName"
             mgR="20px"
+            pad="8px"
             error={errors.firstName}
             errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
           />
-          <FormInput
-            w="70%"
-            label={dict.common.lastName}
-            type="text"
-            name="lastName"
-            mgR="20px"
-            error={errors.lastName}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
+          <FormInput // email
             w="70%"
             label={dict.common.email}
             type="text"
             name="email"
-            mgR="20px"
+            pad="8px"
             error={errors.email}
             errorMessage="Mandatory"
             register={register({
@@ -388,87 +337,131 @@ const InviteJammerForm = ({ roomNr }) => {
             })}
             registerObject={{ required: true }}
           />
-        </Div>
-        { second && (
-        <Div w="100%" just="center" align="flex-start">
-          <SubTitle>Personal info 2nd tenant</SubTitle>
-          <FormInput
-            w="70%"
-            label={dict.common.firstName}
-            type="text"
-            name="firstName2"
+        </FormRow>
+
+        {nrOfTenants > 1 && moreTenants}
+
+        {/* roomNr, checkIn, checkOut */}
+        <FormRow just="space-between">
+          <FormSelect
+            w="25%"
             mgR="20px"
-            error={errors.firstName2}
+            pad="8px"
+            col
+            label={dict.common.roomNr}
+            labelW="100%"
+            name="newRoomNr"
+            type="text"
+            error={errors.newRoomNr}
+            errorMessage="Mandatory"
+            register={register}
+            registerObject={{ required: true }}
+            modifiedValue={(val) => changeRoomNr(val)}
+            options={roomsNrs}
+          />
+
+          <FormSelect // contractMode
+            w="40%"
+            col
+            label={dict.settingsForm.contMode}
+            labelAlign="flex-start"
+            labelW="100%"
+            name="contractMode"
+            type="text"
+            pad="8px"
+            placeholder={defaultValues.contMod}
+            error={errors.contractMode}
+            errorMessage="Mandatory"
+            register={register}
+            registerObject={{ required: true }}
+            options={contracts}
+            modifiedValue={(val) => recalculateRent(val)}
+          />
+          {/* { contractMode !== '' && (
+              <Div pad="20px" back="#CCC5B9" borderR="15px" w="100%" mgT="20px" align="center" just="flex-start">
+                <Txt fSize="14px">{dict.contractType[contractMode]}</Txt>
+              </Div>
+              )} */}
+        </FormRow>
+        <FormRow just="space-between">
+          <Div className="checkIn" mgR="20px">
+            <Div mgR="10px">
+              <label>Check In</label>
+              {errors.checkIn && <Div className="field-error">Required</Div>}
+            </Div>
+            <Controller
+              control={control}
+              dateFormat="dd-MMM-yyyy"
+              name="checkIn"
+              className="input"
+              render={() => (
+                <ReactDatePicker
+                  selected={checkIn}
+                  onChange={(value) => setCheckIn(value)}
+                />
+              )}
+            />
+          </Div>
+          <Div className="checkOut">
+            <Div mgR="10px">
+              <label>Check Out</label>
+              {errors.checkOut && <Div className="field-error">Required</Div>}
+            </Div>
+            <Controller
+              control={control}
+              dateFormat="dd-MMM-yyyy"
+              name="checkOut"
+              className="input"
+              render={() => (
+                <ReactDatePicker
+                  selected={checkOut}
+                  onChange={(value) => setCheckOut(value)}
+                />
+              )}
+            />
+          </Div>
+        </FormRow>
+        <FormRow just="space-between">
+          <FormInput
+            w="30%"
+            label={dict.common.rent}
+            placeholder={defaultValues.rent}
+            type="text"
+            name="rent"
+            mgR="20px"
+            pad="8px"
+            error={errors.rent}
             errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
           />
           <FormInput
-            w="70%"
-            label={dict.common.lastName}
+            w="30%"
+            label={dict.common.expenses}
+            placeholder={defaultValues.expenses}
             type="text"
-            name="lastName2"
+            name="expenses"
             mgR="20px"
-            error={errors.lastName2}
+            pad="8px"
+            error={errors.expenses}
             errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
           />
           <FormInput
-            w="70%"
-            label={dict.common.email}
+            w="30%"
+            label={dict.common.deposit}
+            placeholder={defaultValues.deposit}
             type="text"
-            name="email2"
-            mgR="20px"
-            error={errors.email2}
-            errorMessage="Mndatory"
-            register={register({
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-            registerObject={{ required: true }}
-          />
-        </Div>
-        )}
-        {third && (
-        <Div w="100%" just="center" align="flex-start">
-          <SubTitle>Personal info 3rd tenant</SubTitle>
-          <FormInput
-            w="70%"
-            label={dict.common.firstName}
-            type="text"
-            name="firstName3"
-            mgR="20px"
-            error={errors.firstName3}
+            name="deposit"
+            pad="8px"
+            error={errors.deposit}
             errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
           />
-          <FormInput
-            w="70%"
-            label={dict.common.lastName}
-            type="text"
-            name="lastName3"
-            mgR="20px"
-            error={errors.lastName3}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label={dict.common.email}
-            type="text"
-            name="email3"
-            mgR="20px"
-            error={errors.email3}
-            errorMessage="Mandatory"
-            register={register({
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-            registerObject={{ required: true }}
-          />
-        </Div>
-        )}
+        </FormRow>
+
       </Div>
       <InputSubmit
         w="100%"

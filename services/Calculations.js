@@ -578,9 +578,9 @@ const getOrganizedTenants = (tenantsByRooms, nrOfRooms) => { // Organiza los inq
 };
 
 const getOrganizedTenantsByDates = (tenants) => { // Organiza los inquilinos de cada room
-  let currentTenants = [];
-  let formerTenants = [];
-  let futureTenants = [];
+  const currentTenants = [];
+  const formerTenants = [];
+  const futureTenants = [];
 
   const today = new Date();
   for (let i = 0; i < tenants.length; i++) {
@@ -598,7 +598,7 @@ const getOrganizedTenantsByDates = (tenants) => { // Organiza los inquilinos de 
   }
   // FORNAT --> tenantByDate = {current:[{..}, {..}], former:[{..}, {..}], future:[{..}, {..}]  . . }
   const result = {
-    currentTenants, formerTenants, futureTenants
+    currentTenants, formerTenants, futureTenants,
   };
   return result;
 };
@@ -662,21 +662,49 @@ const missingRoomsInfo = (roomsInfo) => {
   return result;
 };
 
+const getFirstMonth = (val, totalRent, checkIn,) => {
+  switch (val) {
+    case 'fortnightly':
+      if (checkIn < 15) break;
+      break;
+    case 'daily':
+      console.log(val);
+      break;
+    default:
+      console.log(val);
+      break;
+  }
+};
+const getLastMonth = (val, totalRent, checkOut) => {
+  switch (val) {
+    case 'fortnightly':
+      if (checkOut > 15) break;
+      break;
+    case 'daily':
+      console.log(val);
+      break;
+    default:
+      console.log(val);
+      break;
+  }
+};
 const Calculations = {
   generateJamCode,
   getApartmentInfo,
+  getFirstMonth,
   getJamAdminSections,
   getJamGuestSections,
   getJamRules,
-  getMessageDate,
   getLandlordInfo,
+  getLastMonth,
+  getMessageDate,
   getOrganizedTenants,
   getOrganizedTenantsByDates,
   getSelectOptions,
   getSingleRoomOrganizedTenants,
   getTenantPayments,
-  getTypeOfContracts,
   getTenantsByRooms,
+  getTypeOfContracts,
   missingRoomsInfo,
   removeAmdinFromJammers,
   sortByField,
