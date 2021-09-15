@@ -18,7 +18,7 @@ import dictionary from '../../locale';
 import DataService from '../../services/DataService';
 import Calculations from '../../services/Calculations';
 import { setActiveSection, setRoomsInfo } from '../../redux/actions';
-import { TENANTS } from '../../config';
+import { TENANTS, COLORS } from '../../config';
 import { isEmpty } from 'lodash';
 
 const InviteJammerForm = ({ roomNr }) => {
@@ -34,7 +34,7 @@ const InviteJammerForm = ({ roomNr }) => {
   const [nrOfTenants, setNrOfTenants] = useState(1);
   const [moreTenants, setMoreTenants] = useState([]);
   const [rentsSummary, setRentsSummary] = useState({});
-
+  const [newContractMode, setNewContractMode] = useState('')
 
   const getRooms = async () => {
     if (roomsInfo.length === 0) {
@@ -170,14 +170,16 @@ const InviteJammerForm = ({ roomNr }) => {
   const contracts = Calculations.getSelectOptions('contracts');
 
   const renderRentDetails = (obj) => {
-    switch (contractMode) {
+    console.log('obj: ', obj);
+    console.log('contractMode: ', newContractMode);
+    switch (newContractMode) {
       case 'monthly':
         return (
           <FormRow>
             <FormInput
               w="30%"
               label={dict.common.rentEachMonth}
-              placeholder={obj.inviteTenantForm.rent}
+              placeholder={obj.inInfo.rent}
               type="numer"
               name="rent"
               mgR="20px"
@@ -208,7 +210,7 @@ const InviteJammerForm = ({ roomNr }) => {
             <FormInput
               w="30%"
               label={dict.common.inBetweenRent}
-              placeholder={`${dict.rent.rentBetween} ${obj.betweenMonths[0].month} ${dict.common.and} ${obj.betweenMonths[obj.betweenLength].month}}`}
+              // placeholder={`${dict.rent.rentBetween} ${obj.betweenMonths[0].month} ${dict.common.and} ${obj.betweenMonths[obj.betweenLength].month}}`}
               type="numer"
               name="inBetweenrent"
               mgR="20px"
@@ -237,10 +239,12 @@ const InviteJammerForm = ({ roomNr }) => {
   };
 
   useEffect(() => {
-    const rentsObj = Calculations.getTenantPayments(rent, expenses, contractMode, checkIn, checkOut);
-    const details = renderRentDetails(rentsObj);
-    setRentsSummary(details);
-  }, [rent, expenses, contractMode]);
+    const rentsObj = Calculations.getTenantPayments(rent, expenses, newContractMode, checkIn, checkOut);
+    if (rentsObj) {
+      const details = renderRentDetails(rentsObj);
+      setRentsSummary(details);
+    }
+  }, [newContractMode]);
 
   const renderMultipleTenants = (nr) => {
     const arr = [];
@@ -398,7 +402,7 @@ const InviteJammerForm = ({ roomNr }) => {
         <SubTitle>{dict.common.contractInfo}</SubTitle>
         <FormRow just="space-between">
           <FormSelect
-            w="25%"
+            w="20%"
             mgR="20px"
             pad="8px"
             col
@@ -413,67 +417,81 @@ const InviteJammerForm = ({ roomNr }) => {
             modifiedValue={(val) => changeRoomNr(val)}
             options={roomsNrs}
           />
-
-          <FormSelect // contractMode
-            w="70%"
-            col
-            label={dict.settingsForm.contMode}
-            labelAlign="flex-start"
-            labelW="100%"
-            name="contractMode"
-            type="text"
-            pad="8px"
-            placeholder={defaultValues.contMod}
-            error={errors.contractMode}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-            options={contracts}
-            modifiedValue={(val) => recalculateRent(val)}
-          />
+          {newRoomNr !== '' && (
+            <Div just="center" align="center" back="#DCF3FA" pad="0 0 10px 0" border={COLORS.GREENS.BORDERS.BLUE} borderR="5px">
+              <FormInput
+                w="20%"
+                label={dict.common.rent}
+                placeholder={defaultValues.rent}
+                type="numer"
+                name="rent"
+                mgR="20px"
+                pad="8px"
+                mgBI="0px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                disabled
+              />
+              <FormInput
+                w="25%"
+                label={dict.common.expenses}
+                placeholder={defaultValues.expenses}
+                type="number"
+                name="expenses"
+                mgR="20px"
+                pad="8px"
+                mgBI="0"
+                error={errors.expenses}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                disabled
+              />
+              <FormInput
+                w="35%"
+                label={dict.common.deposit}
+                placeholder={defaultValues.deposit}
+                type="number"
+                name="deposit"
+                pad="8px"
+                mgBI="0"
+                error={errors.deposit}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                disabled
+              />
+            </Div>
+          )}
         </FormRow>
-        <FormRow just="space-between">
-          <FormInput
-            w="30%"
-            label={dict.common.rent}
-            placeholder={defaultValues.rent}
-            type="numer"
-            name="rent"
-            mgR="20px"
-            pad="8px"
-            error={errors.rent}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="30%"
-            label={dict.common.expenses}
-            placeholder={defaultValues.expenses}
-            type="number"
-            name="expenses"
-            mgR="20px"
-            pad="8px"
-            error={errors.expenses}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="30%"
-            label={dict.common.deposit}
-            placeholder={defaultValues.deposit}
-            type="number"
-            name="deposit"
-            pad="8px"
-            error={errors.deposit}
-            errorMessage="Mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-        </FormRow>
-        {!isEmpty(rentsSummary) && rentsDetail}
-
+        {newRoomNr !== '' && (
+          <>
+            <FormRow just="space-between">
+              <FormSelect // contractMode
+                w="50%"
+                mgT="20px"
+                label={dict.settingsForm.contMode}
+                labelAlign="flex-start"
+                labelW="100%"
+                name="contractMode"
+                type="text"
+                pad="8px"
+                placeholder={defaultValues.contMod}
+                error={errors.contractMode}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                options={contracts}
+                modifiedValue={(val) => setNewContractMode(val)}
+              />
+            </FormRow>
+            {newContractMode && (
+              !isEmpty(rentsSummary) && rentsSummary
+            )}
+          </>
+        )}
       </Div>
       <InputSubmit
         w="100%"

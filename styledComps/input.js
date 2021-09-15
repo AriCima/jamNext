@@ -7,7 +7,7 @@ const Input = styled.input`
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.16);
     padding:${({pad}) => pad || '15px'};
-    margin-bottom: 10px;
+    margin-bottom: ${({mgBI}) => mgBI || '10px'};
     width: ${({w}) => w || '100%'};
 `
 export default Input;

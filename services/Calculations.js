@@ -1,7 +1,7 @@
+import React, { useSelector } from 'react';
 import { format, getDate, differenceInCalendarMonths, getMonth, getYear } from 'date-fns/';
 import isEmpty from 'lodash/isEmpty';
-import dictionary from '../../../locale';
-const dict = dictionary[lenguage];
+import dictionary from '../locale';
 
 const generateCode = () => {
   // type: 4aG-89n --> 14.776.336 combinations
@@ -448,21 +448,23 @@ const getMessageDate = (timestamp) => {
 };
 
 const getTenantPayments = (rent, expenses, cMode, cIn, cOut) => {
-  // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const months = [
-    dict.months.jan,
-    dict.months.feb,
-    dict.months.mar,
-    dict.months.apr,
-    dict.months.may,
-    dict.months.jun,
-    dict.months.jul,
-    dict.months.aug,
-    dict.months.sep,
-    dict.months.oct,
-    dict.months.nov,
-    dict.months.dec,
-  ];
+  // const { lenguage } = useSelector((state) => state.userReducer);
+  // const dict = dictionary[lenguage];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // const months = [
+  //   dict.months.jan,
+  //   dict.months.feb,
+  //   dict.months.mar,
+  //   dict.months.apr,
+  //   dict.months.may,
+  //   dict.months.jun,
+  //   dict.months.jul,
+  //   dict.months.aug,
+  //   dict.months.sep,
+  //   dict.months.oct,
+  //   dict.months.nov,
+  //   dict.months.dec,
+  // ];
 
   const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -495,13 +497,9 @@ const getTenantPayments = (rent, expenses, cMode, cIn, cOut) => {
       break;
   }
 
-  const inBetweenMonths = [months[inM], months[outM]];
   const totalMonths = differenceInCalendarMonths(new Date(cOut), new Date(cIn));
-  console.log('totalMonths: ', totalMonths);
 
   let betweenMonths = [];
-  console.log('inM+1: ', inM+1);
-  console.log('totalMonths-1: ', totalMonths-1);
 
   for (let i = inM + 1; i < inM + totalMonths; i++) {
     let j = i;
@@ -666,7 +664,6 @@ const missingRoomsInfo = (roomsInfo) => {
     console.log('room: ', typeof room);
     let pushObj = false;
     room.forEach((value, key) => {
-      console.log('value: ', value);
       if (value === '') {
         missingInfo = true;
         pushObj = true;
@@ -681,41 +678,13 @@ const missingRoomsInfo = (roomsInfo) => {
   return result;
 };
 
-const getFirstMonth = (val, totalRent, checkIn,) => {
-  switch (val) {
-    case 'fortnightly':
-      if (checkIn < 15) break;
-      break;
-    case 'daily':
-      console.log(val);
-      break;
-    default:
-      console.log(val);
-      break;
-  }
-};
-const getLastMonth = (val, totalRent, checkOut) => {
-  switch (val) {
-    case 'fortnightly':
-      if (checkOut > 15) break;
-      break;
-    case 'daily':
-      console.log(val);
-      break;
-    default:
-      console.log(val);
-      break;
-  }
-};
 const Calculations = {
   generateCode,
   getApartmentInfo,
-  getFirstMonth,
   getJamAdminSections,
   getJamGuestSections,
   getJamRules,
   getLandlordInfo,
-  getLastMonth,
   getMessageDate,
   getOrganizedTenants,
   getOrganizedTenantsByDates,
