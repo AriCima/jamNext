@@ -4,7 +4,7 @@ import {
 } from '../../styledComps';
 
 const FormInput = ({
-  w, mgL, mgR, label, name, pad, error, errorMessage, register, placeholder = '', registerObject, type = 'text', disabled, modifiedValue,
+  w, mgL, mgR, label, name, pad, error, errorMessage, register, placeholder = '', value, registerObject, type = 'text', disabled, modifiedValue,
 }) => {
   const reportChange = () => {
     modifiedValue && modifiedValue(true);
@@ -33,6 +33,7 @@ const FormInput = ({
         pad={pad}
         type={type}
         name={name}
+        value={value}
         placeholder={placeholder}
         ref={register(registerObject)}
         disabled={disabled}

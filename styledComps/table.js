@@ -33,9 +33,19 @@ const Table = styled.table`
       border-top-left-radius: 10px;
       border-bottom-left-radius: 10px;
     }
+
+    .middleTd-vacant{
+      text-align: center;
+      color: lightgray;
+    }
     .lastTd{
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
+    }
+    .lastTd-vacant{
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      color: lightgray;
     }
     .vacant{
       text-align: center;
@@ -50,11 +60,11 @@ const Table = styled.table`
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
       }
-      .middleTd{
+      .middleTd, .middleTd-vacant, .vacant{
         border-top: 2px solid #FCA311;
         border-bottom: 2px solid #FCA311;
       }
-      .lastTd{
+      .lastTd, .lastTd-vacant{
         border-top: 2px solid #FCA311;
         border-bottom: 2px solid #FCA311;
         border-right:2px solid #FCA311;

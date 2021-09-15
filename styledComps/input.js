@@ -9,6 +9,5 @@ const Input = styled.input`
     padding:${({pad}) => pad || '15px'};
     margin-bottom: 10px;
     width: ${({w}) => w || '100%'};
-
-` 
+`
 export default Input;

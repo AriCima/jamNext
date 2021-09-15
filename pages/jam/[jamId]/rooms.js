@@ -71,59 +71,12 @@ const Rooms = () => {
     dispatch(setActiveSection('rooms'));
   }, [jamId]);
 
-  //   const startChat = (e) => {
-  //     e.preventDefault();
-  //     //console.log('userJams en el create', this.state.userJams)
-  //     let userID = this.state.userId;
-
-  //     let userId = this.state.userId;
-  //     let flatMateId = this.state.flatMateId;
-
-  //     let chatId = userId.concat(flatMateId);
-
-  //     let transJams = [];
-  //     transJams = [...this.state.userJams];
-  //     let createdAt = new Date();
-  //     let jamCode = Calculations.generateCode();
-
-  //     let newJam = {
-  //       adminId: userID,
-  //       jamType: 'chat',
-  //       jamCode: jamCode,
-  //       jamName: this.state.jamName,
-  //       jamDescription: this.state.jamDescription,
-  //       createdAt: createdAt,
-  //       jammers: [{name: this.state.userName, userId: userID}]
-  //     };
-
-  //     DataService.createJam(newJam)
-  //     .then((result)=>{
-  //       // //console.log('el result del create Jam = ', result)
-  //       let jamId = result.id;
-  //       let userID = this.state.userId;
-
-  //       newJam.jamId = jamId;
-  //       newJam.jammers = [userID];
-
-  //       transJams.push(newJam)
-
-  //       //console.log('updateJAm called with: ', userID, '/ ', transJams)
-
-  //       DataService.updateJamsArrayInUser(userID, transJams);
-  //       this.props.closePopup();
-
-  //       // this.props.propsFn.push(`/home/${userId}`)
-
-  //     },(error)=>{
-  //         //console.log('Jam could not be created, error:', error);
-  //     });
-  //   };
-
   const leftTd = {
     textAlign: 'left',
   };
 
   const renderRoomsInfo = () => roomsInfo.map((room, j) => {
+    console.log('room: ', room);
     const current = !isEmpty(room.currentTenant[0]) ? room.currentTenant : [];
     let checkIn; let checkOut; let firstName; let lastName; let rent; let deposit;
 
@@ -150,28 +103,38 @@ const Rooms = () => {
       <Link key={roomId} href="/jam/[jamId]/roomInfo/[roomId]" as={`/jam/${jamId}/roomInfo/${roomId}`} passHref>
         <tr>
           { isVacant ? (
-            existNextTenant
+            !existNextTenant
               ? (
                 <>
                   <td className="startTd">
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="4" className="middleTd">
+                  <td colSpan="3" className="vacant">
                     {dict.common.vacantUnt}
                     {' '}
                     {nextTenant.checkIn}
                   </td>
-                  <td className="lastTd" />
+                  <td className="middleTd">
+                    {room.rent}
+                  </td>
+                  <td className="lastTd">
+                    {room.deposit}
+                  </td>
                 </>
               ) : (
                 <>
                   <td className="startTd">
                     <Txt mgL="20px">{room.roomNr}</Txt>
                   </td>
-                  <td colSpan="4" className="middleTd vacant">
+                  <td colSpan="3" className="vacant">
                     {dict.common.vacant}
                   </td>
-                  <td className="lastTd" />
+                  <td className="middleTd">
+                    {room.rent}
+                  </td>
+                  <td className="lastTd">
+                    {room.deposit}
+                  </td>
                 </>
               )
 
@@ -184,17 +147,6 @@ const Rooms = () => {
                 {firstName}
                 {' '}
                 {lastName}
-{/* 
-                <Div
-                  just="center"
-                  align="center"
-                  mgL="15px"
-                //   onClick={StartChat()}
-                >
-                  <FontAwesomeIcon
-                    icon={faComments}
-                  />
-                </Div> */}
               </td>
               <td className="middleTd">
                 {checkIn}

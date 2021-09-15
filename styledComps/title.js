@@ -5,6 +5,7 @@ const Title = styled.p`
     color: #264653;
     font-weight: 500;
     margin: 0;
+    margin-bottom: 20px;
     span{
         color: #FCA311;
     }

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ReactDatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import isAfter from 'date-fns/isAfter';
 
 import { isBefore } from 'date-fns';
 import {
-  Div, Txt, SubTitle, InputSubmit, FormRow,
+  Div, Txt, Title, SubTitle, Form, InputSubmit, FormRow,
 } from '../../styledComps';
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
@@ -20,7 +20,6 @@ import { setActiveSection, setRoomsInfo } from '../../redux/actions';
 import { TENANTS } from '../../config';
 
 const InviteJammerForm = ({ roomNr }) => {
-  console.log('roomNr: ', roomNr, ' / ', typeof roomNr);
   const dispatch = useDispatch();
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
@@ -60,10 +59,10 @@ const InviteJammerForm = ({ roomNr }) => {
     }
   };
 
-  const getRoomInfo = () => {
-    const rInfo = roomsInfo[roomNr - 1];
-    setRoomInfo(rInfo);
-  };
+  // const getRoomInfo = () => {
+  //   const rInfo = roomsInfo[roomNr - 1];
+  //   setRoomInfo(rInfo);
+  // };
 
   useEffect(() => {
     console.log('use 1');
@@ -92,28 +91,18 @@ const InviteJammerForm = ({ roomNr }) => {
   const defaultValues = {
     rent, deposit, sqm, expenses, exterior, privBath, contractMode,
   };
-  // useEffect(() => {
-  //   if (nrOfTenants === '1') {
-  //     setShowSecond(false);
-  //     setShowThird(false);
-  //   }
-  //   if (nrOfTenants === '2') {
-  //     setShowSecond(true);
-  //   }
-  //   if (nrOfTenants === '3') {
-  //     setShowSecond(true);
-  //     setShowThird(true);
-  //   }
-  // }, [nrOfTenants]);
 
   const onSubmit = (data) => {
-    setShowErrorMessage(false);
+    console.log('data: ', data);
     const cIn = new Date(checkIn);
+    console.log('cIn: ', cIn);
     const cOut = new Date(checkOut);
+    console.log('cOut: ', cOut);
 
     const outLater = isAfter(cOut, cIn);
     if (outLater) {
-      setErrorMessage('Check-out date must be greater than check-In date');
+      // setErrorMessage('Check-out date must be greater than check-In date');
+      console.log('Check-out date must be greater than check-In date');
       return;
     }
     const roomJammers = jammers.filter((e) => e.roomNr === data.roomNr);
@@ -178,21 +167,21 @@ const InviteJammerForm = ({ roomNr }) => {
       });
     }
 
-    for (let i = 0; i < tenantsInfo.length; i++) {
-      DataService.saveInvitation(jamId, data)
-        .then((res) => {
-          const invId = res.id;
-          // eslint-disable-next-line max-len
-          // CHAPUZA AQUI HAY QUE AUTOMATIZAR FUNCION DE INVITACION Y PASAR EL USER UN EMAIL CON EL LINK
-          const registrationURL = `/register/${jamId}/${invId}`;
-          console.log('registrationURL: ', registrationURL);
-          // eslint-disable-next-line max-len
-          // history.push(`/register/${jamId}/${jamName}/${adminFirstName}/${firstName}/${lastName}/${invId}`);
-        });
-    }
+    // for (let i = 0; i < tenantsInfo.length; i++) {
+    //   DataService.saveInvitation(jamId, data)
+    //     .then((res) => {
+    //       const invId = res.id;
+    //       // eslint-disable-next-line max-len
+    //       // CHAPUZA AQUI HAY QUE AUTOMATIZAR FUNCION DE INVITACION Y PASAR EL USER UN EMAIL CON EL LINK
+    //       const registrationURL = `/register/${jamId}/${invId}`;
+    //       console.log('registrationURL: ', registrationURL);
+    //       // eslint-disable-next-line max-len
+    //       // history.push(`/register/${jamId}/${jamName}/${adminFirstName}/${firstName}/${lastName}/${invId}`);
+    //     });
+    // }
   };
 
-  const roomsNrs = [];
+  const roomsNrs = [{ id: '', name: '' }];
   for (let i = 0; i < roomsInfo.length; i++) {
     const number = i + 1;
     const stringRoom = number.toString();
@@ -213,11 +202,6 @@ const InviteJammerForm = ({ roomNr }) => {
     console.log('firstMonth: ', firstMonth);
     console.log('lastMonth: ', lastMonth);
   };
-
-  useEffect(() => {
-    const multipleTenants = renderMultipleTenants(nrOfTenants);
-    setMoreTenants(multipleTenants);
-  }, [nrOfTenants]);
 
   const renderMultipleTenants = (nr) => {
     console.log('nr: ', nr, ' / ', typeof nr);
@@ -270,28 +254,33 @@ const InviteJammerForm = ({ roomNr }) => {
     );
   };
 
+  useEffect(() => {
+    const multipleTenants = renderMultipleTenants(nrOfTenants);
+    setMoreTenants(multipleTenants);
+  }, [nrOfTenants]);
+
   return (
-    <form
+    <Form
       autoComplete="off"
       className="hook-form"
       onSubmit={handleSubmit(onSubmit)}
-      style={inviteStyle}
+      // style={inviteStyle}
+      mg="15px"
+      col
     >
-
-      <Div w="100%" col just="center" align="flex-start">
-        <SubTitle>
+      <Div w="100%" col just="center" align="flex-start" mgB="20px">
+        <Title>
           {dict.common.inviteTenantForm}
           {' '}
-        </SubTitle>
+        </Title>
         {/* nrOfTenants */}
         <FormRow>
           <FormSelect // nrOfTenants
-            // w="100%"
-            mgR="20px"
+            w="100%"
             pad="8px"
             type="text"
             label={dict.common.nrOfTenants}
-            labelW="100%"
+            labelW="150%"
             name="nrOfTenants"
             error={errors.nrOfTenants}
             errorMessage="Mandatory"
@@ -341,7 +330,35 @@ const InviteJammerForm = ({ roomNr }) => {
 
         {nrOfTenants > 1 && moreTenants}
 
-        {/* roomNr, checkIn, checkOut */}
+        {/* checkIn, checkOut */}
+        <SubTitle>{dict.common.inAndOutSubtitle}</SubTitle>
+        <FormRow just="space-between">
+          <Div className="checkIn" align="center" mgT="20px" mgR="20px">
+            <Div mgR="10px">
+            <Txt fSize="16px" color="#808080">Check-In</Txt>
+              {errors.checkIn && <Div className="field-error">Required</Div>}
+            </Div>
+            <DatePicker
+              selected={checkIn}
+              onChange={(date) => setCheckIn(date)}
+              dateFormat="dd-MMM-yyyy"
+
+            />
+          </Div>
+          <Div className="checkOut" align="center" mgT="20px">
+            <Div mgR="10px">
+              <Txt fSize="16px" color="#808080">Check-Out</Txt>
+              {errors.checkOut && <Div className="field-error">Required</Div>}
+            </Div>
+            <DatePicker
+              selected={checkOut}
+              onChange={(value) => setCheckOut(value)}
+              dateFormat="dd-MMM-yyyy"
+            />
+          </Div>
+        </FormRow>
+
+        <SubTitle>{dict.common.contractInfo}</SubTitle>
         <FormRow just="space-between">
           <FormSelect
             w="25%"
@@ -361,7 +378,7 @@ const InviteJammerForm = ({ roomNr }) => {
           />
 
           <FormSelect // contractMode
-            w="40%"
+            w="70%"
             col
             label={dict.settingsForm.contMode}
             labelAlign="flex-start"
@@ -377,56 +394,13 @@ const InviteJammerForm = ({ roomNr }) => {
             options={contracts}
             modifiedValue={(val) => recalculateRent(val)}
           />
-          {/* { contractMode !== '' && (
-              <Div pad="20px" back="#CCC5B9" borderR="15px" w="100%" mgT="20px" align="center" just="flex-start">
-                <Txt fSize="14px">{dict.contractType[contractMode]}</Txt>
-              </Div>
-              )} */}
-        </FormRow>
-        <FormRow just="space-between">
-          <Div className="checkIn" mgR="20px">
-            <Div mgR="10px">
-              <label>Check In</label>
-              {errors.checkIn && <Div className="field-error">Required</Div>}
-            </Div>
-            <Controller
-              control={control}
-              dateFormat="dd-MMM-yyyy"
-              name="checkIn"
-              className="input"
-              render={() => (
-                <ReactDatePicker
-                  selected={checkIn}
-                  onChange={(value) => setCheckIn(value)}
-                />
-              )}
-            />
-          </Div>
-          <Div className="checkOut">
-            <Div mgR="10px">
-              <label>Check Out</label>
-              {errors.checkOut && <Div className="field-error">Required</Div>}
-            </Div>
-            <Controller
-              control={control}
-              dateFormat="dd-MMM-yyyy"
-              name="checkOut"
-              className="input"
-              render={() => (
-                <ReactDatePicker
-                  selected={checkOut}
-                  onChange={(value) => setCheckOut(value)}
-                />
-              )}
-            />
-          </Div>
         </FormRow>
         <FormRow just="space-between">
           <FormInput
             w="30%"
             label={dict.common.rent}
             placeholder={defaultValues.rent}
-            type="text"
+            type="numer"
             name="rent"
             mgR="20px"
             pad="8px"
@@ -439,7 +413,7 @@ const InviteJammerForm = ({ roomNr }) => {
             w="30%"
             label={dict.common.expenses}
             placeholder={defaultValues.expenses}
-            type="text"
+            type="number"
             name="expenses"
             mgR="20px"
             pad="8px"
@@ -452,7 +426,7 @@ const InviteJammerForm = ({ roomNr }) => {
             w="30%"
             label={dict.common.deposit}
             placeholder={defaultValues.deposit}
-            type="text"
+            type="number"
             name="deposit"
             pad="8px"
             error={errors.deposit}
@@ -467,10 +441,10 @@ const InviteJammerForm = ({ roomNr }) => {
         w="100%"
         back="rgb(85, 187, 151)"
         type="submit"
-        value="submit"
+        value={dict.common.sendInv}
       />
 
-    </form>
+    </Form>
   );
 };
 
