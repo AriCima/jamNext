@@ -1,12 +1,13 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import isAfter from 'date-fns/isAfter';
 
-import { isBefore } from 'date-fns';
+import { isBefore, format } from 'date-fns';
 import {
   Div, Txt, Title, SubTitle, Form, InputSubmit, FormRow,
 } from '../../styledComps';
@@ -18,22 +19,22 @@ import DataService from '../../services/DataService';
 import Calculations from '../../services/Calculations';
 import { setActiveSection, setRoomsInfo } from '../../redux/actions';
 import { TENANTS } from '../../config';
+import { isEmpty } from 'lodash';
 
 const InviteJammerForm = ({ roomNr }) => {
   const dispatch = useDispatch();
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
-  const { jamId, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
+  const { jamId, jamName, adminFirstName, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
 
   const [newRoomNr, setNewRoomNr] = useState('');
   const [roomInfo, setRoomInfo] = useState({});
   const [checkIn, setCheckIn] = useState(new Date());
   const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)));
   const [nrOfTenants, setNrOfTenants] = useState(1);
-  const [nrOfTheRoom, setNrOfTheRoom] = useState('');
   const [moreTenants, setMoreTenants] = useState([]);
-  const [second, setShowSecond] = useState(false);
-  const [third, setShowThird] = useState(false);
+  const [rentsSummary, setRentsSummary] = useState({});
+
 
   const getRooms = async () => {
     if (roomsInfo.length === 0) {
@@ -59,11 +60,6 @@ const InviteJammerForm = ({ roomNr }) => {
     }
   };
 
-  // const getRoomInfo = () => {
-  //   const rInfo = roomsInfo[roomNr - 1];
-  //   setRoomInfo(rInfo);
-  // };
-
   useEffect(() => {
     console.log('use 1');
     if (jamId) {
@@ -75,7 +71,6 @@ const InviteJammerForm = ({ roomNr }) => {
   const changeRoomNr = (val) => {
     const nr = parseInt(val, 10);
     const newInfo = roomsInfo[nr - 1];
-    console.log('newInfo: ', newInfo);
     setNewRoomNr(nr - 1);
     setRoomInfo(newInfo);
   };
@@ -93,19 +88,17 @@ const InviteJammerForm = ({ roomNr }) => {
   };
 
   const onSubmit = (data) => {
-    console.log('data: ', data);
     const cIn = new Date(checkIn);
-    console.log('cIn: ', cIn);
     const cOut = new Date(checkOut);
-    console.log('cOut: ', cOut);
 
-    const outLater = isAfter(cOut, cIn);
+    const outLater = !isAfter(cOut, cIn);
+
     if (outLater) {
-      // setErrorMessage('Check-out date must be greater than check-In date');
-      console.log('Check-out date must be greater than check-In date');
+      alert('Check-out date must be greater than check-In date');
       return;
     }
-    const roomJammers = jammers.filter((e) => e.roomNr === data.roomNr);
+
+    const roomJammers = TENANTS.filter((e) => e.roomNr === data.roomNr);
 
     for (let i = 0; i < roomJammers.length; i++) {
       const inIsBetween = isAfter(cIn, roomJammers[i].checkIn) && isBefore(cIn, roomJammers[i].checkOut);
@@ -122,18 +115,18 @@ const InviteJammerForm = ({ roomNr }) => {
       }
     }
 
-    const rentsArray = Calculations.getTenantPayments(data.rent, data.contractMode, cIn, cOut);
+    const rentsArray = Calculations.getTenantPayments(data.rent, data.expenses, data.contractMode, cIn, cOut);
 
     data.rentsArray = rentsArray;
     data.registeredUser = false;
     data.jamName = jamName;
     data.adminFirstName = adminFirstName;
     data.contractCode = Calculations.generateCode();
-    data.checkIn = moment(cIn).format('DD-MMM-YYYY');
-    data.checkOut = moment(cOut).format('DD-MMM-YYYY');
+    data.checkIn =format(cIn, 'dd/MMM/yyyy');
+    data.checkOut = format(cOut, 'dd/MMM/yyyy');
     console.log('data: ', data);
 
-    setInvitationInfo(data);
+    // setInvitationInfo(data);
 
     let contractType = 'single';
 
@@ -142,29 +135,14 @@ const InviteJammerForm = ({ roomNr }) => {
 
     const tenantsInfo = [{
       firstName: data.firstName,
-      lastName: data.lastName,
       emial: data.email,
     }];
 
-    if (nrOfTenants === 2) {
-      tenantsInfo.push({
-        firstName: data.firstName2,
-        lastName: data.lastName2,
-        emial: data.email2,
-      });
-    }
-
-    if (nrOfTenants === 3) {
-      tenantsInfo.push({
-        firstName: data.firstName2,
-        lastName: data.lastName2,
-        emial: data.email2,
-      });
-      tenantsInfo.push({
-        firstName: data.firstName3,
-        lastName: data.lastName3,
-        email: data.email3,
-      });
+    for (let i = 0; i < nrOfTenants; i++) {
+      const name = 'firstName'+(i+1);
+      const email = 'email'+(i+1);
+      const obj = { firstName: name, email };
+      tenantsInfo.push(obj);
     }
 
     // for (let i = 0; i < tenantsInfo.length; i++) {
@@ -191,20 +169,80 @@ const InviteJammerForm = ({ roomNr }) => {
 
   const contracts = Calculations.getSelectOptions('contracts');
 
-  const inviteStyle = {
-    margin: '15px',
-    overflowY: 'scroll',
-  };
-  const recalculateRent = (val) => {
-    const totalRent = Number(rent) + Number(expenses);
-    const firstMonth = Calculations.getFirstMonth(val, totalRent, checkIn);
-    const lastMonth = Calculations.getLastMonth(val, totalRent, checkOut);
-    console.log('firstMonth: ', firstMonth);
-    console.log('lastMonth: ', lastMonth);
+  const renderRentDetails = (obj) => {
+    switch (contractMode) {
+      case 'monthly':
+        return (
+          <FormRow>
+            <FormInput
+              w="30%"
+              label={dict.common.rentEachMonth}
+              placeholder={obj.inviteTenantForm.rent}
+              type="numer"
+              name="rent"
+              mgR="20px"
+              pad="8px"
+              error={errors.rent}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+          </FormRow>
+        );
+      default:
+        return (
+          <FormRow>
+            <FormInput
+              w="30%"
+              label={dict.common.rentFirstMonth}
+              placeholder={obj.inInfo.rent}
+              type="numer"
+              name="rentFirstMonth"
+              mgR="20px"
+              pad="8px"
+              error={errors.rent}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+            <FormInput
+              w="30%"
+              label={dict.common.inBetweenRent}
+              placeholder={`${dict.rent.rentBetween} ${obj.betweenMonths[0].month} ${dict.common.and} ${obj.betweenMonths[obj.betweenLength].month}}`}
+              type="numer"
+              name="inBetweenrent"
+              mgR="20px"
+              pad="8px"
+              error={errors.rent}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+            <FormInput
+              w="30%"
+              label={dict.common.rentLastMonth}
+              placeholder={obj.outInfo.rent}
+              type="numer"
+              name="rentLastMonth"
+              mgR="20px"
+              pad="8px"
+              error={errors.rent}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+          </FormRow>
+        );
+    }
   };
 
+  useEffect(() => {
+    const rentsObj = Calculations.getTenantPayments(rent, expenses, contractMode, checkIn, checkOut);
+    const details = renderRentDetails(rentsObj);
+    setRentsSummary(details);
+  }, [rent, expenses, contractMode]);
+
   const renderMultipleTenants = (nr) => {
-    console.log('nr: ', nr, ' / ', typeof nr);
     const arr = [];
     for (let i = 1; i < nr; i++) {
       const obj = {
@@ -264,7 +302,6 @@ const InviteJammerForm = ({ roomNr }) => {
       autoComplete="off"
       className="hook-form"
       onSubmit={handleSubmit(onSubmit)}
-      // style={inviteStyle}
       mg="15px"
       col
     >
@@ -435,6 +472,7 @@ const InviteJammerForm = ({ roomNr }) => {
             registerObject={{ required: true }}
           />
         </FormRow>
+        {!isEmpty(rentsSummary) && rentsDetail}
 
       </Div>
       <InputSubmit

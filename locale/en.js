@@ -8,6 +8,7 @@ export default {
   common: {
     address: 'Street, house nro, floor, door . . . ',
     allTenants: 'All Tenants',
+    and: 'and',
     aTenant: ' a tenant',
     city: 'City',
     contractInfo: 'Contract conditions',
@@ -60,6 +61,9 @@ export default {
     fortnightly: 'If the stay is less than 2 weeks (either in the month of check-in or in the month of check-out) you would only pay half of the rent for that month.',
     daily: 'The rent is calculated according to the exact number of days spent in the accommodation.',
   },
+  rent: {
+    rentBetween: 'Rent between',
+  },
   deposit: {
     ten: '10 days',
     thirty: '30 days',
@@ -104,5 +108,19 @@ export default {
     info: 'Room Info',
     privBath: 'Has the room private bathroom ?',
     sqm: 'Size (sqm)',
+  },
+  months: {
+    jan: 'Jan',
+    feb: 'Feb',
+    mar: 'Mar',
+    apr: 'Apr',
+    may: 'May',
+    jun: 'Jun',
+    jul: 'Jul',
+    aug: 'Aug',
+    sep: 'Sep',
+    oct: 'Oct',
+    nov: 'Nov',
+    dec: 'Dec',
   },
 };

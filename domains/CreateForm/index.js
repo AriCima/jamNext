@@ -31,7 +31,7 @@ const CreateForm = ({ showModal }) => {
       jamName, jamDesc, jamType, nrOfRooms, apartmentAddress, apartmentZipCode, apartmentCountry, apartmentCity
     } = data;
 
-    const jamCode = Calculations.generateJamCode();
+    const jamCode = Calculations.generateCode();
     const createdAt = new Date();
     const updatedAt = '';
     let jamRules = {};

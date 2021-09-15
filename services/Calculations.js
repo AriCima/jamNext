@@ -1,7 +1,9 @@
-import { format } from 'date-fns/';
+import { format, getDate, differenceInCalendarMonths, getMonth, getYear } from 'date-fns/';
 import isEmpty from 'lodash/isEmpty';
+import dictionary from '../../../locale';
+const dict = dictionary[lenguage];
 
-const generateJamCode = () => {
+const generateCode = () => {
   // type: 4aG-89n --> 14.776.336 combinations
   const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   const codeArray = [];
@@ -445,71 +447,88 @@ const getMessageDate = (timestamp) => {
   return messageTime;
 };
 
-const getTenantPayments = (rent, cMode, cIn, cOut) => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const getTenantPayments = (rent, expenses, cMode, cIn, cOut) => {
+  // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [
+    dict.months.jan,
+    dict.months.feb,
+    dict.months.mar,
+    dict.months.apr,
+    dict.months.may,
+    dict.months.jun,
+    dict.months.jul,
+    dict.months.aug,
+    dict.months.sep,
+    dict.months.oct,
+    dict.months.nov,
+    dict.months.dec,
+  ];
 
-  const chIn = cIn;
-  const inYY = Number(chIn.getFullYear());
-  const inM = Number(chIn.getMonth()); // CheckIn Month in numbers
-  const inDays = moment(cIn).date();
+  const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  const chOut = cOut;
-  const outYY = Number(chOut.getFullYear());
-  const outM = Number(chOut.getMonth()); // CheckOut Month in numbers
-  const outDays = moment(cOut).date();
+  const inYY = getYear(cIn); // CheckIn Year in numbers
+  const inM = getMonth(cIn); // CheckIn Month in numbers
+  const inDay = getDate(cIn);
 
-  let inRent = parseInt(rent);
-  let outRent = parseInt(rent);
+  const outYY = getYear(cOut); // CheckOut Year in numbers
+  const outM = getMonth(cOut); // CheckOut Month in numbers
+  const outDay = getDate(cOut);
+
+  const nrRent = Number(rent) + Number(expenses);
+  let inRent = nrRent;
+  let outRent = nrRent;
 
   switch (cMode) {
     case 'daily':
-      inRent = (parseInt(rent) / 30) * (30 - inDays);
-      outRent = (parseInt(rent) / 30) * outDays;
+      inRent = (nrRent / days[inM]) * (30 - inDay);
+      outRent = (nrRent / days[outM]) * outDay;
       break;
     case 'fortnightly':
-      if (inDays > 15) {
-        inRent = parseInt(rent) / 2;
+      if (inDay > 15) {
+        inRent = nrRent / 2;
       }
-      if (outDays <= 15) {
-        outRent = parseInt(rent) / 2;
+      if (outDay <= 15) {
+        outRent = nrRent / 2;
       }
       break;
     default:
       break;
   }
 
-  const rentsArray = [{
-    month: months[inM], rent: inRent, paidRent: 0, difOK: false,
-  }];
+  const inBetweenMonths = [months[inM], months[outM]];
+  const totalMonths = differenceInCalendarMonths(new Date(cOut), new Date(cIn));
+  console.log('totalMonths: ', totalMonths);
 
-  if (inYY === outYY) {
-    for (let s = inM + 1; s < outM; s++) {
-      const pay = {
-        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
-      };
-      rentsArray.push(pay);
-    }
-  } else {
-    for (let s = inM; s <= 11; s++) {
-      const pay = {
-        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
-      };
-      rentsArray.push(pay);
+  let betweenMonths = [];
+  console.log('inM+1: ', inM+1);
+  console.log('totalMonths-1: ', totalMonths-1);
+
+  for (let i = inM + 1; i < inM + totalMonths; i++) {
+    let j = i;
+    let year = inYY;
+
+    if (i > 11) {
+      j = i - 12;
+      year = outYY;
     }
 
-    for (let s = 0; s < outM; s++) {
-      const pay = {
-        month: months[s], rent: parseInt(rent), paidRent: 0, difOK: false,
-      };
-      rentsArray.push(pay);
-    }
+    const obj = {
+      month: months[j],
+      year,
+      rent: nrRent,
+    };
+    betweenMonths.push(obj);
   }
 
-  rentsArray.push({
-    month: months[outM], rent: outRent, paidRent: 0, difOK: false,
-  });
+  const betweenLength = betweenMonths.length;
+  const rentsSummary = {
+    inInfo: { month: months[inM], year: inYY, rent: inRent.toFixed(0) },
+    outInfo: { month: months[outM], year: outYY, rent: outRent.toFixed(0) },
+    betweenMonths,
+    betweenLength,
+  };
 
-  return rentsArray;
+  return rentsSummary;
 };
 
 const getTypeOfContracts = () => ['daily', 'fortnightly', 'monthly'];
@@ -689,7 +708,7 @@ const getLastMonth = (val, totalRent, checkOut) => {
   }
 };
 const Calculations = {
-  generateJamCode,
+  generateCode,
   getApartmentInfo,
   getFirstMonth,
   getJamAdminSections,
@@ -709,5 +728,6 @@ const Calculations = {
   removeAmdinFromJammers,
   sortByField,
 };
+
 
 export default Calculations;

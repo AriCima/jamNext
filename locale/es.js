@@ -8,6 +8,7 @@ export default {
   common: {
     address: 'Calle, número, planta, puerta  . . .',
     allTenants: 'Todos los inquilinos',
+    and: 'y',
     aTenant: ' un inquilino',
     city: 'Ciudad',
     contractInfo: 'Condiciones del contrato',
@@ -25,7 +26,7 @@ export default {
     formerTenants: 'Antiguos inquilinos',
     futureTenants: 'Próximos inquilinos',
     inAndOutSubtitle: 'Fechas de check-in y check-out',
-    inviteTenantForm: 'Completa la información del/los inquilino/s que deseas invitar',
+    inviteTenantForm: 'Completa la información del / los inquilino/s que deseas invitar',
     jamCode: 'JamCode',
     jamDesc: 'Descrición',
     jamName: 'Nombre del Jam',
@@ -59,6 +60,9 @@ export default {
     monthly: 'Siempre se pagará el alquiler completo de cada mes, independientemente de las fechas de ingreso y egreso del alojamiento.',
     fortnightly: 'Si la estancia es inferior a 2 semanas (ya sea en el mes de ingreso como en el de egreso) solo pagaría la mitad del alquiler de ese mes.',
     daily: 'Se paga según el número exacto de días que permanezcan en el alojamiento.'
+  },
+  rent: {
+    rentBetween: 'Alquiler entre'
   },
   deposit: {
     ten: '10 días',
@@ -104,5 +108,19 @@ export default {
     info: 'Información de la habitación',
     privBath: 'Tiene baño privado ?',
     sqm: `Superficie (m2)`,
+  },
+  months: {
+    jan: 'Ene',
+    feb: 'Feb',
+    mar: 'Mar',
+    apr: 'Abr',
+    may: 'May',
+    jun: 'Jun',
+    jul: 'Jul',
+    aug: 'Ago',
+    sep: 'Sep',
+    oct: 'Oct',
+    nov: 'Nov',
+    dec: 'Dic',
   },
 };
