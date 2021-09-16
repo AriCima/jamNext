@@ -484,11 +484,7 @@ const getTenantPayments = (rent, expenses, cMode, cIn, cOut) => {
   const totalMonths = differenceInCalendarMonths(new Date(cOut), new Date(cIn));
 
   let betweenMonths = [];
-  
-  console.log('inM: ', inM);
-  console.log('totalMonths: ', totalMonths);
-  console.log('inM + totalMonths: ', inM + totalMonths);
-  for (let i = inM + 1; i < inM + totalMonths; i++) {
+    for (let i = inM + 1; i < inM + totalMonths; i++) {
     let j = i;
     let year = inYY;
 

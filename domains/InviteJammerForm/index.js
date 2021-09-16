@@ -170,11 +170,20 @@ const InviteJammerForm = ({ roomNr }) => {
   const contracts = Calculations.getSelectOptions('contracts');
 
   const renderRentDetails = (obj) => {
+    let l = 0;
+    let fromMonth = '';
+    let toMonth = '';
     const firstMonth = obj.inInfo.month;
     const lastMonth = obj.outInfo.month;
-    const fromMonth = obj.betweenMonths[0].month;
-    const l = obj.betweenLength - 1;
-    const toMonth = obj.betweenMonths[l].month;
+    const betw = obj.betweenMonths;
+    console.log('betw: ', betw);
+    if (betw.length > 0) {
+      fromMonth = betw[0] && obj.betweenMonths[0].month;
+      console.log('fromMonth: ', fromMonth);
+      l = betw - 1;
+      toMonth = betw[l].month;
+      console.log('toMonth: ', toMonth);
+    }
 
     switch (newContractMode) {
       case 'monthly':

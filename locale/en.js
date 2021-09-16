@@ -15,7 +15,6 @@ export default {
     country: 'Country',
     currentTenant: 'Current tenant',
     currentTenants: 'Current tenants',
-    deposit: 'Deposit €',
     desc: 'description',
     docNr: 'Document nr',
     docType: 'Document type',
@@ -69,6 +68,7 @@ export default {
     rentsDetails: 'Rents details',
   },
   deposit: {
+    deposit: 'Deposit €',
     ten: '10 days',
     thirty: '30 days',
     afterExp: 'once all expenses bills were received',
