@@ -38,7 +38,8 @@ const Div = styled.div`
     &:hover{
         background-color: ${({ backHov }) => backHov || ''};
         color: ${({ colorHov }) => colorHov || ''};
-        border: ${({ borderHov }) => borderHov || 'black'};
+        border: ${({ borderHov }) => (borderHov ? `1px solid ${borderHov}` : 'none')};
+
     }
         ${({ main }) => main && `
         margin: 0;

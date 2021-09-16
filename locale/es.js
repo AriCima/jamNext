@@ -44,6 +44,7 @@ export default {
     tenantInfo: 'Tenant Info',
     tenantType: 'Tipo de inquilino',
     title: 'Título',
+    to: 'hasta',
     vacant: 'Habitación libre',
     vacantUnt: 'Libre hasta',
     yes: 'Si',
@@ -62,10 +63,10 @@ export default {
   rent: {
     rent: 'Alquiler €/Mes',
     rentBetween: 'Alquiler entre ',
-    rentEachMonth: 'Alquiler mensual',
+    monthlyRent: 'Alquiler mensual',
     rentFirstMonth: 'Alquiler del primer mes',
     rentLastMonth: 'Rent of the last month',
-    rentsDetails: 'Detallo de los alquileres',
+    rentsDetails: 'Detalle de los alquileres mensuales',
   },
   deposit: {
     deposit: 'Fianza €',

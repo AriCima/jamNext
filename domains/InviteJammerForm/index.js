@@ -178,11 +178,11 @@ const InviteJammerForm = ({ roomNr }) => {
     const betw = obj.betweenMonths;
     console.log('betw: ', betw);
     if (betw.length > 0) {
+      console.log('betw: ', betw);
       fromMonth = betw[0] && obj.betweenMonths[0].month;
-      console.log('fromMonth: ', fromMonth);
-      l = betw - 1;
+      l = betw.length - 1;
+      console.log('l: ', l);
       toMonth = betw[l].month;
-      console.log('toMonth: ', toMonth);
     }
 
     switch (newContractMode) {
@@ -190,75 +190,61 @@ const InviteJammerForm = ({ roomNr }) => {
         return (
           <Div w="100%" col>
             <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <FormRow>
-              <FormInput
-                w="30%"
-                label={dict.rent.rentEachMonth}
-                placeholder={obj.inInfo.rent}
-                type="numer"
-                name="rent"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-              />
-            </FormRow>
+            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderHov={COLORS.GREENS.BORDERS.BLUE} borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
+                  {dict.rent.monthlyRent}
+                </Txt>
+                <Txt>€ {rent + expenses}</Txt>
+              </Div>
+            </Div>
           </Div>
         );
       case 'daily':
         return (
           <Div w="100%" col>
             <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <FormRow>
-              <FormInput
-                w="30%"
-                label={dict.months[firstMonth]}
-                placeholder={obj.inInfo.rent}
-                type="numer"
-                name="rentFirstMonth"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-              />
-              <FormInput
-                w="30%"
-                label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
-                placeholder={rent}
-                type="numer"
-                name="inBetweenrent"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-              />
-              <FormInput
-                w="30%"
-                label={dict.months[lastMonth]}
-                placeholder={obj.outInfo.rent}
-                type="numer"
-                name="rentLastMonth"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-              />
-            </FormRow>
+            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[firstMonth]}</Txt>
+                <Txt>€ {obj.inInfo.rent}</Txt>
+              </Div>
+              {obj.betweenLength > 0 && (
+                <Div col w="33%" just="center" align="center">
+                  <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{`${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`}</Txt>
+                  <Txt>€ {rent}</Txt>
+                </Div>
+              )}
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[lastMonth]}</Txt>
+                <Txt>€ {obj.outInfo.rent}</Txt>
+              </Div>
+            </Div>
           </Div>
         );
       default:
         return (
           <Div w="100%" col>
             <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <FormRow>
+            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[firstMonth]}</Txt>
+                <Txt>€ {obj.inInfo.rent}</Txt>
+              </Div>
+              {obj.betweenLength > 0 && (
+                <Div col w="33%" just="center" align="center">
+                  <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
+                    {`${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`}
+                  </Txt>
+                  <Txt>€ {rent + expenses}</Txt>
+                </Div>
+              )}
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[lastMonth]}</Txt>
+                <Txt>€ {obj.outInfo.rent}</Txt>
+              </Div>
+            </Div>
+            {/* <FormRow>
               <FormInput
                 w="30%"
                 label={dict.months[firstMonth]}
@@ -271,20 +257,24 @@ const InviteJammerForm = ({ roomNr }) => {
                 errorMessage="Mandatory"
                 register={register}
                 registerObject={{ required: true }}
+                disabled
               />
-              <FormInput
-                w="30%"
-                label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
-                placeholder={rent}
-                type="numer"
-                name="inBetweenRent"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-              />
+              {obj.betweenLength > 0 && (
+                <FormInput
+                  w="30%"
+                  label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
+                  placeholder={rent}
+                  type="numer"
+                  name="inBetweenRent"
+                  mgR="20px"
+                  pad="8px"
+                  error={errors.rent}
+                  errorMessage="Mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                  disabled
+                />
+              )}
               <FormInput
                 w="30%"
                 label={dict.months[lastMonth]}
@@ -297,8 +287,9 @@ const InviteJammerForm = ({ roomNr }) => {
                 errorMessage="Mandatory"
                 register={register}
                 registerObject={{ required: true }}
+                disabled
               />
-            </FormRow>
+            </FormRow> */}
           </Div>
         );
     }
@@ -484,7 +475,7 @@ const InviteJammerForm = ({ roomNr }) => {
             options={roomsNrs}
           />
           {newRoomNr !== '' && (
-            <Div just="center" align="center" back="#DCF3FA" pad="0 0 10px 0" border={COLORS.GREENS.BORDERS.BLUE} borderR="5px">
+            <Div just="center" align="center">
               <FormInput
                 w="20%"
                 label={dict.rent.rent}
@@ -498,7 +489,6 @@ const InviteJammerForm = ({ roomNr }) => {
                 errorMessage="Mandatory"
                 register={register}
                 registerObject={{ required: true }}
-                disabled
               />
               <FormInput
                 w="25%"
@@ -513,7 +503,6 @@ const InviteJammerForm = ({ roomNr }) => {
                 errorMessage="Mandatory"
                 register={register}
                 registerObject={{ required: true }}
-                disabled
               />
               <FormInput
                 w="35%"
@@ -527,7 +516,6 @@ const InviteJammerForm = ({ roomNr }) => {
                 errorMessage="Mandatory"
                 register={register}
                 registerObject={{ required: true }}
-                disabled
               />
             </Div>
           )}
