@@ -61,33 +61,39 @@ const InviteJammerForm = ({ roomNr }) => {
   };
 
   useEffect(() => {
-    console.log('use 1');
     if (jamId) {
       getRooms();
     }
     dispatch(setActiveSection('tenants'));
-  }, []);
+  }, [jamId]);
+
+  const {
+    rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
+  } = roomInfo;
+  const { contractMode = '' } = jamDetails.contractInfo;
+  const defaultValues = {
+    rent, deposit, sqm, expenses, exterior, privBath, contractMode,
+  };
+  const {
+    register, errors, handleSubmit, control, setValue, getValues
+  } = useForm({defaultValues});
 
   const changeRoomNr = (val) => {
     const nr = parseInt(val, 10);
     const newInfo = roomsInfo[nr - 1];
     setNewRoomNr(nr - 1);
     setRoomInfo(newInfo);
+    const {
+      rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
+    } = newInfo;
+    console.log(rent, deposit, sqm, expenses);
+    setValue('rent', rent)
+    setValue('deposit', deposit)
+    setValue('expenses', expenses)
   };
-  const {
-    register, errors, handleSubmit, control, setValue,
-  } = useForm();
-
-  const {
-    rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
-  } = roomInfo;
-  const { contractMode = '' } = jamDetails.contractInfo;
-
-  const defaultValues = {
-    rent, deposit, sqm, expenses, exterior, privBath, contractMode,
-  };
-
+  
   const onSubmit = (data) => {
+    console.log(data);
     const cIn = new Date(checkIn);
     const cOut = new Date(checkOut);
 
@@ -122,7 +128,7 @@ const InviteJammerForm = ({ roomNr }) => {
     data.jamName = jamName;
     data.adminFirstName = adminFirstName;
     data.contractCode = Calculations.generateCode();
-    data.checkIn =format(cIn, 'dd/MMM/yyyy');
+    data.checkIn = format(cIn, 'dd/MMM/yyyy');
     data.checkOut = format(cOut, 'dd/MMM/yyyy');
     console.log('data: ', data);
 
@@ -176,7 +182,7 @@ const InviteJammerForm = ({ roomNr }) => {
     const firstMonth = obj.inInfo.month;
     const lastMonth = obj.outInfo.month;
     const betw = obj.betweenMonths;
-    console.log('betw: ', betw);
+
     if (betw.length > 0) {
       console.log('betw: ', betw);
       fromMonth = betw[0] && obj.betweenMonths[0].month;
@@ -185,65 +191,27 @@ const InviteJammerForm = ({ roomNr }) => {
       toMonth = betw[l].month;
     }
 
-    switch (newContractMode) {
-      case 'monthly':
-        return (
-          <Div w="100%" col>
+    const contractModeDic = {
+      monthly: [{title: dict.rent.monthlyRent, value: rent + expenses}],
+      daily: [{title: dict.months[firstMonth], value: obj.inInfo.rent}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: rent + expenses },{title:dict.months[lastMonth], value: obj.outInfo.rent}],
+      fortnightly: [{title: dict.months[firstMonth], value: obj.inInfo.rent}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: rent + expenses },{title:dict.months[lastMonth], value: obj.outInfo.rent}]
+    }
+    console.log('betw: ', betw);
+    
+    return (<Div w="100%" col>
             <SubTitle>{dict.rent.rentsDetails}</SubTitle>
             <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderHov={COLORS.GREENS.BORDERS.BLUE} borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
-              <Div col w="33%" just="center" align="center">
-                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
-                  {dict.rent.monthlyRent}
-                </Txt>
-                <Txt>€ {rent + expenses}</Txt>
-              </Div>
+            {contractModeDic[newContractMode] && contractModeDic[newContractMode].map(el => {
+              return el && (
+                  <Div col w={`${100/contractModeDic[newContractMode].length}%`} just="center" align="center">
+                    <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
+                      {el.title}
+                    </Txt>
+                    <Txt>€ {el.value}</Txt>
+                  </Div>
+                )})}
             </Div>
-          </Div>
-        );
-      case 'daily':
-        return (
-          <Div w="100%" col>
-            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
-              <Div col w="33%" just="center" align="center">
-                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[firstMonth]}</Txt>
-                <Txt>€ {obj.inInfo.rent}</Txt>
-              </Div>
-              {obj.betweenLength > 0 && (
-                <Div col w="33%" just="center" align="center">
-                  <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{`${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`}</Txt>
-                  <Txt>€ {rent}</Txt>
-                </Div>
-              )}
-              <Div col w="33%" just="center" align="center">
-                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[lastMonth]}</Txt>
-                <Txt>€ {obj.outInfo.rent}</Txt>
-              </Div>
-            </Div>
-          </Div>
-        );
-      default:
-        return (
-          <Div w="100%" col>
-            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
-              <Div col w="33%" just="center" align="center">
-                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[firstMonth]}</Txt>
-                <Txt>€ {obj.inInfo.rent}</Txt>
-              </Div>
-              {obj.betweenLength > 0 && (
-                <Div col w="33%" just="center" align="center">
-                  <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
-                    {`${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`}
-                  </Txt>
-                  <Txt>€ {rent + expenses}</Txt>
-                </Div>
-              )}
-              <Div col w="33%" just="center" align="center">
-                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[lastMonth]}</Txt>
-                <Txt>€ {obj.outInfo.rent}</Txt>
-              </Div>
-            </Div>
+          </Div>);
             {/* <FormRow>
               <FormInput
                 w="30%"
@@ -289,10 +257,10 @@ const InviteJammerForm = ({ roomNr }) => {
                 registerObject={{ required: true }}
                 disabled
               />
-            </FormRow> */}
+            </FormRow> 
           </Div>
         );
-    }
+    }*/}
   };
 
   useEffect(() => {
@@ -476,10 +444,10 @@ const InviteJammerForm = ({ roomNr }) => {
           />
           {newRoomNr !== '' && (
             <Div just="center" align="center">
+              
               <FormInput
                 w="20%"
                 label={dict.rent.rent}
-                placeholder={defaultValues.rent}
                 type="numer"
                 name="rent"
                 mgR="20px"
@@ -487,13 +455,14 @@ const InviteJammerForm = ({ roomNr }) => {
                 mgBI="0px"
                 error={errors.rent}
                 errorMessage="Mandatory"
+                value={getValues('rent')}
+                modifiedValue={val => setValue('rent',val)}
                 register={register}
                 registerObject={{ required: true }}
               />
               <FormInput
                 w="25%"
                 label={dict.common.expenses}
-                placeholder={defaultValues.expenses}
                 type="number"
                 name="expenses"
                 mgR="20px"
@@ -502,12 +471,12 @@ const InviteJammerForm = ({ roomNr }) => {
                 error={errors.expenses}
                 errorMessage="Mandatory"
                 register={register}
+                value={expenses}
                 registerObject={{ required: true }}
               />
               <FormInput
                 w="35%"
                 label={dict.deposit.deposit}
-                placeholder={defaultValues.deposit}
                 type="number"
                 name="deposit"
                 pad="8px"
@@ -515,8 +484,10 @@ const InviteJammerForm = ({ roomNr }) => {
                 error={errors.deposit}
                 errorMessage="Mandatory"
                 register={register}
+                value={deposit}
                 registerObject={{ required: true }}
               />
+              <input {...register('rent')} />
             </Div>
           )}
         </FormRow>

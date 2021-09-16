@@ -9,7 +9,6 @@ const FormInput = ({
   const reportChange = () => {
     modifiedValue && modifiedValue(true);
   };
-
   return (
     <Div
       col
@@ -38,7 +37,7 @@ const FormInput = ({
         placeholder={placeholder}
         ref={register(registerObject)}
         disabled={disabled}
-        onChange={() => reportChange()}
+        onChange={reportChange}
       />
     </Div>
   );

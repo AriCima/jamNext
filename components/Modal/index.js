@@ -22,7 +22,7 @@ const ModalBody = styled.div`
     border-radius: 10px;
     padding: 0 0 0 10px;
     min-width: 50%;
-    max-height: 50%
+    max-height: 60%;
     justify-content: center;
     align-items: center;
     z-index: 2;
