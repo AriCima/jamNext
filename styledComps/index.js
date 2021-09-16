@@ -7,6 +7,7 @@ import CloseButton from './closeButton';
 import Div from './divs';
 import DivShadow from './divShadow';
 import Footer from './footer';
+import Form from './form';
 import FormError from './formError';
 import FormSection from './formSection';
 import FormRow from './formRow';
@@ -43,6 +44,7 @@ export {
   Div,
   DivShadow,
   Footer,
+  Form,
   FormError,
   FormRow,
   FormSection,

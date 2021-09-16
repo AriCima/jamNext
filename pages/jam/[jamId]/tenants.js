@@ -63,7 +63,6 @@ const Tenants = () => {
 
   const renderTenantsInfo = () => {
     const tenantsByDates = Calculations.getOrganizedTenantsByDates(TENANTS);
-    console.log('tenantsByDates: ', tenantsByDates);
     let tenantsToShow = Calculations.sortByField({elements: TENANTS, asc: true, field: 'firstName'});
     
     switch(tenantsType) {
@@ -153,7 +152,7 @@ const Tenants = () => {
             modifiedValue={(val) => { selectTenantType(val) }}
           />
         </form>
-          <InviteJammerButton text={dict.common.aTenant} />
+          <InviteJammerButton roomNr='' text={dict.common.aTenant} />
         </Div>
         <Div colorHov="black" mgT="20px" w="100%" just="center" align="center">
           <Table w="90%">
@@ -163,8 +162,8 @@ const Tenants = () => {
                 <td style={leftTd}>{dict.common.roomNr}</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>
-                <td>{dict.common.rent}</td>
-                <td>{dict.common.deposit}</td>
+                <td>{dict.rent.rent}</td>
+                <td>{dict.deposit.deposit}</td>
               </tr>
             </thead>
             <tbody>

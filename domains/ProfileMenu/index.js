@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import firebase from '@firebase/app';
 import Link from 'next/link';
 import { resetUserInfo, setUserLenguage } from '../../redux/actions/userActions';
 import {

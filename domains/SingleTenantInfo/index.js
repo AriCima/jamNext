@@ -280,7 +280,7 @@ const SingleTenantInfo = ({ tenants, edit }) => {
         <FormRow>
           <FormInput
             w="70%"
-            label={dict.common.rent}
+            label={dict.rent.rent}
             placeholder={rent}
             type="text"
             name="rent"
@@ -308,7 +308,7 @@ const SingleTenantInfo = ({ tenants, edit }) => {
 
           <FormInput
             w="70%"
-            label={dict.common.deposit}
+            label={dict.deposit.deposit}
             placeholder={deposit}
             type="text"
             name="deposit"

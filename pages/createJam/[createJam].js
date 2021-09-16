@@ -24,7 +24,7 @@ const CreateJam = () => {
     const createNewJam = (data) => {
         const { jamName, jamDesc, jamType } = data;
         
-        const jamCode = Calculations.generateJamCode();
+        const jamCode = Calculations.generateCode();
         const createdAt = new Date();
         const updatedAt = '';
         let jamRules = {};

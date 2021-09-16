@@ -45,13 +45,13 @@ const EditRoomForm = ({
   const dict = dictionary[lenguage];
 
   const defaultValues = {
-    airConditioner: roomInfo.airConditioner,
-    balcony: roomInfo.balcony,
+    airConditioner: roomInfo.airConditioner ? roomInfo.airConditioner : '',
+    balcony: roomInfo.balcony ? roomInfo.balcony : '',
     deposit: roomInfo.deposit,
     expenses: roomInfo.expenses,
-    exterior: roomInfo.exterior,
-    heater: roomInfo.heater,
-    privBath: roomInfo.privBath,
+    exterior: roomInfo.exterior ? roomInfo.exterior : '',
+    heater: roomInfo.heater ? roomInfo.heater : '',
+    privBath: roomInfo.privBath ? roomInfo.privBath : '',
     rent: roomInfo.rent,
     roomNr: roomInfo.roomNr,
     sqm: roomInfo.sqm,
@@ -104,7 +104,7 @@ const EditRoomForm = ({
           w="70%"
           label="Rent €/Mo"
           placeholder={defaultValues.rent}
-          type="text"
+          type="number"
           name="rent"
           mgR="20px"
           error={errors.rent}
@@ -119,7 +119,7 @@ const EditRoomForm = ({
           w="70%"
           label="Expenses €/Mo"
           placeholder={defaultValues.expenses}
-          type="text"
+          type="number"
           name="expenses"
           mgR="20px"
           error={errors.expenses}
@@ -134,7 +134,7 @@ const EditRoomForm = ({
           w="70%"
           label="Deposit €"
           placeholder={defaultValues.deposit}
-          type="text"
+          type="number"
           name="deposit"
           mgR="20px"
           error={errors.deposit}

@@ -6,14 +6,14 @@ import {
 } from '../../styledComps';
 
 const FormSelect = ({
- options, labelW, labelMgR, col, w, mgT, mgB, mgL, mgR, label, name, error, errorMessage, register, registerObject, type = 'text', pad, modifiedValue
+ options, labelW, labelMgR, labelJust, labelAlign, col, w, mgT, mgB, mgL, mgR, label, name, error, errorMessage, register, registerObject, type = 'text', pad, modifiedValue
 }) => {
   const optionsList = options.map((el) => (
     <option key={el.id} value={el.id}>{el.name}</option>
   ));
 
   const handleChange = (e) => {
-    modifiedValue(e.target.value);
+    modifiedValue && modifiedValue(e.target.value);
   };
 
   return (
@@ -31,8 +31,8 @@ const FormSelect = ({
         col
         w={labelW}
         mgR={labelMgR}
-        just="center"
-        align="flex-start"
+        just={labelJust}
+        align={labelAlign}
       >
         <Label>{label}</Label>
         {error && <FormError bold>{errorMessage}</FormError>}

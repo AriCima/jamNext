@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 const FormRow = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: ${({ just }) => just || 'flex-start'};
     align-items: center;
-    margin: 15px 0 0 0;
+    margin: 0;
     width: 100%;
 `;
 

@@ -1,109 +1,104 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
-import { useForm, Controller } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
-import moment from 'moment';
-import ReactDatePicker from 'react-datepicker';
+import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ReactSelect from 'react-select';
 import isAfter from 'date-fns/isAfter';
 
-import { isBefore } from 'date-fns';
-import { Div, SubTitle, InputSubmit } from '../../styledComps';
+import { isBefore, format } from 'date-fns';
+import {
+  Div, Txt, Title, SubTitle, Form, InputSubmit, FormRow,
+} from '../../styledComps';
 import FormInput from '../../components/FormInput';
 import FormSelect from '../../components/FormSelect';
+import dictionary from '../../locale';
 
 import DataService from '../../services/DataService';
 import Calculations from '../../services/Calculations';
+import { setActiveSection, setRoomsInfo } from '../../redux/actions';
+import { TENANTS, COLORS } from '../../config';
+import { isEmpty } from 'lodash';
 
-const useInviteJammerForm = ({
-  jamId, jamName, adminFirstName, jammers, rooms, jamDetails, roomNr = '',
-}) => {
-  // const [ organizedJammers, setOrganizedJammers ] = useState([]);
-  // const [ showModal, setShowModal ] = useState(false);
-  const [deposit, setDeposit] = useState('');
-  const [rent, setRent] = useState('');
+const InviteJammerForm = ({ roomNr }) => {
+  const dispatch = useDispatch();
+  const { lenguage } = useSelector((state) => state.userReducer);
+  const dict = dictionary[lenguage];
+  const { jamId, jamName, adminFirstName, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
+
+  const [newRoomNr, setNewRoomNr] = useState('');
+  const [roomInfo, setRoomInfo] = useState({});
   const [checkIn, setCheckIn] = useState(new Date());
-  // eslint-disable-next-line max-len
   const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)));
-  const [errorDesc, setErrorDesc] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [invitationInfo, setInvitationInfo] = useState({});
   const [nrOfTenants, setNrOfTenants] = useState(1);
-  const [nrOfTheRoom, setNrOfTheRoom] = useState('');
-  const [room, setRoomInfo] = useState({});
-  const [second, setShowSecond] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [third, setShowThird] = useState(false);
+  const [moreTenants, setMoreTenants] = useState([]);
+  const [rentsSummary, setRentsSummary] = useState({});
+  const [newContractMode, setNewContractMode] = useState('')
 
-  const [defaultValues, setDefaultValues] = useState({
-    checkIn,
-    checkOut,
-    deposit: '',
-    nrOfTenants: 1,
-    rent: '',
-    contractMode: jamDetails.contractMode,
-    roomNr,
-  });
+  const getRooms = async () => {
+    if (roomsInfo.length === 0) {
+      const rooms = await DataService.getJamRooms(jamId);
+      const nrOfRooms = rooms.length.toString();
 
-  const {
-    register, errors, handleSubmit, control, setValue,
-  } = useForm({ defaultValues });
+      const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
+      const organizedTenantsByRoom = Calculations.getOrganizedTenants(tenantsByRooms, nrOfRooms);
+
+      const sortedRooms = Calculations.sortByField({ elements: rooms, asc: true, field: 'roomNr' });
+
+      if (rooms.length > 0) {
+        for (let i = 0; i < rooms.length; i++) {
+          const oT = organizedTenantsByRoom[i];
+          sortedRooms[i].currentTenant = oT.currentTenant;
+          sortedRooms[i].formerTenants = oT.formerTenants;
+          sortedRooms[i].futureTenants = oT.futureTenants;
+        }
+      }
+
+      // Info en Redux
+      dispatch(setRoomsInfo(sortedRooms));
+    }
+  };
 
   useEffect(() => {
-    const rL = rooms.length;
-    const newOptions = [];
-
-    for (let j = 0; j < rL; j++) {
-      const val = j + 1;
-      const sVal = val.toString();
-      const obj = { value: sVal, label: sVal };
-      newOptions.push(obj);
+    console.log('use 1');
+    if (jamId) {
+      getRooms();
     }
-
-    setOptions(newOptions);
+    dispatch(setActiveSection('tenants'));
   }, []);
 
-  useEffect(() => {
-    if (nrOfTenants === '1') {
-      setShowSecond(false);
-      setShowThird(false);
-    }
-    if (nrOfTenants === '2') {
-      setShowSecond(true);
-    }
-    if (nrOfTenants === '3') {
-      setShowSecond(true);
-      setShowThird(true);
-    }
-  }, [nrOfTenants]);
+  const changeRoomNr = (val) => {
+    const nr = parseInt(val, 10);
+    const newInfo = roomsInfo[nr - 1];
+    setNewRoomNr(nr - 1);
+    setRoomInfo(newInfo);
+  };
+  const {
+    register, errors, handleSubmit, control, setValue,
+  } = useForm();
 
-  useEffect(() => {
-    const nrOfRooms = rooms.length;
-    const nr = parseInt(nrOfTheRoom);
-    const validNr = nr > 0 && nr < nrOfRooms;
-    if (nrOfTheRoom !== '' && validNr) {
-      const room = rooms.filter((e) => e.roomNr === nrOfTheRoom);
-      setRoomInfo(room);
-      setRent(room[0].rent);
-      setDeposit(room[0].deposit);
-      setValue('rent', room[0].rent);
-      setValue('deposit', room[0].deposit);
-    }
-  }, [nrOfTheRoom]);
+  const {
+    rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
+  } = roomInfo;
+  const { contractMode = '' } = jamDetails.contractInfo;
+
+  const defaultValues = {
+    rent, deposit, sqm, expenses, exterior, privBath, contractMode,
+  };
 
   const onSubmit = (data) => {
-    setShowErrorMessage(false);
     const cIn = new Date(checkIn);
     const cOut = new Date(checkOut);
 
-    const outLater = isAfter(cOut, cIn);
+    const outLater = !isAfter(cOut, cIn);
+
     if (outLater) {
-      setErrorMessage('Check-out date must be greater than check-In date');
+      alert('Check-out date must be greater than check-In date');
       return;
     }
-    const roomJammers = jammers.filter((e) => e.roomNr === data.roomNr);
+
+    const roomJammers = TENANTS.filter((e) => e.roomNr === data.roomNr);
 
     for (let i = 0; i < roomJammers.length; i++) {
       const inIsBetween = isAfter(cIn, roomJammers[i].checkIn) && isBefore(cIn, roomJammers[i].checkOut);
@@ -120,301 +115,447 @@ const useInviteJammerForm = ({
       }
     }
 
-    const rentsArray = Calculations.getTenantPayments(data.rent, data.contractMode, cIn, cOut);
+    const rentsArray = Calculations.getTenantPayments(data.rent, data.expenses, data.contractMode, cIn, cOut);
 
     data.rentsArray = rentsArray;
     data.registeredUser = false;
     data.jamName = jamName;
     data.adminFirstName = adminFirstName;
     data.contractCode = Calculations.generateCode();
-    data.checkIn = moment(cIn).format('DD-MMM-YYYY');
-    data.checkOut = moment(cOut).format('DD-MMM-YYYY');
+    data.checkIn =format(cIn, 'dd/MMM/yyyy');
+    data.checkOut = format(cOut, 'dd/MMM/yyyy');
     console.log('data: ', data);
 
-    setInvitationInfo(data);
+    // setInvitationInfo(data);
 
     let contractType = 'single';
-    const nrOfTenants = parseInt(data.nrOfTenants);
 
     if (nrOfTenants > 1) contractType = 'multiple';
     data.contractType = contractType;
 
     const tenantsInfo = [{
       firstName: data.firstName,
-      lastName: data.lastName,
       emial: data.email,
     }];
 
-    if (nrOfTenants === 2) {
-      tenantsInfo.push({
-        firstName: data.firstName2,
-        lastName: data.lastName2,
-        emial: data.email2,
-      });
+    for (let i = 0; i < nrOfTenants; i++) {
+      const name = 'firstName'+(i+1);
+      const email = 'email'+(i+1);
+      const obj = { firstName: name, email };
+      tenantsInfo.push(obj);
     }
 
-    if (nrOfTenants === 3) {
-      tenantsInfo.push({
-        firstName: data.firstName2,
-        lastName: data.lastName2,
-        emial: data.email2,
-      });
-      tenantsInfo.push({
-        firstName: data.firstName3,
-        lastName: data.lastName3,
-        email: data.email3,
-      });
+    // for (let i = 0; i < tenantsInfo.length; i++) {
+    //   DataService.saveInvitation(jamId, data)
+    //     .then((res) => {
+    //       const invId = res.id;
+    //       // eslint-disable-next-line max-len
+    //       // CHAPUZA AQUI HAY QUE AUTOMATIZAR FUNCION DE INVITACION Y PASAR EL USER UN EMAIL CON EL LINK
+    //       const registrationURL = `/register/${jamId}/${invId}`;
+    //       console.log('registrationURL: ', registrationURL);
+    //       // eslint-disable-next-line max-len
+    //       // history.push(`/register/${jamId}/${jamName}/${adminFirstName}/${firstName}/${lastName}/${invId}`);
+    //     });
+    // }
+  };
+
+  const roomsNrs = [{ id: '', name: '' }];
+  for (let i = 0; i < roomsInfo.length; i++) {
+    const number = i + 1;
+    const stringRoom = number.toString();
+    const opt = { id: stringRoom, name: stringRoom };
+    roomsNrs.push(opt);
+  }
+
+  const contracts = Calculations.getSelectOptions('contracts');
+
+  const renderRentDetails = (obj) => {
+    let l = 0;
+    let fromMonth = '';
+    let toMonth = '';
+    const firstMonth = obj.inInfo.month;
+    const lastMonth = obj.outInfo.month;
+    const betw = obj.betweenMonths;
+    console.log('betw: ', betw);
+    if (betw.length > 0) {
+      console.log('betw: ', betw);
+      fromMonth = betw[0] && obj.betweenMonths[0].month;
+      l = betw.length - 1;
+      console.log('l: ', l);
+      toMonth = betw[l].month;
     }
 
-    for (let i = 0; i < tenantsInfo.length; i++) {
-      DataService.saveInvitation(jamId, data)
-        .then((res) => {
-          const invId = res.id;
-          // eslint-disable-next-line max-len
-          // CHAPUZA AQUI HAY QUE AUTOMATIZAR FUNCION DE INVITACION Y PASAR EL USER UN EMAIL CON EL LINK
-          const registrationURL = `/register/${jamId}/${invId}`;
-          console.log('registrationURL: ', registrationURL);
-          // eslint-disable-next-line max-len
-          // history.push(`/register/${jamId}/${jamName}/${adminFirstName}/${firstName}/${lastName}/${invId}`);
-        });
+    switch (newContractMode) {
+      case 'monthly':
+        return (
+          <Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderHov={COLORS.GREENS.BORDERS.BLUE} borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
+                  {dict.rent.monthlyRent}
+                </Txt>
+                <Txt>€ {rent + expenses}</Txt>
+              </Div>
+            </Div>
+          </Div>
+        );
+      case 'daily':
+        return (
+          <Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[firstMonth]}</Txt>
+                <Txt>€ {obj.inInfo.rent}</Txt>
+              </Div>
+              {obj.betweenLength > 0 && (
+                <Div col w="33%" just="center" align="center">
+                  <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{`${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`}</Txt>
+                  <Txt>€ {rent}</Txt>
+                </Div>
+              )}
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[lastMonth]}</Txt>
+                <Txt>€ {obj.outInfo.rent}</Txt>
+              </Div>
+            </Div>
+          </Div>
+        );
+      default:
+        return (
+          <Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[firstMonth]}</Txt>
+                <Txt>€ {obj.inInfo.rent}</Txt>
+              </Div>
+              {obj.betweenLength > 0 && (
+                <Div col w="33%" just="center" align="center">
+                  <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
+                    {`${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`}
+                  </Txt>
+                  <Txt>€ {rent + expenses}</Txt>
+                </Div>
+              )}
+              <Div col w="33%" just="center" align="center">
+                <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">{dict.months[lastMonth]}</Txt>
+                <Txt>€ {obj.outInfo.rent}</Txt>
+              </Div>
+            </Div>
+            {/* <FormRow>
+              <FormInput
+                w="30%"
+                label={dict.months[firstMonth]}
+                placeholder={obj.inInfo.rent}
+                type="numer"
+                name="rentFirstMonth"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                disabled
+              />
+              {obj.betweenLength > 0 && (
+                <FormInput
+                  w="30%"
+                  label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
+                  placeholder={rent}
+                  type="numer"
+                  name="inBetweenRent"
+                  mgR="20px"
+                  pad="8px"
+                  error={errors.rent}
+                  errorMessage="Mandatory"
+                  register={register}
+                  registerObject={{ required: true }}
+                  disabled
+                />
+              )}
+              <FormInput
+                w="30%"
+                label={dict.months[lastMonth]}
+                placeholder={obj.outInfo.rent}
+                type="numer"
+                name="rentLastMonth"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                disabled
+              />
+            </FormRow> */}
+          </Div>
+        );
     }
   };
 
-  const typeOfContracts = Calculations.getTypeOfContracts();
+  useEffect(() => {
+    const rentsObj = Calculations.getTenantPayments(rent, expenses, newContractMode, checkIn, checkOut);
+    if (!isEmpty(rentsObj) && newRoomNr) {
+      const details = renderRentDetails(rentsObj);
+      setRentsSummary(details);
+    }
+  }, [newContractMode]);
+
+  const renderMultipleTenants = (nr) => {
+    const arr = [];
+    for (let i = 1; i < nr; i++) {
+      const obj = {
+        tNr: i+1, nameName: 'firstName'+(i+1), nameLabel: 'First name tenant' +(i+1), emailName: 'email' + (i + 1), emailLabel: 'Email tenant' +(i+1),
+      };
+      arr.push(obj);
+    }
+    return (
+
+      arr.map((tenant) => (
+        <>
+          <SubTitle>
+            {dict.common.tenant}
+            :
+            {''}
+            {tenant.tNr}
+          </SubTitle>
+          <FormRow>
+            <FormInput
+              w="70%"
+              label={dict.common.firstName}
+              type="text"
+              mgR="20px"
+              pad="8px"
+              name={tenant.nameName}
+              error={errors.nameName}
+              errorMessage="Mandatory"
+              register={register}
+              registerObject={{ required: true }}
+            />
+            <FormInput
+              w="70%"
+              label={dict.common.email}
+              type="text"
+              pad="8px"
+              name={tenant.emailName}
+              error={errors.emailName}
+              errorMessage="Ma  ndatory"
+              register={register({
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              })}
+              registerObject={{ required: true }}
+            />
+          </FormRow>
+        </>
+      ))
+    );
+  };
+
+  useEffect(() => {
+    const multipleTenants = renderMultipleTenants(nrOfTenants);
+    setMoreTenants(multipleTenants);
+  }, [nrOfTenants]);
 
   return (
-    <form
+    <Form
       autoComplete="off"
       className="hook-form"
       onSubmit={handleSubmit(onSubmit)}
+      mg="15px"
+      col
     >
-
-      <Div w="100%" col just="center" align="flex-start">
-        <SubTitle>Jam info</SubTitle>
-        <Div w="100%" col just="center" align="flex-start">
-          <FormInput
-            w="70%"
-            label="Nr of tenants to include in the contact"
+      <Div w="100%" col just="center" align="flex-start" mgB="20px">
+        <Title>
+          {dict.common.inviteTenantForm}
+          {' '}
+        </Title>
+        {/* nrOfTenants */}
+        <FormRow>
+          <FormSelect // nrOfTenants
+            w="100%"
+            pad="8px"
             type="text"
+            label={dict.common.nrOfTenants}
+            labelW="150%"
             name="nrOfTenants"
-            mgR="20px"
             error={errors.nrOfTenants}
-            errorMessage="This is mandatory"
+            errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
-            onChange={(e) => setNrOfTenants(e.target.value)}
+            modifiedValue={(val) => { 
+              setNrOfTenants(Number(val));
+              // renderMultipleTenants(Number(val));
+            }}
+            options={[
+              { id: 1, name: 1 },
+              { id: 2, name: 2 },
+              { id: 3, name: 3 },
+              { id: 4, name: 4 },
+              { id: 5, name: 5 },
+            ]}
           />
-          <FormSelect
-            w="50%"
-            label="Room Nr"
-            name="roomNr"
-            type="text"
-            error={errors.roomNr}
-            errorMessage="Room Nr is mandatory"
-            register={register}
-            registerObject={{ required: true }}
-                    // reportValue={(val) => setContractMode(val)}
-            options={typeOfContracts}
-          />
-          <FormSelect
-            w="50%"
-            label="Contract Mode"
-            name="contractMode"
-            type="text"
-            error={errors.contractMode}
-            errorMessage="Please select the type of contract"
-            register={register}
-            registerObject={{ required: true }}
-                    // reportValue={(val) => setContractMode(val)}
-            options={typeOfContracts}
-          />
-          <div className="custom-input-block midWidth">
-            <div className="block-label ">
-              <label>Check In</label>
-              {errors.checkIn && <div className="field-error">Required</div>}
-            </div>
-            <Controller
-              control={control}
-              dateFormat="dd-MMM-yyyy"
-              name="checkIn"
-              className="input"
-              render={() => (
-                <ReactDatePicker
-                  selected={checkIn}
-                  onChange={(value) => setCheckIn(value)}
-                />
-              )}
-            />
-          </div>
-          <div className="custom-input-block midWidth">
-            <div className="block-label ">
-              <label>Check Out</label>
-              {errors.checkOut && <div className="field-error">Required</div>}
-            </div>
-            <Controller
-              control={control}
-              dateFormat="dd-MMM-yyyy"
-              name="checkOut"
-              className="input"
-              render={() => (
-                <ReactDatePicker
-                  selected={checkOut}
-                  onChange={(value) => setCheckOut(value)}
-                />
-              )}
-            />
-          </div>
-          <FormInput
+        </FormRow>
+        <SubTitle>{dict.common.tenantInfo}</SubTitle>
+        <FormRow>
+          <FormInput // firstName
             w="70%"
-            label="Rent €/Mo"
-            type="text"
-            name="rent"
-            mgR="20px"
-            error={errors.rent}
-            errorMessage="Rent value is mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label="Deposit €"
-            type="text"
-            name="deposit"
-            mgR="20px"
-            error={errors.deposit}
-            errorMessage="Deposit value mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-        </Div>
-        <SubTitle>Personal info</SubTitle>
-        <Div w="100%" just="center" align="flex-start">
-          <FormInput
-            w="70%"
-            label="First Name"
+            label={dict.common.firstName}
             type="text"
             name="firstName"
             mgR="20px"
+            pad="8px"
             error={errors.firstName}
-            errorMessage="This is mandatory"
+            errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
           />
-          <FormInput
+          <FormInput // email
             w="70%"
-            label="Last Name"
-            type="text"
-            name="lastName"
-            mgR="20px"
-            error={errors.lastName}
-            errorMessage="This is mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label="Email"
+            label={dict.common.email}
             type="text"
             name="email"
-            mgR="20px"
+            pad="8px"
             error={errors.email}
-            errorMessage="This is mandatory"
+            errorMessage="Mandatory"
             register={register({
               pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             })}
             registerObject={{ required: true }}
           />
-        </Div>
-        { second && (
-        <Div w="100%" just="center" align="flex-start">
-          <SubTitle>Personal info 2nd tenant</SubTitle>
-          <FormInput
-            w="70%"
-            label="First Name"
-            type="text"
-            name="firstName2"
+        </FormRow>
+
+        {nrOfTenants > 1 && moreTenants}
+
+        {/* checkIn, checkOut */}
+        <SubTitle>{dict.common.inAndOutSubtitle}</SubTitle>
+        <FormRow just="space-between">
+          <Div className="checkIn" align="center" mgT="20px" mgR="20px">
+            <Div mgR="10px">
+            <Txt fSize="16px" color="#808080">Check-In</Txt>
+              {errors.checkIn && <Div className="field-error">Required</Div>}
+            </Div>
+            <DatePicker
+              selected={checkIn}
+              onChange={(date) => setCheckIn(date)}
+              dateFormat="dd-MMM-yyyy"
+
+            />
+          </Div>
+          <Div className="checkOut" align="center" mgT="20px">
+            <Div mgR="10px">
+              <Txt fSize="16px" color="#808080">Check-Out</Txt>
+              {errors.checkOut && <Div className="field-error">Required</Div>}
+            </Div>
+            <DatePicker
+              selected={checkOut}
+              onChange={(value) => setCheckOut(value)}
+              dateFormat="dd-MMM-yyyy"
+            />
+          </Div>
+        </FormRow>
+
+        <SubTitle>{dict.common.contractInfo}</SubTitle>
+        <FormRow just="space-between">
+          <FormSelect
+            w="20%"
             mgR="20px"
-            error={errors.firstName2}
-            errorMessage="This is mandatory"
+            pad="8px"
+            col
+            label={dict.common.roomNr}
+            labelW="100%"
+            name="newRoomNr"
+            type="text"
+            error={errors.newRoomNr}
+            errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
+            modifiedValue={(val) => changeRoomNr(val)}
+            options={roomsNrs}
           />
-          <FormInput
-            w="70%"
-            label="Last Name"
-            type="text"
-            name="lastName2"
-            mgR="20px"
-            error={errors.lastName2}
-            errorMessage="This is mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label="Email"
-            type="text"
-            name="email2"
-            mgR="20px"
-            error={errors.email2}
-            errorMessage="This is mandatory"
-            register={register({
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-            registerObject={{ required: true }}
-          />
-        </Div>
-        )}
-        {third && (
-        <Div w="100%" just="center" align="flex-start">
-          <SubTitle>Personal info 3rd tenant</SubTitle>
-          <FormInput
-            w="70%"
-            label="First Name"
-            type="text"
-            name="firstName3"
-            mgR="20px"
-            error={errors.firstName3}
-            errorMessage="This is mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label="Last Name"
-            type="text"
-            name="lastName3"
-            mgR="20px"
-            error={errors.lastName3}
-            errorMessage="This is mandatory"
-            register={register}
-            registerObject={{ required: true }}
-          />
-          <FormInput
-            w="70%"
-            label="Email"
-            type="text"
-            name="email3"
-            mgR="20px"
-            error={errors.email3}
-            errorMessage="This is mandatory"
-            register={register({
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-            registerObject={{ required: true }}
-          />
-        </Div>
+          {newRoomNr !== '' && (
+            <Div just="center" align="center">
+              <FormInput
+                w="20%"
+                label={dict.rent.rent}
+                placeholder={defaultValues.rent}
+                type="numer"
+                name="rent"
+                mgR="20px"
+                pad="8px"
+                mgBI="0px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+              <FormInput
+                w="25%"
+                label={dict.common.expenses}
+                placeholder={defaultValues.expenses}
+                type="number"
+                name="expenses"
+                mgR="20px"
+                pad="8px"
+                mgBI="0"
+                error={errors.expenses}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+              <FormInput
+                w="35%"
+                label={dict.deposit.deposit}
+                placeholder={defaultValues.deposit}
+                type="number"
+                name="deposit"
+                pad="8px"
+                mgBI="0"
+                error={errors.deposit}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+            </Div>
+          )}
+        </FormRow>
+        {newRoomNr !== '' && (
+          <>
+            <FormRow just="space-between">
+              <FormSelect // contractMode
+                w="50%"
+                mgT="20px"
+                label={dict.settingsForm.contMode}
+                labelAlign="flex-start"
+                labelW="100%"
+                name="contractMode"
+                type="text"
+                pad="8px"
+                placeholder={defaultValues.contMod}
+                error={errors.contractMode}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+                options={contracts}
+                modifiedValue={(val) => setNewContractMode(val)}
+              />
+            </FormRow>
+            {newContractMode && (
+              !isEmpty(rentsSummary) && rentsSummary
+            )}
+          </>
         )}
       </Div>
       <InputSubmit
         w="100%"
         back="rgb(85, 187, 151)"
         type="submit"
-        value="submit"
+        value={dict.common.sendInv}
       />
 
-    </form>
+    </Form>
   );
 };
 
-export default useInviteJammerForm;
+export default InviteJammerForm;
