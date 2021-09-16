@@ -448,23 +448,7 @@ const getMessageDate = (timestamp) => {
 };
 
 const getTenantPayments = (rent, expenses, cMode, cIn, cOut) => {
-  // const { lenguage } = useSelector((state) => state.userReducer);
-  // const dict = dictionary[lenguage];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  // const months = [
-  //   dict.months.jan,
-  //   dict.months.feb,
-  //   dict.months.mar,
-  //   dict.months.apr,
-  //   dict.months.may,
-  //   dict.months.jun,
-  //   dict.months.jul,
-  //   dict.months.aug,
-  //   dict.months.sep,
-  //   dict.months.oct,
-  //   dict.months.nov,
-  //   dict.months.dec,
-  // ];
 
   const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -500,7 +484,10 @@ const getTenantPayments = (rent, expenses, cMode, cIn, cOut) => {
   const totalMonths = differenceInCalendarMonths(new Date(cOut), new Date(cIn));
 
   let betweenMonths = [];
-
+  
+  console.log('inM: ', inM);
+  console.log('totalMonths: ', totalMonths);
+  console.log('inM + totalMonths: ', inM + totalMonths);
   for (let i = inM + 1; i < inM + totalMonths; i++) {
     let j = i;
     let year = inYY;

@@ -19,7 +19,7 @@ const ModalBody = styled.div`
     display: flex;
     flex-direction: column;
     background-color: white;
-    borde-radius: 10px;
+    border-radius: 10px;
     padding: 0 0 0 10px;
     min-width: 50%;
     max-height: 50%

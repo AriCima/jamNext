@@ -162,8 +162,8 @@ const Tenants = () => {
                 <td style={leftTd}>{dict.common.roomNr}</td>
                 <td>Cehck-In</td>
                 <td>Check-Out</td>
-                <td>{dict.common.rent}</td>
-                <td>{dict.common.deposit}</td>
+                <td>{dict.rent.rent}</td>
+                <td>{dict.deposit.deposit}</td>
               </tr>
             </thead>
             <tbody>

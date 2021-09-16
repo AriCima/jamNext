@@ -170,77 +170,134 @@ const InviteJammerForm = ({ roomNr }) => {
   const contracts = Calculations.getSelectOptions('contracts');
 
   const renderRentDetails = (obj) => {
-    console.log('obj: ', obj);
-    console.log('contractMode: ', newContractMode);
+    const firstMonth = obj.inInfo.month;
+    const lastMonth = obj.outInfo.month;
+    const fromMonth = obj.betweenMonths[0].month;
+    const l = obj.betweenLength - 1;
+    const toMonth = obj.betweenMonths[l].month;
+
     switch (newContractMode) {
       case 'monthly':
         return (
-          <FormRow>
-            <FormInput
-              w="30%"
-              label={dict.common.rentEachMonth}
-              placeholder={obj.inInfo.rent}
-              type="numer"
-              name="rent"
-              mgR="20px"
-              pad="8px"
-              error={errors.rent}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-          </FormRow>
+          <Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <FormRow>
+              <FormInput
+                w="30%"
+                label={dict.rent.rentEachMonth}
+                placeholder={obj.inInfo.rent}
+                type="numer"
+                name="rent"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+            </FormRow>
+          </Div>
+        );
+      case 'daily':
+        return (
+          <Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <FormRow>
+              <FormInput
+                w="30%"
+                label={dict.months[firstMonth]}
+                placeholder={obj.inInfo.rent}
+                type="numer"
+                name="rentFirstMonth"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+              <FormInput
+                w="30%"
+                label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
+                placeholder={rent}
+                type="numer"
+                name="inBetweenrent"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+              <FormInput
+                w="30%"
+                label={dict.months[lastMonth]}
+                placeholder={obj.outInfo.rent}
+                type="numer"
+                name="rentLastMonth"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+            </FormRow>
+          </Div>
         );
       default:
         return (
-          <FormRow>
-            <FormInput
-              w="30%"
-              label={dict.common.rentFirstMonth}
-              placeholder={obj.inInfo.rent}
-              type="numer"
-              name="rentFirstMonth"
-              mgR="20px"
-              pad="8px"
-              error={errors.rent}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-            <FormInput
-              w="30%"
-              label={dict.common.inBetweenRent}
-              // placeholder={`${dict.rent.rentBetween} ${obj.betweenMonths[0].month} ${dict.common.and} ${obj.betweenMonths[obj.betweenLength].month}}`}
-              type="numer"
-              name="inBetweenrent"
-              mgR="20px"
-              pad="8px"
-              error={errors.rent}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-            <FormInput
-              w="30%"
-              label={dict.common.rentLastMonth}
-              placeholder={obj.outInfo.rent}
-              type="numer"
-              name="rentLastMonth"
-              mgR="20px"
-              pad="8px"
-              error={errors.rent}
-              errorMessage="Mandatory"
-              register={register}
-              registerObject={{ required: true }}
-            />
-          </FormRow>
+          <Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <FormRow>
+              <FormInput
+                w="30%"
+                label={dict.months[firstMonth]}
+                placeholder={obj.inInfo.rent}
+                type="numer"
+                name="rentFirstMonth"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+              <FormInput
+                w="30%"
+                label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
+                placeholder={rent}
+                type="numer"
+                name="inBetweenRent"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+              <FormInput
+                w="30%"
+                label={dict.months[lastMonth]}
+                placeholder={obj.outInfo.rent}
+                type="numer"
+                name="rentLastMonth"
+                mgR="20px"
+                pad="8px"
+                error={errors.rent}
+                errorMessage="Mandatory"
+                register={register}
+                registerObject={{ required: true }}
+              />
+            </FormRow>
+          </Div>
         );
     }
   };
 
   useEffect(() => {
     const rentsObj = Calculations.getTenantPayments(rent, expenses, newContractMode, checkIn, checkOut);
-    if (rentsObj) {
+    if (!isEmpty(rentsObj) && newRoomNr) {
       const details = renderRentDetails(rentsObj);
       setRentsSummary(details);
     }
@@ -421,7 +478,7 @@ const InviteJammerForm = ({ roomNr }) => {
             <Div just="center" align="center" back="#DCF3FA" pad="0 0 10px 0" border={COLORS.GREENS.BORDERS.BLUE} borderR="5px">
               <FormInput
                 w="20%"
-                label={dict.common.rent}
+                label={dict.rent.rent}
                 placeholder={defaultValues.rent}
                 type="numer"
                 name="rent"
@@ -451,7 +508,7 @@ const InviteJammerForm = ({ roomNr }) => {
               />
               <FormInput
                 w="35%"
-                label={dict.common.deposit}
+                label={dict.deposit.deposit}
                 placeholder={defaultValues.deposit}
                 type="number"
                 name="deposit"
