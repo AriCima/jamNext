@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 
 import DatePicker from 'react-datepicker';
@@ -28,17 +28,24 @@ const InviteJammerForm = ({ roomNr }) => {
   const { jamId, jamName, adminFirstName, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
 
   const [newRoomNr, setNewRoomNr] = useState('');
-  const [roomInfo, setRoomInfo] = useState({});
+  const [jamRooms, setJamRooms] = useState([{ id: 0, name: 0 }]);
+  //const [roomInfo, setRoomInfo] = useState({});
   const [checkIn, setCheckIn] = useState(new Date());
-  const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)));
+  const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 3)));
   const [nrOfTenants, setNrOfTenants] = useState(1);
   const [moreTenants, setMoreTenants] = useState([]);
   const [rentsSummary, setRentsSummary] = useState({});
-  const [newContractMode, setNewContractMode] = useState('')
+  const [newContractMode, setNewContractMode] = useState('');
+  const [newDefaultValues, setNewDefaultValues] = useState({});
+  const [newRent, setNewRent] = useState(0);
+  const [newExpenses, setNewExpenses] = useState(0);
+  const [newDeposit, setNewDeposit] = useState(0);
+  const [totalRent, setTotalRent] = useState(0);
 
   const getRooms = async () => {
     if (roomsInfo.length === 0) {
       const rooms = await DataService.getJamRooms(jamId);
+      console.log('rooms: ', rooms);
       const nrOfRooms = rooms.length.toString();
 
       const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
@@ -54,7 +61,6 @@ const InviteJammerForm = ({ roomNr }) => {
           sortedRooms[i].futureTenants = oT.futureTenants;
         }
       }
-
       // Info en Redux
       dispatch(setRoomsInfo(sortedRooms));
     }
@@ -65,31 +71,49 @@ const InviteJammerForm = ({ roomNr }) => {
       getRooms();
     }
     dispatch(setActiveSection('tenants'));
-  }, [jamId]);
+  }, []);
+
+  const getRoomsNr = () => {
+    const rNrs = [];
+    for (let i = 1; i <= roomsInfo.length; i++) {
+      const opt = { id: i, name: i };
+      rNrs.push(opt);
+    }
+    setJamRooms(rNrs)
+  }
+
+  useEffect(()=> {
+    getRoomsNr()
+  }, [roomsInfo])
+
+
+  // const {
+  //   rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
+  // } = roomInfo;
+
+  // const { contractMode = '' } = jamDetails.contractInfo;
+
+  // const defaultValues = {
+  //   rent, deposit, sqm, expenses, exterior, privBath, contractMode,
+  // };
 
   const {
-    rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
-  } = roomInfo;
-  const { contractMode = '' } = jamDetails.contractInfo;
-  const defaultValues = {
-    rent, deposit, sqm, expenses, exterior, privBath, contractMode,
-  };
-  const {
-    register, errors, handleSubmit, control, setValue, getValues
-  } = useForm({defaultValues});
+    register, errors, control, handleSubmit, setValue 
+  } = useForm({defaultValues: newDefaultValues});
 
   const changeRoomNr = (val) => {
     const nr = parseInt(val, 10);
     const newInfo = roomsInfo[nr - 1];
     setNewRoomNr(nr - 1);
     setRoomInfo(newInfo);
+
     const {
       rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
     } = newInfo;
-    console.log(rent, deposit, sqm, expenses);
-    setValue('rent', rent)
-    setValue('deposit', deposit)
-    setValue('expenses', expenses)
+
+    setNewDefaultValues({
+      rent, deposit, expenses
+    });
   };
   
   const onSubmit = (data) => {
@@ -164,14 +188,6 @@ const InviteJammerForm = ({ roomNr }) => {
     //     });
     // }
   };
-
-  const roomsNrs = [{ id: '', name: '' }];
-  for (let i = 0; i < roomsInfo.length; i++) {
-    const number = i + 1;
-    const stringRoom = number.toString();
-    const opt = { id: stringRoom, name: stringRoom };
-    roomsNrs.push(opt);
-  }
 
   const contracts = Calculations.getSelectOptions('contracts');
 
@@ -264,7 +280,17 @@ const InviteJammerForm = ({ roomNr }) => {
   };
 
   useEffect(() => {
-    const rentsObj = Calculations.getTenantPayments(rent, expenses, newContractMode, checkIn, checkOut);
+    if (newRoomNr) {
+      const newInfo = roomsInfo[newRoomNr - 1];
+      const { rent = '', deposit = '', expenses = '' } = newInfo;
+      setValue('rent', rent);
+      setValue('expenses', expenses);
+      setValue('deposit', deposit);
+    }
+  }, [newRoomNr]);
+
+  useEffect(() => {
+    const rentsObj = Calculations.getTenantPayments(newRent, newExpenses, newContractMode, checkIn, checkOut);
     if (!isEmpty(rentsObj) && newRoomNr) {
       const details = renderRentDetails(rentsObj);
       setRentsSummary(details);
@@ -408,7 +434,6 @@ const InviteJammerForm = ({ roomNr }) => {
               selected={checkIn}
               onChange={(date) => setCheckIn(date)}
               dateFormat="dd-MMM-yyyy"
-
             />
           </Div>
           <Div className="checkOut" align="center" mgT="20px">
@@ -427,10 +452,10 @@ const InviteJammerForm = ({ roomNr }) => {
         <SubTitle>{dict.common.contractInfo}</SubTitle>
         <FormRow just="space-between">
           <FormSelect
-            w="20%"
+            w="30%"
             mgR="20px"
+            mgT="10px"
             pad="8px"
-            col
             label={dict.common.roomNr}
             labelW="100%"
             name="newRoomNr"
@@ -439,8 +464,8 @@ const InviteJammerForm = ({ roomNr }) => {
             errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
-            modifiedValue={(val) => changeRoomNr(val)}
-            options={roomsNrs}
+            modifiedValue={(val) => setNewRoomNr(val)}
+            options={jamRooms}
           />
           {newRoomNr !== '' && (
             <Div just="center" align="center">
@@ -455,10 +480,15 @@ const InviteJammerForm = ({ roomNr }) => {
                 mgBI="0px"
                 error={errors.rent}
                 errorMessage="Mandatory"
-                value={getValues('rent')}
-                modifiedValue={val => setValue('rent',val)}
+                // modifiedValue={val => setValue('rent',val)}
                 register={register}
                 registerObject={{ required: true }}
+              />
+              <Controller
+                as={<input type='text' />}
+                control={control}
+                // defaultValue={userData ? userData.phone : ''}
+                name='rent'
               />
               <FormInput
                 w="25%"
@@ -471,7 +501,6 @@ const InviteJammerForm = ({ roomNr }) => {
                 error={errors.expenses}
                 errorMessage="Mandatory"
                 register={register}
-                value={expenses}
                 registerObject={{ required: true }}
               />
               <FormInput
@@ -484,10 +513,9 @@ const InviteJammerForm = ({ roomNr }) => {
                 error={errors.deposit}
                 errorMessage="Mandatory"
                 register={register}
-                value={deposit}
+                // value={deposit}
                 registerObject={{ required: true }}
               />
-              <input {...register('rent')} />
             </Div>
           )}
         </FormRow>
@@ -503,7 +531,7 @@ const InviteJammerForm = ({ roomNr }) => {
                 name="contractMode"
                 type="text"
                 pad="8px"
-                placeholder={defaultValues.contMod}
+                // placeholder={defaultValues.contMod}
                 error={errors.contractMode}
                 errorMessage="Mandatory"
                 register={register}
