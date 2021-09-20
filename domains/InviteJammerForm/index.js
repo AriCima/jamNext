@@ -68,21 +68,25 @@ const InviteJammerForm = ({ roomNr }) => {
 
   useEffect(() => {
     if (jamId) {
+      console.log('rooms Info 1')
       getRooms();
+      getRoomsNr()
     }
     dispatch(setActiveSection('tenants'));
-  }, []);
+  }, [jamId]);
 
   const getRoomsNr = () => {
-    const rNrs = [];
+    const rNrs = [{id: 0, name: 0 }];
     for (let i = 1; i <= roomsInfo.length; i++) {
       const opt = { id: i, name: i };
       rNrs.push(opt);
     }
     setJamRooms(rNrs)
+    
   }
 
   useEffect(()=> {
+    console.log('rooms Info 2')
     getRoomsNr()
   }, [roomsInfo])
 
