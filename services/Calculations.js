@@ -405,7 +405,6 @@ const getSelectOptions = (listType) => {
       break;
     case 'contracts':
       list = [
-        { id: 'select', name: 'Select . . .' },
         { id: 'monthly', name: 'Monthly' },
         { id: 'fortnightly', name: 'Fortnightly' },
         { id: 'daily', name: 'Daily' },

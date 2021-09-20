@@ -36,16 +36,14 @@ const InviteJammerForm = ({ roomNr }) => {
   const [moreTenants, setMoreTenants] = useState([]);
   const [rentsSummary, setRentsSummary] = useState({});
   const [newContractMode, setNewContractMode] = useState('');
-  const [newDefaultValues, setNewDefaultValues] = useState({});
   const [newRent, setNewRent] = useState(0);
   const [newExpenses, setNewExpenses] = useState(0);
   const [newDeposit, setNewDeposit] = useState(0);
-  const [totalRent, setTotalRent] = useState(0);
+  const [contractsMode, setContractsMode] = useState([]);
 
   const getRooms = async () => {
     if (roomsInfo.length === 0) {
       const rooms = await DataService.getJamRooms(jamId);
-      console.log('rooms: ', rooms);
       const nrOfRooms = rooms.length.toString();
 
       const tenantsByRooms = Calculations.getTenantsByRooms(TENANTS, nrOfRooms);
@@ -66,11 +64,26 @@ const InviteJammerForm = ({ roomNr }) => {
     }
   };
 
+  const getContractMode = () => {
+    const contracts = Calculations.getSelectOptions('contracts');
+    const { contractInfo } = jamDetails;
+    const { contractMode } = contractInfo;
+    const index = contracts.findIndex(x => x.id === contractMode);
+    const newCMode = [contracts[index]]
+    for (let i = 0; i < contracts.length; i++) {
+      if (i !== index) {
+        newCMode.push(contracts[i]);
+      } 
+    };
+    setContractsMode(newCMode);
+    setValue('contractMode', newCMode);
+  }
+
   useEffect(() => {
     if (jamId) {
-      console.log('rooms Info 1')
       getRooms();
-      getRoomsNr()
+      getRoomsNr();
+      getContractMode();
     }
     dispatch(setActiveSection('tenants'));
   }, [jamId]);
@@ -89,94 +102,68 @@ const InviteJammerForm = ({ roomNr }) => {
     getRoomsNr()
   }, [roomsInfo])
 
-
-  // const {
-  //   rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
-  // } = roomInfo;
-
-  // const { contractMode = '' } = jamDetails.contractInfo;
-
-  // const defaultValues = {
-  //   rent, deposit, sqm, expenses, exterior, privBath, contractMode,
-  // };
-
   const {
     register, errors, control, handleSubmit, setValue 
-  } = useForm({defaultValues: newDefaultValues});
-
-  const changeRoomNr = (val) => {
-    const nr = parseInt(val, 10);
-    const newInfo = roomsInfo[nr - 1];
-    setNewRoomNr(nr - 1);
-    setRoomInfo(newInfo);
-
-    const {
-      rent = '', deposit = '', sqm = '', expenses = '', exterior = '', privBath = '',
-    } = newInfo;
-
-    setNewDefaultValues({
-      rent, deposit, expenses
-    });
-  };
+  } = useForm();
   
   const onSubmit = (data) => {
     console.log(data);
-    const cIn = new Date(checkIn);
-    const cOut = new Date(checkOut);
+    // const cIn = new Date(checkIn);
+    // const cOut = new Date(checkOut);
 
-    const outLater = !isAfter(cOut, cIn);
+    // const outLater = !isAfter(cOut, cIn);
 
-    if (outLater) {
-      alert('Check-out date must be greater than check-In date');
-      return;
-    }
+    // if (outLater) {
+    //   alert('Check-out date must be greater than check-In date');
+    //   return;
+    // }
 
-    const roomJammers = TENANTS.filter((e) => e.roomNr === data.roomNr);
+    // const roomJammers = TENANTS.filter((e) => e.roomNr === data.roomNr);
 
-    for (let i = 0; i < roomJammers.length; i++) {
-      const inIsBetween = isAfter(cIn, roomJammers[i].checkIn) && isBefore(cIn, roomJammers[i].checkOut);
-      const outIsBetween = isAfter(cOut, roomJammers[i].checkIn) && isBefore(cOut, roomJammers[i].checkOut);
-      const isOverlapping = inIsBetween || outIsBetween;
-      if (isOverlapping) {
-        const {
-          firstName, lastName, roomNr, checkIn, checkOut,
-        } = roomJammers[i];
-        setErrorMessage('There is dates overlapping with');
-        setErrorDesc(`Tenant: ${firstName} ${lastName}, roomNr: ${roomNr}, check-In: ${checkIn}, check-out: ${checkOut}`);
-        setShowErrorMessage(true);
-        return;
-      }
-    }
+    // for (let i = 0; i < roomJammers.length; i++) {
+    //   const inIsBetween = isAfter(cIn, roomJammers[i].checkIn) && isBefore(cIn, roomJammers[i].checkOut);
+    //   const outIsBetween = isAfter(cOut, roomJammers[i].checkIn) && isBefore(cOut, roomJammers[i].checkOut);
+    //   const isOverlapping = inIsBetween || outIsBetween;
+    //   if (isOverlapping) {
+    //     const {
+    //       firstName, lastName, roomNr, checkIn, checkOut,
+    //     } = roomJammers[i];
+    //     setErrorMessage('There is dates overlapping with');
+    //     setErrorDesc(`Tenant: ${firstName} ${lastName}, roomNr: ${roomNr}, check-In: ${checkIn}, check-out: ${checkOut}`);
+    //     setShowErrorMessage(true);
+    //     return;
+    //   }
+    // }
 
-    const rentsArray = Calculations.getTenantPayments(data.rent, data.expenses, data.contractMode, cIn, cOut);
+    // const rentsArray = Calculations.getTenantPayments(data.rent, data.expenses, data.contractMode, cIn, cOut);
 
-    data.rentsArray = rentsArray;
-    data.registeredUser = false;
-    data.jamName = jamName;
-    data.adminFirstName = adminFirstName;
-    data.contractCode = Calculations.generateCode();
-    data.checkIn = format(cIn, 'dd/MMM/yyyy');
-    data.checkOut = format(cOut, 'dd/MMM/yyyy');
-    console.log('data: ', data);
+    // data.rentsArray = rentsArray;
+    // data.registeredUser = false;
+    // data.jamName = jamName;
+    // data.adminFirstName = adminFirstName;
+    // data.contractCode = Calculations.generateCode();
+    // data.checkIn = format(cIn, 'dd/MMM/yyyy');
+    // data.checkOut = format(cOut, 'dd/MMM/yyyy');
+    // console.log('data: ', data);
 
-    // setInvitationInfo(data);
+    // // setInvitationInfo(data);
 
-    let contractType = 'single';
+    // let contractType = 'single';
 
-    if (nrOfTenants > 1) contractType = 'multiple';
-    data.contractType = contractType;
+    // if (nrOfTenants > 1) contractType = 'multiple';
+    // data.contractType = contractType;
 
-    const tenantsInfo = [{
-      firstName: data.firstName,
-      emial: data.email,
-    }];
+    // const tenantsInfo = [{
+    //   firstName: data.firstName,
+    //   emial: data.email,
+    // }];
 
-    for (let i = 0; i < nrOfTenants; i++) {
-      const name = 'firstName'+(i+1);
-      const email = 'email'+(i+1);
-      const obj = { firstName: name, email };
-      tenantsInfo.push(obj);
-    }
+    // for (let i = 0; i < nrOfTenants; i++) {
+    //   const name = 'firstName'+(i+1);
+    //   const email = 'email'+(i+1);
+    //   const obj = { firstName: name, email };
+    //   tenantsInfo.push(obj);
+    // }
 
     // for (let i = 0; i < tenantsInfo.length; i++) {
     //   DataService.saveInvitation(jamId, data)
@@ -192,75 +179,13 @@ const InviteJammerForm = ({ roomNr }) => {
     // }
   };
 
-  const contracts = Calculations.getSelectOptions('contracts');
-
-  const renderRentDetails = (obj) => {
-    let l = 0;
-    let fromMonth = '';
-    let toMonth = '';
-    const firstMonth = obj.inInfo.month;
-    const lastMonth = obj.outInfo.month;
-    const betw = obj.betweenMonths;
-
-    if (betw.length > 0) {
-      console.log('betw: ', betw);
-      fromMonth = betw[0] && obj.betweenMonths[0].month;
-      l = betw.length - 1;
-      console.log('l: ', l);
-      toMonth = betw[l].month;
-    }
-
-    const contractModeDic = {
-      monthly: [{title: dict.rent.monthlyRent, value: Number(newRent) + Number(newExpenses)}],
-      daily: [{title: dict.months[firstMonth], value: Number(obj.inInfo.rent)}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: Number(newRent) + Number(newExpenses) },{title:dict.months[lastMonth], value: obj.outInfo.rent}],
-      fortnightly: [{title: dict.months[firstMonth], value: Number(obj.inInfo.rent)}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: Number(newRent) + Number(newExpenses) },{title:dict.months[lastMonth], value: obj.outInfo.rent}]
-    }
-    
-    return (<Div w="100%" col>
-            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <Div w="200%" mgT="10px" pad="10px 0" just="center">
-            {contractModeDic[newContractMode] && contractModeDic[newContractMode].map(el => {
-              return el && (
-                  <Div col w={`${100/contractModeDic[newContractMode].length}%`} just="center" align="center">
-                    <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
-                      {el.title}
-                    </Txt>
-                    <Txt>€ {el.value}</Txt>
-                  </Div>
-                )})}
-            </Div>
-          </Div>);
-  };
-
-  useEffect(() => {
-    if (newRoomNr) {
-      if (newRoomNr === '0') {
-        setValue('rent', '');
-        setNewRent('');
-        setValue('expenses', '');
-        setNewExpenses('')
-        setValue('deposit', '');
-        setNewDeposit('');
-        return;
-      }
-      const newInfo = roomsInfo[newRoomNr - 1];
-      const { rent = '', deposit = '', expenses = '' } = newInfo;
-      setValue('rent', rent);
-      setNewRent(rent);
-      setValue('expenses', expenses);
-      setNewExpenses(expenses)
-      setValue('deposit', deposit);
-      setNewDeposit(deposit);
-    }
-  }, [newRoomNr]);
-
   useEffect(() => {
     const rentsObj = Calculations.getTenantPayments(newRent, newExpenses, newContractMode, checkIn, checkOut);
     if (!isEmpty(rentsObj) && newRoomNr) {
       const details = renderRentDetails(rentsObj);
       setRentsSummary(details);
     }
-  }, [newContractMode]);
+  }, [newContractMode, newRent, newExpenses]);
 
   const renderMultipleTenants = (nr) => {
     const arr = [];
@@ -317,8 +242,79 @@ const InviteJammerForm = ({ roomNr }) => {
     setMoreTenants(multipleTenants);
   }, [nrOfTenants]);
 
-  const newRentValue = (x) => {
-    console.log('x = ', x)
+  const renderRentDetails = (obj) => {
+    let l = 0;
+    let fromMonth = '';
+    let toMonth = '';
+    const firstMonth = obj.inInfo.month;
+    const lastMonth = obj.outInfo.month;
+    const betw = obj.betweenMonths;
+
+    if (betw.length > 0) {
+      fromMonth = betw[0] && obj.betweenMonths[0].month;
+      l = betw.length - 1;
+      toMonth = betw[l].month;
+    }
+
+    const contractModeDic = {
+      monthly: [{title: dict.rent.monthlyRent, value: Number(newRent) + Number(newExpenses)}],
+      daily: [{title: dict.months[firstMonth], value: Number(obj.inInfo.rent)}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: Number(newRent) + Number(newExpenses) },{title:dict.months[lastMonth], value: obj.outInfo.rent}],
+      fortnightly: [{title: dict.months[firstMonth], value: Number(obj.inInfo.rent)}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: Number(newRent) + Number(newExpenses) },{title:dict.months[lastMonth], value: obj.outInfo.rent}]
+    }
+    
+    return (<Div w="100%" col>
+            <SubTitle>{dict.rent.rentsDetails}</SubTitle>
+            <Div w="200%" mgT="10px" pad="10px 10px" just="center" back="rgba(240, 239, 235, 0.6)">
+            {contractModeDic[newContractMode] && contractModeDic[newContractMode].map(el => {
+              return el && (
+                  <Div key={el.title} col w={`${100/contractModeDic[newContractMode].length}%`} just="center" align="center">
+                    <Txt mgB="10px" color={COLORS.GREENS.FONTS.TITLE} fSize="16px">
+                      {el.title}
+                    </Txt>
+                    <Txt>€ {el.value}</Txt>
+                  </Div>
+                )})}
+            </Div>
+          </Div>);
+  };
+
+  useEffect(() => {
+    if (newRoomNr) {
+      if (newRoomNr === '0') {
+        setValue('rent', '');
+        setNewRent('');
+        setValue('expenses', '');
+        setNewExpenses('')
+        setValue('deposit', '');
+        setNewDeposit('');
+        return;
+      }
+      const newInfo = roomsInfo[newRoomNr - 1];
+      const { rent = '', deposit = '', expenses = '' } = newInfo;
+      setValue('rent', rent);
+      setNewRent(rent);
+      setValue('expenses', expenses);
+      setNewExpenses(expenses)
+      setValue('deposit', deposit);
+      setNewDeposit(deposit);
+    }
+  }, [newRoomNr]);
+
+  const updateValue = (name, val) => {
+    switch (name) {
+      case 'rent':
+        setNewRent(val);
+        break;
+      case 'expenses':
+        setNewExpenses(val);
+        break;
+      case 'deposit':
+        setNewDeposit(val);
+        break;
+      default:
+        break;
+    }
+
   }
   return (
     <Form
@@ -446,7 +442,7 @@ const InviteJammerForm = ({ roomNr }) => {
             mgBI="0px"
             error={errors.rent}
             errorMessage="Mandatory"
-            reportNewValue={newRentValue}
+            reportNewValue={updateValue}
             register={register}
             registerObject={{ required: true }}
           />
@@ -462,6 +458,7 @@ const InviteJammerForm = ({ roomNr }) => {
             errorMessage="Mandatory"
             register={register}
             registerObject={{ required: true }}
+            reportNewValue={updateValue}
           />
           <FormInput // DEPOSIT
             w="35%"
@@ -473,7 +470,7 @@ const InviteJammerForm = ({ roomNr }) => {
             error={errors.deposit}
             errorMessage="Mandatory"
             register={register}
-            // value={deposit}
+            reportNewValue={updateValue}
             registerObject={{ required: true }}
           />
             {/* </Div> */}
@@ -490,18 +487,15 @@ const InviteJammerForm = ({ roomNr }) => {
                 name="contractMode"
                 type="text"
                 pad="8px"
-                // placeholder={defaultValues.contMod}
                 error={errors.contractMode}
                 errorMessage="Mandatory"
                 register={register}
                 registerObject={{ required: true }}
-                options={contracts}
+                options={contractsMode}
                 modifiedValue={(val) => setNewContractMode(val)}
               />
             </FormRow>
-            {newContractMode && (
-              !isEmpty(rentsSummary) && rentsSummary
-            )}
+            {!isEmpty(rentsSummary) && rentsSummary}
           </>
         )}
       </Div>

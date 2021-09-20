@@ -8,7 +8,7 @@ const FormInput = ({
 }) => {
   const reportChange = (val) => {
     modifiedValue && modifiedValue(true);
-    reportNewValue && reportNewValue(val) 
+    reportNewValue && reportNewValue(name, val) 
   };
 
   return (
