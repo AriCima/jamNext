@@ -76,7 +76,7 @@ const InviteJammerForm = ({ roomNr }) => {
   }, [jamId]);
 
   const getRoomsNr = () => {
-    const rNrs = [{id: 0, name: 0 }];
+    const rNrs = [{id: '0', name: '' }];
     for (let i = 1; i <= roomsInfo.length; i++) {
       const opt = { id: i, name: i };
       rNrs.push(opt);
@@ -86,7 +86,6 @@ const InviteJammerForm = ({ roomNr }) => {
   }
 
   useEffect(()=> {
-    console.log('rooms Info 2')
     getRoomsNr()
   }, [roomsInfo])
 
@@ -212,15 +211,14 @@ const InviteJammerForm = ({ roomNr }) => {
     }
 
     const contractModeDic = {
-      monthly: [{title: dict.rent.monthlyRent, value: rent + expenses}],
-      daily: [{title: dict.months[firstMonth], value: obj.inInfo.rent}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: rent + expenses },{title:dict.months[lastMonth], value: obj.outInfo.rent}],
-      fortnightly: [{title: dict.months[firstMonth], value: obj.inInfo.rent}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: rent + expenses },{title:dict.months[lastMonth], value: obj.outInfo.rent}]
+      monthly: [{title: dict.rent.monthlyRent, value: Number(newRent) + Number(newExpenses)}],
+      daily: [{title: dict.months[firstMonth], value: Number(obj.inInfo.rent)}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: Number(newRent) + Number(newExpenses) },{title:dict.months[lastMonth], value: obj.outInfo.rent}],
+      fortnightly: [{title: dict.months[firstMonth], value: Number(obj.inInfo.rent)}, obj.betweenLength > 0 && {title: `${dict.months[fromMonth]} ${dict.common.to} ${dict.months[toMonth]}`, value: Number(newRent) + Number(newExpenses) },{title:dict.months[lastMonth], value: obj.outInfo.rent}]
     }
-    console.log('betw: ', betw);
     
     return (<Div w="100%" col>
             <SubTitle>{dict.rent.rentsDetails}</SubTitle>
-            <Div w="200%" mgT="10px" pad="10px 0" back="#D9EAF7" borderHov={COLORS.GREENS.BORDERS.BLUE} borderR="10px" border={COLORS.GREENS.BORDERS.BLUE} just="center">
+            <Div w="200%" mgT="10px" pad="10px 0" just="center">
             {contractModeDic[newContractMode] && contractModeDic[newContractMode].map(el => {
               return el && (
                   <Div col w={`${100/contractModeDic[newContractMode].length}%`} just="center" align="center">
@@ -232,64 +230,27 @@ const InviteJammerForm = ({ roomNr }) => {
                 )})}
             </Div>
           </Div>);
-            {/* <FormRow>
-              <FormInput
-                w="30%"
-                label={dict.months[firstMonth]}
-                placeholder={obj.inInfo.rent}
-                type="numer"
-                name="rentFirstMonth"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-                disabled
-              />
-              {obj.betweenLength > 0 && (
-                <FormInput
-                  w="30%"
-                  label={`${dict.months[fromMonth]} to ${dict.months[toMonth]}`}
-                  placeholder={rent}
-                  type="numer"
-                  name="inBetweenRent"
-                  mgR="20px"
-                  pad="8px"
-                  error={errors.rent}
-                  errorMessage="Mandatory"
-                  register={register}
-                  registerObject={{ required: true }}
-                  disabled
-                />
-              )}
-              <FormInput
-                w="30%"
-                label={dict.months[lastMonth]}
-                placeholder={obj.outInfo.rent}
-                type="numer"
-                name="rentLastMonth"
-                mgR="20px"
-                pad="8px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-                disabled
-              />
-            </FormRow> 
-          </Div>
-        );
-    }*/}
   };
 
   useEffect(() => {
     if (newRoomNr) {
+      if (newRoomNr === '0') {
+        setValue('rent', '');
+        setNewRent('');
+        setValue('expenses', '');
+        setNewExpenses('')
+        setValue('deposit', '');
+        setNewDeposit('');
+        return;
+      }
       const newInfo = roomsInfo[newRoomNr - 1];
       const { rent = '', deposit = '', expenses = '' } = newInfo;
       setValue('rent', rent);
+      setNewRent(rent);
       setValue('expenses', expenses);
+      setNewExpenses(expenses)
       setValue('deposit', deposit);
+      setNewDeposit(deposit);
     }
   }, [newRoomNr]);
 
@@ -356,6 +317,9 @@ const InviteJammerForm = ({ roomNr }) => {
     setMoreTenants(multipleTenants);
   }, [nrOfTenants]);
 
+  const newRentValue = (x) => {
+    console.log('x = ', x)
+  }
   return (
     <Form
       autoComplete="off"
@@ -454,12 +418,13 @@ const InviteJammerForm = ({ roomNr }) => {
         </FormRow>
 
         <SubTitle>{dict.common.contractInfo}</SubTitle>
-        <FormRow just="space-between">
-          <FormSelect
+        <FormRow just="space-between" align="flex-end">
+          <FormSelect // ROOM-NR
             w="30%"
+            col
             mgR="20px"
-            mgT="10px"
-            pad="8px"
+            mgT="0px"
+            pad="6px"
             label={dict.common.roomNr}
             labelW="100%"
             name="newRoomNr"
@@ -471,57 +436,47 @@ const InviteJammerForm = ({ roomNr }) => {
             modifiedValue={(val) => setNewRoomNr(val)}
             options={jamRooms}
           />
-          {newRoomNr !== '' && (
-            <Div just="center" align="center">
-              
-              <FormInput
-                w="20%"
-                label={dict.rent.rent}
-                type="numer"
-                name="rent"
-                mgR="20px"
-                pad="8px"
-                mgBI="0px"
-                error={errors.rent}
-                errorMessage="Mandatory"
-                // modifiedValue={val => setValue('rent',val)}
-                register={register}
-                registerObject={{ required: true }}
-              />
-              <Controller
-                as={<input type='text' />}
-                control={control}
-                // defaultValue={userData ? userData.phone : ''}
-                name='rent'
-              />
-              <FormInput
-                w="25%"
-                label={dict.common.expenses}
-                type="number"
-                name="expenses"
-                mgR="20px"
-                pad="8px"
-                mgBI="0"
-                error={errors.expenses}
-                errorMessage="Mandatory"
-                register={register}
-                registerObject={{ required: true }}
-              />
-              <FormInput
-                w="35%"
-                label={dict.deposit.deposit}
-                type="number"
-                name="deposit"
-                pad="8px"
-                mgBI="0"
-                error={errors.deposit}
-                errorMessage="Mandatory"
-                register={register}
-                // value={deposit}
-                registerObject={{ required: true }}
-              />
-            </Div>
-          )}
+          <FormInput // RENT
+            w="20%"
+            label={dict.rent.rent}
+            type="numer"
+            name="rent"
+            mgR="20px"
+            pad="8px"
+            mgBI="0px"
+            error={errors.rent}
+            errorMessage="Mandatory"
+            reportNewValue={newRentValue}
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput // EXPENSES
+            w="25%"
+            label={dict.common.expenses}
+            type="number"
+            name="expenses"
+            mgR="20px"
+            pad="8px"
+            mgBI="0"
+            error={errors.expenses}
+            errorMessage="Mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput // DEPOSIT
+            w="35%"
+            label={dict.deposit.deposit}
+            type="number"
+            name="deposit"
+            pad="8px"
+            mgBI="0"
+            error={errors.deposit}
+            errorMessage="Mandatory"
+            register={register}
+            // value={deposit}
+            registerObject={{ required: true }}
+          />
+            {/* </Div> */}
         </FormRow>
         {newRoomNr !== '' && (
           <>

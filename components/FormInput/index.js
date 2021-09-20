@@ -4,11 +4,13 @@ import {
 } from '../../styledComps';
 
 const FormInput = ({
-  w, mgL, mgR, mgBI, label, name, pad, error, errorMessage, register, placeholder = '', value, registerObject, type = 'text', disabled, modifiedValue,
+  w, mgL, mgR, mgBI, label, name, pad, error, errorMessage, register, placeholder = '', value, registerObject, type = 'text', disabled, modifiedValue, reportNewValue
 }) => {
-  const reportChange = () => {
+  const reportChange = (val) => {
     modifiedValue && modifiedValue(true);
+    reportNewValue && reportNewValue(val) 
   };
+
   return (
     <Div
       col
@@ -37,7 +39,7 @@ const FormInput = ({
         placeholder={placeholder}
         ref={register(registerObject)}
         disabled={disabled}
-        onChange={reportChange}
+        onChange={(e) => reportChange(e.target.value)}
       />
     </Div>
   );
