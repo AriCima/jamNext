@@ -26,25 +26,19 @@ const InviteJammerForm = ({ roomNr }) => {
   const { lenguage } = useSelector((state) => state.userReducer);
   const dict = dictionary[lenguage];
   const { jamId, jamName, adminFirstName, roomsInfo, jamDetails } = useSelector((state) => state.jamReducer);
-
-  const [newRoomNr, setNewRoomNr] = useState(roomNr);
-  const [jamRooms, setJamRooms] = useState([{ id: 0, name: 0 }]);
-  // const [roomInfo, setRoomInfo] = useState({});
+  
   const [checkIn, setCheckIn] = useState(new Date());
   const [checkOut, setCheckOut] = useState(new Date(new Date().setMonth(new Date().getMonth() + 3)));
-  const [nrOfTenants, setNrOfTenants] = useState(1);
-  const [moreTenants, setMoreTenants] = useState([]);
-  const [rentsSummary, setRentsSummary] = useState({});
-  const [newContractMode, setNewContractMode] = useState('');
-  const [newRent, setNewRent] = useState(0);
-  const [newExpenses, setNewExpenses] = useState(0);
-  const [newDeposit, setNewDeposit] = useState(0);
-  const [contractsMode, setContractsMode] = useState([]);
+  const [jamRooms, setJamRooms] = useState([{id: '0', name: '' }]);
 
   // ERRORS
   const [datesErrors, setDatesErrors] = useState(false);
   const [datesErrorType, setDatesErrorType] = useState('');
   const [datesErrorMessage, setDatesErrorMessage] = useState('');
+  
+  const {
+    register, errors, control, handleSubmit, setValue, formState 
+  } = useForm({defaultValues:{newRoomNr}});
 
   const getRooms = async () => {
     if (roomsInfo.length === 0) {
@@ -68,7 +62,14 @@ const InviteJammerForm = ({ roomNr }) => {
       dispatch(setRoomsInfo(sortedRooms));
     }
   };
-
+  const getRoomsNr = () => {
+    for (let i = 1; i <= roomsInfo.length; i++) {
+      const opt = { id: i, name: i };
+      rNrs.push(opt);
+    }
+    setJamRooms(rNrs)
+  };
+  
   const getContractMode = () => {
     const contracts = Calculations.getSelectOptions('contracts');
     const { contractInfo } = jamDetails;
@@ -80,7 +81,6 @@ const InviteJammerForm = ({ roomNr }) => {
         newCMode.push(contracts[i]);
       } 
     };
-    setContractsMode(newCMode);
     setValue('contractMode', newCMode);
   };
 
@@ -95,26 +95,11 @@ const InviteJammerForm = ({ roomNr }) => {
     dispatch(setActiveSection('tenants'));
   }, []);
 
-  const getRoomsNr = () => {
-    const rNrs = [{id: '0', name: '' }];
-    for (let i = 1; i <= roomsInfo.length; i++) {
-      const opt = { id: i, name: i };
-      rNrs.push(opt);
-    }
-    setJamRooms(rNrs)
-    
-  }
-
   useEffect(()=> {
     getRoomsNr()
   }, [roomsInfo])
 
-  const {
-    register, errors, control, handleSubmit, setValue 
-  } = useForm({defaultValues:{newRoomNr}});
-  
   const onSubmit = (data) => {
-    console.log('data1: ', data);
     data.rentsSummary = rentsSummary
     const cIn = new Date(checkIn);
     const cOut = new Date(checkOut);
@@ -162,10 +147,13 @@ const InviteJammerForm = ({ roomNr }) => {
     if (nrOfTenants > 1) contractType = 'multiple';
     data.contractType = contractType;
 
-    const tenantsInfo = [];
+    const tenantsInfo = [{
+      firstName: data.firstName,
+      emial: data.email,
+    }];
 
-    for (let i = 0; i < nrOfTenants; i++) {
-      const obj = { firstName: data['firstName'+i], email: data['email'+i] };
+    for (let i = 1; i < nrOfTenants; i++) {
+      const obj = { firstName: firstName+i+1, email: email+i+1 };
       tenantsInfo.push(obj);
     }
 
@@ -193,21 +181,27 @@ const InviteJammerForm = ({ roomNr }) => {
       const details = renderRentDetails(rentsObj);
       setRentsSummary(details);
     }
-  }, [newContractMode, newRent, newExpenses]);
+  }, [formState]);
 
   const renderMultipleTenants = (nr) => {
-    const arr = [ ...Array(nr).keys() ]
+    const arr = [];
+    for (let i = 1; i < nr; i++) {
+      const nr= i+1
+      const obj = { tNr: nr, firstName: 'firstName' + nr,  email: 'email' + nr};
+      arr.push(obj);
+    }
     return (
-      arr.map((tenant, i) => {
-        const firstName = 'firstName'+i;
-        const email = 'email'+i;
+
+      arr.map((tenant) => {
+        const firstName = tenant.firstName;
+        const email = tenant.email;
         return(
           <>
             <SubTitle>
               {dict.common.tenant}
               :
               {''}
-              {i+1}
+              {tenant.tNr}
             </SubTitle>
             <FormRow>
               <FormInput
@@ -244,6 +238,11 @@ const InviteJammerForm = ({ roomNr }) => {
       )
     );
   };
+
+  useEffect(() => {
+    const multipleTenants = renderMultipleTenants(nrOfTenants);
+    setMoreTenants(multipleTenants);
+  }, [nrOfTenants]);
 
   const renderRentDetails = (obj) => {
     let l = 0;
@@ -360,8 +359,36 @@ const InviteJammerForm = ({ roomNr }) => {
           />
         </FormRow>
         <SubTitle>{dict.common.tenantInfo}</SubTitle>
+        <FormRow>
+          <FormInput // firstName
+            w="70%"
+            label={dict.common.firstName}
+            type="text"
+            name="firstName"
+            mgR="20px"
+            pad="8px"
+            error={errors.firstName}
+            errorMessage="Mandatory"
+            register={register}
+            registerObject={{ required: true }}
+          />
+          <FormInput // email
+            w="70%"
+            label={dict.common.email}
+            type="text"
+            name="email"
+            pad="8px"
+            error={errors.email}
+            errorMessage="Mandatory"
+            // register={register({
+            //   pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            // })}
+            register={register}
+            registerObject={{ required: true }}
+          />
+        </FormRow>
 
-        {renderMultipleTenants(nrOfTenants)}
+        {nrOfTenants > 1 && moreTenants}
 
         {/* checkIn, checkOut */}
         <SubTitle>{dict.common.inAndOutSubtitle}</SubTitle>

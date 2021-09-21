@@ -22,7 +22,7 @@ const TenantSummary = ({ tenantType, tenant, jamId }) => {
 
   return (
 
-    <Div className="cTenant-header" mgB="10px" mgR="40px" col shad="2px 2px 12px 0px #B2B2B2" zIndex="2" w="400px" pad="15px" borderR="5px" just="center" align="center">
+    <Div className="cTenant-header" mgB="10px" mgR="40px" col shad="2px 2px 12px 0px #B2B2B2" w="400px" pad="5px" borderR="5px" just="center" align="center">
       <>
         <Div className="TenantSummaryInfo" w="100%" pad="5px 0" just="space-between" align="flex-start">
 
