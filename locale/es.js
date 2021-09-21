@@ -128,4 +128,7 @@ export default {
     Nov: 'Noviembre',
     Dec: 'Diciembre',
   },
+  invalidRange: 'Rango inválido',
+  checkOutLater: 'La fecha de check-out debe ser posterior a la de check-in',
+  overlapping: 'Las fechas se superponene con :',
 };

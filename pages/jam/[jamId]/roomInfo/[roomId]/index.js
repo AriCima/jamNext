@@ -11,6 +11,7 @@ import {
 } from '../../../../../styledComps';
 import BookingsGraphic from '../../../../../components/BookingsGraphic';
 import BackButton from '../../../../../components/BackButton';
+import InviteJammerButton from '../../../../../components/InviteJammerButton'
 import Layout from '../../../../../domains/Layout';
 import NavBarJam from '../../../../../domains/NavBarJam';
 import DataService from '../../../../../services/DataService';
@@ -18,10 +19,13 @@ import Calculations from '../../../../../services/Calculations';
 import TenantSummary from '../../../../../domains/TenantSummary';
 import EditRoomForm from '../../../../../domains/EditRoomForm';
 import SingleRoomInfo from '../../../../../domains/SingleRoomInfo';
+
 import dictionary from '../../../../../locale';
 
 const RoomInfo = () => {
   const { lenguage } = useSelector((state) => state.userReducer);
+  const { roomsInfo } = useSelector((state) => state.jamReducer);
+
   const dict = dictionary[lenguage];
   const [info, setInfo] = useState({});
   const [current, setCurrent] = useState({});
@@ -69,10 +73,13 @@ const RoomInfo = () => {
     <Layout>
       <NavBarJam />
       <Div className="roomId" h="100%" w="100%" col pad="5px 20px">
-        <Div className="BackButton">
+        <Div className="BackButton" just="space-between">
           <BackButton section="rooms" />
+          <Div mgT="20px">
+            <InviteJammerButton roomNr={roomNr} text={dict.common.aTenant} />
+          </Div>
         </Div>
-        <Div className="title" w="100%" mgB="30px" just="space-between">
+        <Div className="title" col w="100%" mgB="30px" just="center" align="flex-start">
           <Title>
             {dict.common.roomNr}
             &nbsp;

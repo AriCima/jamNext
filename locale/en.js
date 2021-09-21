@@ -128,4 +128,9 @@ export default {
     Nov: 'November',
     Dec: 'December',
   },
+  dates: {
+    invalidRange: 'Invalid date range',
+    checkOutLater: 'Check-out date must be later than check-in date',
+    overlapping: 'Dates overlap with :',
+  },
 };
